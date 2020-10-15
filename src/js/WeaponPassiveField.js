@@ -1,6 +1,9 @@
 import React from "react";
 import { weaponSub, weaponPassives } from "./Effects.js";
-import "../css/WeaponPassiveField.css"
+import "../css/WeaponPassiveField.css";
+import { SelectionValueField } from "./SelectionValueField.js";
+import { inputFieldOnLine } from "./InputField.js";
+
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
@@ -10,21 +13,22 @@ class WeaponField extends React.Component {
     };
   }
 
-  WeaponPassiveInput = (id, index) => {
-    return (
-      <div key={"weapon-passive-" + id}>
-        <select id={"weapon-passive-" + id}>
-          {weaponPassives.map((name) => {
-            return (
-              <option key={name} value={"weaponPassive_" + name}>
-                {name}
-              </option>
-            );
-          })}
-        </select>{" "}
-        Value <input type="text" />
+  updateSelection = (key) => (e) =>
+    this.setState({
+      [key]:
+        e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
+    });
+
+  WeaponPassiveInput = (index) => {
+    return SelectionValueField(
+      weaponPassives,
+      "weaponPassive",
+      this.updateSelection,
+      <>
+        {inputFieldOnLine}
         <button onClick={() => this.RemoveEffect(index)}>Remove</button>
-      </div>
+      </>,
+      this.state["weaponPassive"]
     );
   };
 
@@ -50,24 +54,26 @@ class WeaponField extends React.Component {
       <div>
         <div>
           <div> Weapon Substat </div>
-          <select id="weapon-substat">
-            {weaponSub.map((name) => {
-              return (
-                <option key={name} value={"weaponSub_" + name}>
-                  {name}
-                </option>
-              );
-            })}
-          </select>{" "}
-          Value <input type="text" />
+          {SelectionValueField(
+            weaponSub,
+            "weaponSub",
+            this.updateSelection,
+            inputFieldOnLine,
+            this.state["weaponSub"]
+          )}
         </div>
         <div>
-          {" "}
           Weapon Passive
           <button onClick={() => this.AddEffect()}>Add Passive</button>
         </div>
         <div>
-          <div className={this.state.weaponPassives.length > 3 ? "section__weaponPassive--scrollView" :"section__weaponPassive" }>
+          <div
+            className={
+              this.state.weaponPassives.length > 3
+                ? "section__weaponPassive--scrollView"
+                : "section__weaponPassive"
+            }
+          >
             {this.state.weaponPassives.map((id, index) => {
               return this.WeaponPassiveInput(id, index);
             })}

@@ -1,9 +1,8 @@
 import React from "react";
-import "./App.css";
+import "./css/App.css";
 import WeaponField from "./js/WeaponPassiveField.js";
 import CharacterField from "./js/CharacterField.js";
 import ArtifactsView from "./js/ArtifactsView.js";
-
 
 function App() {
   return (
@@ -18,9 +17,7 @@ function App() {
             <WeaponField />
           </div>
         </div>
-
         <ArtifactsView/>
-
       </div>
     </div>
   );

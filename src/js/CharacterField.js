@@ -19,12 +19,13 @@ class CharacterField extends React.Component {
       [key]:
         e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
     });
-
+    
   render = () => {
+    console.log(this.state);
     return (
       <div>
         <div> Character Stats </div>
-        <div className="left">
+        <div className="section__textAlignEnd">
           {characterStats.map((name) => {
             return InputField(name);
           })}
@@ -32,16 +33,16 @@ class CharacterField extends React.Component {
         <div>
           Ascension Stat
           <div />
-          <div className="left">
+          <div className="section__textAlignEnd">
             {SelectionValueField(
               characterAscensionStat,
               "ascensionStat",
-              this.updateSelection,
+              this.updateSelection
               <>
-              <div>Stat Value</div>
-              <div className="left">
+              <div className="section__textAlignStart">{this.state["ascensionStat"]} Value</div>
+              {/* <div className="left"> */}
               <input type="text" />
-              </div>
+              {/* </div> */}
               </>,
               this.state["ascensionStat"]
             )}

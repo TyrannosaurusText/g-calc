@@ -5,7 +5,7 @@ var SelectionValueField = (
   key,
   onChange,
   inputField,
-  value,
+  intialValue,
   hideable = true
 ) => {
   return (
@@ -18,8 +18,10 @@ var SelectionValueField = (
             </option>
           );
         })}
+        <option hidden>Elemental Mastery</option>
+        {/* Just to match length of the subfields lol. */}
       </select>{" "}
-      {true === hideable && value === undefined ? <></> : <>{inputField}</>}
+      {true === hideable && intialValue === undefined ? <></> : <>{inputField}</>}
     </div>
   );
 };

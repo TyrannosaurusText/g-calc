@@ -2,6 +2,7 @@ import React from "react";
 import { artifactSub } from "./Effects.js";
 import "../css/ArtifactField.css";
 import { SelectionValueField } from "./SelectionValueField.js";
+import { inputFieldOnLine } from "./InputField.js";
 
 class ArtifactField extends React.Component {
   constructor(props) {
@@ -20,26 +21,8 @@ class ArtifactField extends React.Component {
       artifactSub,
       "artifactSub-" + id,
       this.updateSelection,
-      <>
-        Value <input type="text" />
-      </>,
+      inputFieldOnLine,
       this.state["artifactSub-" + id]
-    );
-  };
-  artifactMainField = (id) => {
-    return (
-      <div key={"artifactMain-" + id}>
-        <select id={"artifactMain-" + id}>
-          {this.state.mainStats.map((name) => {
-            return (
-              <option key={name} value={"artifactMain_" + name}>
-                {name}
-              </option>
-            );
-          })}
-        </select>{" "}
-        Value <input type="text" />
-      </div>
     );
   };
   render = () => {
@@ -48,14 +31,20 @@ class ArtifactField extends React.Component {
       <div className="section__artifactBody">
         Main Stat
         <div className="section__artifactMainLines">
-          {this.artifactMainField()}
+          {SelectionValueField(
+            this.state.mainStats,
+            "artifactMain",
+            this.updateSelection,
+            inputFieldOnLine,
+            this.state["artifactMainStat"],
+            false
+          )}
         </div>
         Sub Stats
         <div className="section__artifactSubLines">
-          {this.artifactSubField(0)}
-          {this.artifactSubField(1)}
-          {this.artifactSubField(2)}
-          {this.artifactSubField(3)}
+          {Array(4)
+            .fill(0)
+            .map((_, index) => this.artifactSubField(index))}
         </div>
       </div>
     );
