@@ -1,0 +1,13 @@
+.section__artifactBody{
+    max-width: 29vw;
+}
+.section__artifactMainLines{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.section__artifactSubLines{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}

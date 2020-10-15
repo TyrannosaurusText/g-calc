@@ -2,21 +2,26 @@ import React from "react";
 import "./App.css";
 import WeaponField from "./js/WeaponPassiveField.js";
 import CharacterField from "./js/CharacterField.js";
-
+import ArtifactsView from "./js/ArtifactsView.js";
 
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <div>
-          <CharacterField/>
+      <div className="App-column">
+        <div className="App-row">
+          <div>
+            <CharacterField />
+          </div>
+
+          <div>
+            <WeaponField />
+          </div>
         </div>
 
-        <div>
-          <WeaponField />
-        </div>
-      </header>
+        <ArtifactsView/>
+
+      </div>
     </div>
   );
 }

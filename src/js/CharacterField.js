@@ -27,7 +27,7 @@ class CharacterField extends React.Component {
                 );
               })}
             </select>
-            {InputField("Value")}
+            {InputField("Stat Value")}
           </div>
         </div>
     );

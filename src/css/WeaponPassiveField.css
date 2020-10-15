@@ -1,0 +1,5 @@
+.section__weaponPassive--scrollView {
+    height: 18vh;
+    overflow-y: scroll;
+}
+

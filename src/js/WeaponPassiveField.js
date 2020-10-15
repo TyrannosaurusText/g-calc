@@ -1,5 +1,6 @@
 import React from "react";
 import { weaponSub, weaponPassives } from "./Effects.js";
+import "../css/WeaponPassiveField.css"
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ class WeaponField extends React.Component {
           })}
         </select>{" "}
         Value <input type="text" />
-        <button onClick={()=>this.RemoveEffect(index)}>X</button>
+        <button onClick={() => this.RemoveEffect(index)}>Remove</button>
       </div>
     );
   };
@@ -36,12 +37,13 @@ class WeaponField extends React.Component {
     });
   };
 
-  RemoveEffect = (index)=>{
+  RemoveEffect = (index) => {
     var passives = this.state.weaponPassives;
-    passives.splice(index,1)
+    passives.splice(index, 1);
     this.setState({
       weaponPassives: passives,
-    });  }
+    });
+  };
 
   render = () => {
     return (
@@ -59,14 +61,17 @@ class WeaponField extends React.Component {
           </select>{" "}
           Value <input type="text" />
         </div>
-        <div> Weapon Passive </div>
         <div>
-          <div>
+          {" "}
+          Weapon Passive
+          <button onClick={() => this.AddEffect()}>Add Passive</button>
+        </div>
+        <div>
+          <div className={this.state.weaponPassives.length > 3 ? "section__weaponPassive--scrollView" :"section__weaponPassive" }>
             {this.state.weaponPassives.map((id, index) => {
               return this.WeaponPassiveInput(id, index);
             })}
           </div>
-          <button onClick={() => this.AddEffect()}>Add</button>
         </div>
       </div>
     );
