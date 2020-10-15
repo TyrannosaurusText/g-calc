@@ -14,8 +14,8 @@
   z-index: 1000;
   box-sizing: border-box;
 }
-.item {
-  flex-grow: 1;
+.section__characterTop {
+  min-height:30vh;
 }
 
 .center{
@@ -23,7 +23,7 @@
   width:70%
 }
 
-.App-row {
+.App__row {
   min-height: 0vh;
   display: flex;
   flex-direction: row;
@@ -31,7 +31,7 @@
   justify-content: center;
 }
 
-.App-column {
+.App__column {
   display:flex;
   flex-direction: column;
   align-items: center;

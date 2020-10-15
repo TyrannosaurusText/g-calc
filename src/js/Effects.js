@@ -30,9 +30,10 @@ var plumeMain = [effects.ATK];
 var sandsMain = [effects.er].concat(artifactMain);
 var gobletMain = [effects.ele, effects.phys].concat(artifactMain);
 var circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
-var weaponSub = [effects.phys].concat(generalSubs);
+var weaponSub = [effects.None, effects.phys].concat(generalSubs);
+var characterAscensionStat = weaponSub;
 var characterStats = [effects.HP, effects.DEF, effects.ATK];
-var weaponPassives = [effects.ele, effects.phys].concat(generalSubs);
+var weaponPassives = [effects.None, effects.ele, effects.phys].concat(generalSubs);
 var artifactSub = [effects.None].concat(characterStats).concat(generalSubs);
 
-export { weaponSub, characterStats, weaponPassives, artifactSub, flowerMain, plumeMain, sandsMain, gobletMain,circletMain };
+export { weaponSub, characterAscensionStat, characterStats, weaponPassives, artifactSub, flowerMain, plumeMain, sandsMain, gobletMain,circletMain };

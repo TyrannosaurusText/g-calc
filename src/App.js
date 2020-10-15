@@ -8,8 +8,8 @@ import ArtifactsView from "./js/ArtifactsView.js";
 function App() {
   return (
     <div className="App">
-      <div className="App-column">
-        <div className="App-row">
+      <div className="App__column">
+        <div className="App__row section__characterTop">
           <div>
             <CharacterField />
           </div>
