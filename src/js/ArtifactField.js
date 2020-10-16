@@ -12,11 +12,22 @@ class ArtifactField extends React.Component {
     this.state = { ...val, mainStats: props.mainStats };
   }
 
-  updateSelection = (key) => (e) =>
-    this.setState({
-      [key]:
-        e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
-    });
+  updateSelection = (key) => (e) => {
+    this.setState(
+      {
+        [key]:
+          e.target.value.localeCompare("None") === 0
+            ? undefined
+            : e.target.value,
+      },
+      () => {
+        localStorage.setItem(
+          localStorageArtifactField,
+          JSON.stringify(this.state)
+        );
+      }
+    );
+  };
 
   onChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
@@ -29,37 +40,46 @@ class ArtifactField extends React.Component {
 
   artifactSubField = (id) => {
     const artifactId = `artifactSub-${id}`;
-    return SelectionValueField(
-      artifactSub,
-      artifactId,
-      this.updateSelection,
+    const artifactSubFieldInputComponent = (
       <NumberFieldOnLine
-        name={artifactId}
+        name={"Value"}
         onChange={this.onChange(artifactId)}
         defaultValue={this.state[artifactId]}
-      />,
-      this.state[artifactId]
+      />
+    );
+    return (
+      <SelectionValueField
+        key={artifactId}
+        array={artifactSub}
+        selectionName={artifactId}
+        onChange={this.updateSelection}
+        component={artifactSubFieldInputComponent}
+        fieldValue={this.state[artifactId]}
+      />
     );
   };
   render = () => {
     console.log(this.state);
     const artifactMainStat = "artifactMainStat";
+    const artifactMainStatInputComponent = (
+      <NumberFieldOnLine
+        name={"Value"}
+        onChange={this.onChange(artifactMainStat)}
+        defaultValue={this.state[artifactMainStat]}
+      />
+    );
     return (
       <div className="section__artifactBody">
         Main Stat
         <div className="section__artifactMainLines">
-          {SelectionValueField(
-            this.state.mainStats,
-            artifactMainStat,
-            this.updateSelection,
-            <NumberFieldOnLine 
-              name={"Value"}
-              onChange={this.onChange(artifactMainStat)}
-              defaultValue={this.state[artifactMainStat]}
-            />,
-            this.state[artifactMainStat],
-            false
-          )}
+          <SelectionValueField
+            array={this.state.mainStats}
+            selectionName={artifactMainStat}
+            onChange={this.updateSelection}
+            component={artifactMainStatInputComponent}
+            fieldValue={this.state[artifactMainStat]}
+            hideable={false}
+          />
         </div>
         Sub Stats
         <div className="section__artifactSubLines">

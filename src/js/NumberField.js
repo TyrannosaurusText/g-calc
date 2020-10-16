@@ -1,7 +1,6 @@
 import React from "react";
 
 var NumberField = (props) => {
-  console.log(props.onChange)
   return (
     <input
       type="number"

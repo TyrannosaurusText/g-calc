@@ -1,27 +1,36 @@
 import React from "react";
+import {longestArtifactName} from "./Effects.js"
 
-var SelectionValueField = (
-  array,
-  key,
-  onChange,
-  NumberField,
-  intialValue,
-  hideable = true
-) => {
+var SelectionValueField = (props) => {
+  var {
+    selectionName,
+    onChange,
+    array,
+    fieldValue,
+    component,
+    defaultValue,
+    hideable = true,
+  } = props;
+  console.log(defaultValue)
+  //TODO: fix default value
   return (
-    <div key={key}>
-      <select id={key} onChange={onChange(key)}>
-        {array.map((name) => {
+    <div>
+      <select
+        id={selectionName}
+        defaultValue={defaultValue}
+        onChange={onChange(selectionName)}
+      >
+        {array.map((arrayName) => {
           return (
-            <option key={name} value={name}>
-              {name}
+            <option key={arrayName} value={arrayName}>
+              {arrayName}
             </option>
           );
         })}
-        <option hidden>Elemental Mastery</option>
-        {/* Just to match length of the subfields lol. */}
+        <option hidden>{longestArtifactName}</option>
+        {/* Just to keep selection field lengths consistent. */}
       </select>{" "}
-      {true === hideable && intialValue === undefined ? <></> : <>{NumberField}</>}
+      {true === hideable && fieldValue === undefined ? <></> : <>{component}</>}
     </div>
   );
 };

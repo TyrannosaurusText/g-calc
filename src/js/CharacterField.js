@@ -1,10 +1,9 @@
 import React from "react";
 import { characterAscensionStat, characterStats } from "./Effects.js";
-import { SelectionValueField } from "./SelectionValueField.js";
 import {
-  NumberField,
-  NumberFieldOnLine,
-} from "./NumberField.js";
+  SelectionValueField,
+} from "./SelectionValueField.js";
+import { NumberField, NumberFieldOnLine } from "./NumberField.js";
 
 const localStoreCharacterField = "CharacterField";
 class CharacterField extends React.Component {
@@ -13,11 +12,22 @@ class CharacterField extends React.Component {
     var val = JSON.parse(localStorage.getItem(localStoreCharacterField));
     this.state = { ...val };
   }
-  updateSelection = (key) => (e) =>
-    this.setState({
-      [key]:
-        e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
-    });
+  updateSelection = (key) => (e) => {
+    this.setState(
+      {
+        [key]:
+          e.target.value.localeCompare("None") === 0
+            ? undefined
+            : e.target.value,
+      },
+      () => {
+        localStorage.setItem(
+          localStoreCharacterField,
+          JSON.stringify(this.state)
+        );
+      }
+    );
+  };
   onChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
       localStorage.setItem(
@@ -29,8 +39,18 @@ class CharacterField extends React.Component {
 
   render = () => {
     const ascensionStat = "ascensionStat";
-    const ascensionStatValue = "ascensionStatValue"; 
-    console.log(this.state);
+    const ascensionStatValue = "ascensionStatValue";
+    const ascensionStatInputComponent = (
+      <>
+        <div className="section__textAlignStart">
+          {this.state ? this.state[ascensionStat] : ""} Value
+        </div>
+        <NumberField
+          defaultValue={this.state[ascensionStatValue]}
+          onChange={this.onChange(ascensionStatValue)}
+        />
+      </>
+    );
     return (
       <div>
         <div> Character Stats </div>
@@ -51,21 +71,13 @@ class CharacterField extends React.Component {
           Ascension Stat
           <div />
           <div className="section__textAlignEnd">
-            {SelectionValueField(
-              characterAscensionStat,
-              ascensionStat,
-              this.updateSelection,
-              <>
-                <div className="section__textAlignStart">
-                  {this.state ? this.state[ascensionStat] : ""} Value
-                </div>
-                <NumberField 
-                  defaultValue={this.state[ascensionStatValue]}
-                  onChange={this.onChange(ascensionStatValue)}
-                />
-              </>,
-              this.state[ascensionStat]
-            )}
+            <SelectionValueField
+              array={characterAscensionStat}
+              selectionName={ascensionStat}
+              onChange={this.updateSelection}
+              component={ascensionStatInputComponent}
+              fieldValue={this.state[ascensionStat]}
+            />
           </div>
         </div>
       </div>
