@@ -2,12 +2,15 @@ import React from "react";
 import { weaponSub, weaponPassives } from "./Effects.js";
 import "../css/WeaponPassiveField.css";
 import { SelectionValueField } from "./SelectionValueField.js";
-import { inputFieldOnLine } from "./InputField.js";
+import { NumberFieldOnLine } from "./NumberField.js";
 
+const localStorageWeaponField = "WeaponField";
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
+    var val = JSON.parse(localStorage.getItem(localStorageWeaponField));
     this.state = {
+      ...val,
       weaponPassives: [0],
       counter: 1,
     };
@@ -19,16 +22,29 @@ class WeaponField extends React.Component {
         e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
     });
 
+  onChange = (key) => (value) => {
+    this.setState({ [key]: value }, () => {
+      localStorage.setItem(
+        localStoreCharacterField,
+        JSON.stringify(this.state)
+      );
+    });
+  };
   WeaponPassiveInput = (index) => {
+    const weaponPassive = weaponPassive;
     return SelectionValueField(
       weaponPassives,
-      "weaponPassive",
+      weaponPassive +'-'+ index,
       this.updateSelection,
       <>
-        {inputFieldOnLine}
+        <NumberFieldOnLine
+          name={weaponPassive}
+          onChange={this.onChange(weaponPassive)}
+          defaultValue={this.state[weaponPassive]}
+        />
         <button onClick={() => this.RemoveEffect(index)}>Remove</button>
       </>,
-      this.state["weaponPassive"]
+      this.state[weaponPassive]
     );
   };
 
@@ -50,16 +66,21 @@ class WeaponField extends React.Component {
   };
 
   render = () => {
+    const weaponSubstat = "weaponSubstat";
     return (
       <div>
         <div>
           <div> Weapon Substat </div>
           {SelectionValueField(
             weaponSub,
-            "weaponSub",
+            weaponSubstat,
             this.updateSelection,
-            inputFieldOnLine,
-            this.state["weaponSub"]
+            <NumberFieldOnLine
+            name={weaponSubstat}
+            onChange={this.onChange(weaponSubstat)}
+            defaultValue={this.state[weaponSubstat]}
+          />,
+            this.state[weaponSubstat]
           )}
         </div>
         <div>

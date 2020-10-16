@@ -5,7 +5,6 @@ import "./css/bootstrap.css";
 import App from "./App.js";
 
 class Index extends React.Component {
-
   render() {
     return <App />;
   }

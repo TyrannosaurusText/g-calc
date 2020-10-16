@@ -2,12 +2,14 @@ import React from "react";
 import { artifactSub } from "./Effects.js";
 import "../css/ArtifactField.css";
 import { SelectionValueField } from "./SelectionValueField.js";
-import { inputFieldOnLine } from "./InputField.js";
+import { NumberFieldOnLine } from "./NumberField.js";
 
+const localStorageArtifactField = "ArtifactField";
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { mainStats: props.mainStats };
+    var val = JSON.parse(localStorage.getItem(localStorageArtifactField));
+    this.state = { ...val, mainStats: props.mainStats };
   }
 
   updateSelection = (key) => (e) =>
@@ -16,27 +18,46 @@ class ArtifactField extends React.Component {
         e.target.value.localeCompare("None") === 0 ? undefined : e.target.value,
     });
 
+  onChange = (key) => (value) => {
+    this.setState({ [key]: value }, () => {
+      localStorage.setItem(
+        localStorageArtifactField,
+        JSON.stringify(this.state)
+      );
+    });
+  };
+
   artifactSubField = (id) => {
+    const artifactId = `artifactSub-${id}`;
     return SelectionValueField(
       artifactSub,
-      "artifactSub-" + id,
+      artifactId,
       this.updateSelection,
-      inputFieldOnLine,
-      this.state["artifactSub-" + id]
+      <NumberFieldOnLine
+        name={artifactId}
+        onChange={this.onChange(artifactId)}
+        defaultValue={this.state[artifactId]}
+      />,
+      this.state[artifactId]
     );
   };
   render = () => {
     console.log(this.state);
+    const artifactMainStat = "artifactMainStat";
     return (
       <div className="section__artifactBody">
         Main Stat
         <div className="section__artifactMainLines">
           {SelectionValueField(
             this.state.mainStats,
-            "artifactMain",
+            artifactMainStat,
             this.updateSelection,
-            inputFieldOnLine,
-            this.state["artifactMainStat"],
+            <NumberFieldOnLine 
+              name={"Value"}
+              onChange={this.onChange(artifactMainStat)}
+              defaultValue={this.state[artifactMainStat]}
+            />,
+            this.state[artifactMainStat],
             false
           )}
         </div>

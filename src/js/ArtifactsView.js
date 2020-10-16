@@ -24,12 +24,13 @@ class ArtifactsView extends React.Component {
   }
 
   renderOnView = (name, component) => {
-    return this.state.view == name ? component : <div />;
+    return this.state.view == name ? component : <div key={name}/>;
   };
 
   selectionButton = (elem) => {
     return (
       <button
+        key={elem}
         disabled={this.state.view === elem}
         onClick={() => this.setView(elem)}
       >
@@ -55,7 +56,7 @@ class ArtifactsView extends React.Component {
         {options.map((_, index) => {
           return this.renderOnView(
             views[index],
-            <ArtifactField mainStats={options[index]} />
+            <ArtifactField key={index} mainStats={options[index]} />
           );
         })}
       </div>
