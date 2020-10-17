@@ -1,33 +1,33 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { artifactSub } from "./Effects.js";
 import "../css/ArtifactField.css";
-import { SelectionValueField } from "./SelectionValueField.js";
+import {
+  SelectionValueField,
+  hideIfFalsyOrNone,
+} from "./SelectionValueField.js";
 import { NumberFieldOnLine } from "./NumberField.js";
+import { updateSelection } from "./UpdateSelection.js";
+
+const artifactMainStatType = "aMainStatType";
+const artifactMainStatValue = "aMainStatValue";
+const artifactSubType = `aSubType`;
+const artifactSubValue = `aSubValue`;
 
 const localStorageArtifactField = "ArtifactField";
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);
     var val = JSON.parse(localStorage.getItem(localStorageArtifactField));
-    this.state = { ...val, mainStats: props.mainStats };
+    this.state = {
+      ...val,
+      mainStats: props.mainStats,
+      index: props.index,
+      artifactMainStatType: artifactMainStatType + "-" + props.index,
+      artifactMainStatValue: artifactMainStatValue + "-" + props.index,
+      artifactSubType: artifactSubType + "-" + props.index,
+      artifactSubValue: artifactSubValue + "-" + props.index,
+    };
   }
-
-  updateSelection = (key) => (e) => {
-    this.setState(
-      {
-        [key]:
-          e.target.value.localeCompare("None") === 0
-            ? undefined
-            : e.target.value,
-      },
-      () => {
-        localStorage.setItem(
-          localStorageArtifactField,
-          JSON.stringify(this.state)
-        );
-      }
-    );
-  };
 
   onChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
@@ -39,33 +39,35 @@ class ArtifactField extends React.Component {
   };
 
   artifactSubField = (id) => {
-    const artifactId = `artifactSub-${id}`;
-    const artifactSubFieldInputComponent = (
+    const artifactSubType = this.state.artifactSubType+`-${id}`;
+    const artifactSubValue = this.state.artifactSubValue+`artifactSubValue-${id}`;
+    const artifactSubFieldInputComponent = hideIfFalsyOrNone(
+      this.state[artifactSubType],
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.onChange(artifactId)}
-        defaultValue={this.state[artifactId]}
+        onChange={this.onChange(artifactSubValue)}
+        defaultValue={this.state[artifactSubValue]}
       />
     );
     return (
       <SelectionValueField
-        key={artifactId}
+        key={artifactSubType}
         array={artifactSub}
-        selectionName={artifactId}
-        onChange={this.updateSelection}
+        onChange={updateSelection(this.onChange, artifactSubType)}
+        defaultValue={this.state[artifactSubType]}
         component={artifactSubFieldInputComponent}
-        fieldValue={this.state[artifactId]}
       />
     );
   };
   render = () => {
+    const artifactMainStatType = this.state.artifactMainStatType
+    const artifactMainStatValue = this.state.artifactMainStatValue;
     console.log(this.state);
-    const artifactMainStat = "artifactMainStat";
     const artifactMainStatInputComponent = (
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.onChange(artifactMainStat)}
-        defaultValue={this.state[artifactMainStat]}
+        onChange={this.onChange(artifactMainStatValue)}
+        defaultValue={this.state[artifactMainStatValue]}
       />
     );
     return (
@@ -74,10 +76,9 @@ class ArtifactField extends React.Component {
         <div className="section__artifactMainLines">
           <SelectionValueField
             array={this.state.mainStats}
-            selectionName={artifactMainStat}
-            onChange={this.updateSelection}
+            onChange={updateSelection(this.onChange, artifactMainStatType)}
             component={artifactMainStatInputComponent}
-            fieldValue={this.state[artifactMainStat]}
+            defaultValue={this.state[artifactMainStatType]}
             hideable={false}
           />
         </div>

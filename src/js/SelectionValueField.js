@@ -1,24 +1,13 @@
-import React from "react";
-import {longestArtifactName} from "./Effects.js"
+import React, { Fragment } from "react";
+import { longestArtifactName } from "./Effects.js";
 
 var SelectionValueField = (props) => {
-  var {
-    selectionName,
-    onChange,
-    array,
-    fieldValue,
-    component,
-    defaultValue,
-    hideable = true,
-  } = props;
-  console.log(defaultValue)
-  //TODO: fix default value
+  var { onChange, array, component, defaultValue } = props;
   return (
     <div>
       <select
-        id={selectionName}
         defaultValue={defaultValue}
-        onChange={onChange(selectionName)}
+        onChange={(e) => onChange(e.target.value)}
       >
         {array.map((arrayName) => {
           return (
@@ -29,10 +18,14 @@ var SelectionValueField = (props) => {
         })}
         <option hidden>{longestArtifactName}</option>
         {/* Just to keep selection field lengths consistent. */}
-      </select>{" "}
-      {true === hideable && fieldValue === undefined ? <></> : <>{component}</>}
+      </select>
+      {component}
     </div>
   );
 };
 
-export { SelectionValueField };
+var hideIfFalsyOrNone = (val, component) => {
+  return val == undefined || val.localeCompare("None") === 0 ? <Fragment/> : component
+};
+
+export { SelectionValueField, hideIfFalsyOrNone };

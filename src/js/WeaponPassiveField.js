@@ -1,28 +1,102 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { weaponSub, weaponPassives } from "./Effects.js";
 import "../css/WeaponPassiveField.css";
-import { SelectionValueField } from "./SelectionValueField.js";
+import {
+  SelectionValueField,
+  hideIfFalsyOrNone,
+} from "./SelectionValueField.js";
 import { NumberFieldOnLine } from "./NumberField.js";
+import { updateSelection } from "./UpdateSelection.js";
 
 const localStorageWeaponField = "WeaponField";
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
-    var val = JSON.parse(localStorage.getItem(localStorageWeaponField));
+    var props = JSON.parse(localStorage.getItem(localStorageWeaponField)) || {};
+    // console.log(props.weaponPassives);
+    props.weaponPassivesType = props.weaponPassivesType || [];
+    props.weaponPassivesValue = props.weaponPassivesValue || [];
+    var weaponPassivesID = Array(props.weaponPassivesType.length)
+      .fill(0)
+      .map((_, index) => index);
     this.state = {
-      ...val,
-      weaponPassives: [0],
-      counter: 1,
+      ...props,
+      weaponPassivesID: weaponPassivesID,
+      counter: weaponPassivesID.length,
     };
+    console.log(this.state);
   }
 
-  updateSelection = (key) => (e) => {
+  onChange = (key) => (value) => {
+    this.setState({ [key]: value }, () => {
+      localStorage.setItem(localStorageWeaponField, JSON.stringify(this.state));
+    });
+  };
+
+  onPassiveChange = (key, index) => (value) => {
+    var passives = this.state[key];
+    passives[index] = value;
+    this.onChange(key)(passives);
+  };
+
+  WeaponPassiveInput = (id, index) => {
+    const weaponPassivesType = "weaponPassivesType";
+    const weaponPassivesValue = "weaponPassivesValue";
+    const weaponPassiveInputComponent = (
+      <>
+        {hideIfFalsyOrNone(
+          this.state[weaponPassivesType][index],
+          <NumberFieldOnLine
+            onChange={this.onPassiveChange(weaponPassivesValue, index)}
+            defaultValue={this.state[weaponPassivesValue][index]}
+          />
+        )}
+        <button onClick={() => this.RemoveEffect(index)}>Remove</button>
+      </>
+    );
+    return (
+      <SelectionValueField
+        key={id}
+        selectionName={weaponPassivesType}
+        onChange={updateSelection(
+          this.onPassiveChange,
+          weaponPassivesType,
+          index
+        )}
+        array={weaponPassives}
+        component={weaponPassiveInputComponent}
+        defaultValue={this.state[weaponPassivesType][index]}
+      />
+    );
+  };
+
+  AddEffect = () => {
+    var ids = this.state.weaponPassivesID;
+    var type = this.state.weaponPassivesType;
+    var value = this.state.weaponPassivesValue;
+    ids.push(this.state.counter);
+    type.push("None");
+    value.push(undefined);
+    this.setState({
+      weaponPassivesID: ids,
+      weaponPassivesType: type,
+      weaponPassivesValue: value,
+      counter: this.state.counter + 1,
+    });
+  };
+
+  RemoveEffect = (index) => {
+    var ids = this.state.weaponPassivesID;
+    var type = this.state.weaponPassivesType;
+    var value = this.state.weaponPassivesValue;
+    ids.splice(index, 1);
+    type.splice(index, 1);
+    value.splice(index, 1);
     this.setState(
       {
-        [key]:
-          e.target.value.localeCompare("None") === 0
-            ? undefined
-            : e.target.value,
+        weaponPassivesID: ids,
+        weaponPassivesType: type,
+        weaponPassivesValue: value,
       },
       () => {
         localStorage.setItem(
@@ -33,66 +107,14 @@ class WeaponField extends React.Component {
     );
   };
 
-  onChange = (key) => (value) => {
-    this.setState({ [key]: value }, () => {
-      localStorage.setItem(
-        localStoreCharacterField,
-        JSON.stringify(this.state)
-      );
-    });
-  };
-  WeaponPassiveInput = (index) => {
-    const weaponPassive = weaponPassive;
-    const weaponPassiveId = `weaponPassive-${index}`;
-    const weaponPassiveValue = `weaponPassiveValue-${index}`;
-    const weaponPassiveInputComponent = (
-      <>
-        <NumberFieldOnLine
-          name={weaponPassive}
-          onChange={this.onChange(weaponPassive)}
-          defaultValue={this.state[weaponPassive]}
-        />
-        <button onClick={() => this.RemoveEffect(index)}>Remove</button>
-      </>
-    );
-    return (
-      <SelectionValueField
-        key={weaponPassiveId}
-        selectionName={weaponPassiveId}
-        onChange={this.updateSelection}
-        array={weaponPassives}
-        fieldValue={this.state[weaponPassiveValue]}
-        component={weaponPassiveInputComponent}
-        defaultValue={this.state[weaponPassiveId]}
-      />
-    );
-  };
-
-  AddEffect = () => {
-    var passives = this.state.weaponPassives;
-    passives.push(this.state.counter);
-    this.setState({
-      weaponPassives: passives,
-      counter: this.state.counter + 1,
-    });
-  };
-
-  RemoveEffect = (index) => {
-    var passives = this.state.weaponPassives;
-    passives.splice(index, 1);
-    this.setState({
-      weaponPassives: passives,
-    });
-  };
-
   render = () => {
-    const weaponSubstat = "weaponSubstat";
-    const weaponSubstatValue = weaponSubstatValue;
-    const weaponSubstatInputComponent = (
+    const weaponSubstatType = "weaponSubstatType";
+    const weaponSubstatValue = "weaponSubstatValue";
+    const weaponSubstatInputComponent = hideIfFalsyOrNone(
+      this.state[weaponSubstatType],
       <NumberFieldOnLine
-        name={weaponSubstat}
-        onChange={this.onChange(weaponSubstat)}
-        defaultValue={this.state[weaponSubstat]}
+        onChange={this.onChange(weaponSubstatValue)}
+        defaultValue={this.state[weaponSubstatValue]}
       />
     );
     return (
@@ -101,10 +123,8 @@ class WeaponField extends React.Component {
           <div> Weapon Substat </div>
           <SelectionValueField
             array={weaponSub}
-            onChange={this.updateSelection}
-            fieldValue={this.state[weaponSubstatValue]}
+            onChange={updateSelection(this.onChange, weaponSubstatType)}
             component={weaponSubstatInputComponent}
-            defaultValue={this.state[weaponSubstat]}
           />
         </div>
         <div>
@@ -114,14 +134,16 @@ class WeaponField extends React.Component {
         <div>
           <div
             className={
-              this.state.weaponPassives.length > 3
+              this.state.weaponPassivesID.length > 3
                 ? "section__weaponPassive--scrollView"
                 : "section__weaponPassive"
             }
           >
-            {this.state.weaponPassives.map((id, index) => {
-              return this.WeaponPassiveInput(id, index);
-            })}
+            {this.state.weaponPassivesID
+              ? this.state.weaponPassivesID.map((id, index) => {
+                  return this.WeaponPassiveInput(id, index);
+                })
+              : null}
           </div>
         </div>
       </div>

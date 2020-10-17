@@ -56,7 +56,7 @@ class ArtifactsView extends React.Component {
         {options.map((_, index) => {
           return this.renderOnView(
             views[index],
-            <ArtifactField key={index} mainStats={options[index]} />
+            <ArtifactField key={index} index={index} mainStats={options[index]} />
           );
         })}
       </div>

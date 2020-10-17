@@ -1,9 +1,8 @@
 import React from "react";
 import { characterAscensionStat, characterStats } from "./Effects.js";
-import {
-  SelectionValueField,
-} from "./SelectionValueField.js";
+import { SelectionValueField, hideIfFalsyOrNone } from "./SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./NumberField.js";
+import { updateSelection } from "./UpdateSelection.js";
 
 const localStoreCharacterField = "CharacterField";
 class CharacterField extends React.Component {
@@ -12,22 +11,7 @@ class CharacterField extends React.Component {
     var val = JSON.parse(localStorage.getItem(localStoreCharacterField));
     this.state = { ...val };
   }
-  updateSelection = (key) => (e) => {
-    this.setState(
-      {
-        [key]:
-          e.target.value.localeCompare("None") === 0
-            ? undefined
-            : e.target.value,
-      },
-      () => {
-        localStorage.setItem(
-          localStoreCharacterField,
-          JSON.stringify(this.state)
-        );
-      }
-    );
-  };
+
   onChange = (key) => (value) => {
     this.setState({ [key]: value }, () => {
       localStorage.setItem(
@@ -38,12 +22,13 @@ class CharacterField extends React.Component {
   };
 
   render = () => {
-    const ascensionStat = "ascensionStat";
+    const ascensionStatType = "ascensionStatType";
     const ascensionStatValue = "ascensionStatValue";
-    const ascensionStatInputComponent = (
+    const ascensionStatInputComponent = hideIfFalsyOrNone(
+      this.state[ascensionStatType],
       <>
         <div className="section__textAlignStart">
-          {this.state ? this.state[ascensionStat] : ""} Value
+          {this.state ? this.state[ascensionStatType] : ""} Value
         </div>
         <NumberField
           defaultValue={this.state[ascensionStatValue]}
@@ -73,10 +58,8 @@ class CharacterField extends React.Component {
           <div className="section__textAlignEnd">
             <SelectionValueField
               array={characterAscensionStat}
-              selectionName={ascensionStat}
-              onChange={this.updateSelection}
+              onChange={updateSelection(this.onChange, ascensionStatType)}
               component={ascensionStatInputComponent}
-              fieldValue={this.state[ascensionStat]}
             />
           </div>
         </div>
