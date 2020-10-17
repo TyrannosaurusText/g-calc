@@ -13,7 +13,6 @@ class WeaponField extends React.Component {
   constructor(props) {
     super(props);
     var props = JSON.parse(localStorage.getItem(localStorageWeaponField)) || {};
-    // console.log(props.weaponPassives);
     props.weaponPassivesType = props.weaponPassivesType || [];
     props.weaponPassivesValue = props.weaponPassivesValue || [];
     var weaponPassivesID = Array(props.weaponPassivesType.length)
@@ -24,7 +23,6 @@ class WeaponField extends React.Component {
       weaponPassivesID: weaponPassivesID,
       counter: weaponPassivesID.length,
     };
-    console.log(this.state);
   }
 
   onChange = (key) => (value) => {

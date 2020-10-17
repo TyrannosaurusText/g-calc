@@ -62,7 +62,6 @@ class ArtifactField extends React.Component {
   render = () => {
     const artifactMainStatType = this.state.artifactMainStatType
     const artifactMainStatValue = this.state.artifactMainStatValue;
-    console.log(this.state);
     const artifactMainStatInputComponent = (
       <NumberFieldOnLine
         name={"Value"}
