@@ -1,8 +1,8 @@
 import React from "react";
-import { characterAscensionStat, characterStats } from "./Effects.js";
-import { SelectionValueField, hideIfFalsyOrNone } from "./SelectionValueField.js";
-import { NumberField, NumberFieldOnLine } from "./NumberField.js";
-import { updateSelection } from "./UpdateSelection.js";
+import { characterAscensionStat, characterStats } from "./utils/Effects.js";
+import { SelectionValueField, hideIfFalsyOrNone } from "./utils/SelectionValueField.js";
+import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
+import { updateSelection } from "./utils/UpdateSelection.js";
 
 const localStoreCharacterField = "CharacterField";
 class CharacterField extends React.Component {

@@ -6,7 +6,7 @@ import {
   sandsMain,
   gobletMain,
   circletMain,
-} from "./Effects.js";
+} from "./utils/Effects.js";
 
 const views = [
   "Flower of Life",

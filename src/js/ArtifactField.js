@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import { artifactSub } from "./Effects.js";
+import React from "react";
+import { artifactSub } from "./utils/Effects.js";
 import "../css/ArtifactField.css";
 import {
   SelectionValueField,
   hideIfFalsyOrNone,
-} from "./SelectionValueField.js";
-import { NumberFieldOnLine } from "./NumberField.js";
-import { updateSelection } from "./UpdateSelection.js";
+} from "./utils/SelectionValueField.js";
+import { NumberFieldOnLine } from "./utils/NumberField.js";
+import { updateSelection } from "./utils/UpdateSelection.js";
 
 const artifactMainStatType = "aMainStatType";
 const artifactMainStatValue = "aMainStatValue";

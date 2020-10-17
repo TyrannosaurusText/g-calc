@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import { weaponSub, weaponPassives } from "./Effects.js";
+import React from "react";
+import { weaponSub, weaponPassives } from "./utils/Effects.js";
 import "../css/WeaponPassiveField.css";
 import {
   SelectionValueField,
   hideIfFalsyOrNone,
-} from "./SelectionValueField.js";
-import { NumberFieldOnLine } from "./NumberField.js";
-import { updateSelection } from "./UpdateSelection.js";
+} from "./utils/SelectionValueField.js";
+import { NumberFieldOnLine } from "./utils/NumberField.js";
+import { updateSelection } from "./utils/UpdateSelection.js";
 
 const localStorageWeaponField = "WeaponField";
 class WeaponField extends React.Component {
