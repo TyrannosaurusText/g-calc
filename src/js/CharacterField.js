@@ -8,8 +8,7 @@ const localStoreCharacterField = "CharacterField";
 class CharacterField extends React.Component {
   constructor(props) {
     super(props);
-    var val = JSON.parse(localStorage.getItem(localStoreCharacterField));
-    this.state = { ...val };
+    this.state = { ...props.data };
   }
 
   onChange = (key) => (value) => {
@@ -60,6 +59,7 @@ class CharacterField extends React.Component {
               array={characterAscensionStat}
               onChange={updateSelection(this.onChange, ascensionStatType)}
               component={ascensionStatInputComponent}
+              defaultValue={this.state[ascensionStatType]}
             />
           </div>
         </div>

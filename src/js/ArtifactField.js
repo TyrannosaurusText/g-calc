@@ -8,24 +8,28 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { updateSelection } from "./utils/UpdateSelection.js";
 
-const artifactMainStatType = "aMainStatType";
-const artifactMainStatValue = "aMainStatValue";
-const artifactSubType = `aSubType`;
-const artifactSubValue = `aSubValue`;
+const aMainStatType = "aMainStatType";
+const aMainStatValue = "aMainStatValue";
+const aSubType = `aSubType`;
+const aSubValue = `aSubValue`;
 
 const localStorageArtifactField = "ArtifactField";
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);
-    var val = JSON.parse(localStorage.getItem(localStorageArtifactField));
+    const artifactMainStatType = aMainStatType + "-" + props.index;
     this.state = {
-      ...val,
+      ...props.data,
       mainStats: props.mainStats,
       index: props.index,
-      artifactMainStatType: artifactMainStatType + "-" + props.index,
-      artifactMainStatValue: artifactMainStatValue + "-" + props.index,
-      artifactSubType: artifactSubType + "-" + props.index,
-      artifactSubValue: artifactSubValue + "-" + props.index,
+      artifactMainStatType: artifactMainStatType,
+      artifactMainStatValue: aMainStatValue + "-" + props.index,
+      artifactSubType: aSubType + "-" + props.index,
+      artifactSubValue: aSubValue + "-" + props.index,
+      artifactMainStatType:
+        props[artifactMainStatType] == undefined
+          ? props.mainStats[0]
+          : props[artifactMainStatType],
     };
   }
 
@@ -39,8 +43,8 @@ class ArtifactField extends React.Component {
   };
 
   artifactSubField = (id) => {
-    const artifactSubType = this.state.artifactSubType+`-${id}`;
-    const artifactSubValue = this.state.artifactSubValue+`artifactSubValue-${id}`;
+    const artifactSubType = this.state.artifactSubType + `-${id}`;
+    const artifactSubValue = this.state.artifactSubValue + `-${id}`;
     const artifactSubFieldInputComponent = hideIfFalsyOrNone(
       this.state[artifactSubType],
       <NumberFieldOnLine
@@ -60,7 +64,7 @@ class ArtifactField extends React.Component {
     );
   };
   render = () => {
-    const artifactMainStatType = this.state.artifactMainStatType
+    const artifactMainStatType = this.state.artifactMainStatType;
     const artifactMainStatValue = this.state.artifactMainStatValue;
     const artifactMainStatInputComponent = (
       <NumberFieldOnLine

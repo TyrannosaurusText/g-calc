@@ -12,14 +12,14 @@ const localStorageWeaponField = "WeaponField";
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
-    var props = JSON.parse(localStorage.getItem(localStorageWeaponField)) || {};
-    props.weaponPassivesType = props.weaponPassivesType || [];
-    props.weaponPassivesValue = props.weaponPassivesValue || [];
-    var weaponPassivesID = Array(props.weaponPassivesType.length)
+    var data = props.data || {};
+    data.weaponPassivesType = data.weaponPassivesType || [];
+    data.weaponPassivesValue = data.weaponPassivesValue || [];
+    var weaponPassivesID = Array(data.weaponPassivesType.length)
       .fill(0)
       .map((_, index) => index);
     this.state = {
-      ...props,
+      ...data,
       weaponPassivesID: weaponPassivesID,
       counter: weaponPassivesID.length,
     };
@@ -123,6 +123,7 @@ class WeaponField extends React.Component {
             array={weaponSub}
             onChange={updateSelection(this.onChange, weaponSubstatType)}
             component={weaponSubstatInputComponent}
+            defaultValue={this.state[weaponSubstatType]}
           />
         </div>
         <div>

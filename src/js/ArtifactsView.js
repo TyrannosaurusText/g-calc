@@ -20,11 +20,11 @@ const options = [flowerMain, plumeMain, sandsMain, gobletMain, circletMain];
 class ArtifactsView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { view: views[0] };
+    this.state = { view: views[0], data: props.data };
   }
 
   renderOnView = (name, component) => {
-    return this.state.view == name ? component : <div key={name}/>;
+    return this.state.view == name ? component : <div key={name} />;
   };
 
   selectionButton = (elem) => {
@@ -47,16 +47,19 @@ class ArtifactsView extends React.Component {
         <div>Artifact Stats</div>
         <div className="App__row">
           {options.map((_, index) => {
-            return (
-              this.selectionButton(views[index])
-            );
+            return this.selectionButton(views[index]);
           })}
           {this.selectionButton(setEffect)}
         </div>
         {options.map((_, index) => {
           return this.renderOnView(
             views[index],
-            <ArtifactField key={index} index={index} mainStats={options[index]} />
+            <ArtifactField
+              data={this.state.data}
+              key={index}
+              index={index}
+              mainStats={options[index]}
+            />
           );
         })}
       </div>
