@@ -1,40 +1,54 @@
 import React from "react";
 import "./css/App.css";
 import CharacterView from "./js/CharacterView.js";
+import {
+  WeaponFieldName,
+  ArtifactFieldName,
+  CharacterFieldName,
+} from "./js/Names.js";
 
-const localStoreCharacterField = "CharacterField";
-const localStorageArtifactField = "ArtifactField";
-const localStorageWeaponField = "WeaponField";
+const characterSheet1 = "CharacterSheet1";
+const characterSheet2 = "CharacterSheet2";
+const comparePage = "ComparePage";
 
 var loadPage = (page) => {
   var data = JSON.parse(localStorage.getItem(page)) || {};
-  localStorage.setItem(localStorageWeaponField, data.weapon || "{}");
-  localStorage.setItem(localStorageArtifactField, data.artifact || "{}");
-  localStorage.setItem(localStoreCharacterField, data.character || "{}");
+  data[WeaponFieldName] = data[WeaponFieldName] || '{}'
+  data[ArtifactFieldName] = data[ArtifactFieldName] || '{}'
+  data[CharacterFieldName] = data[CharacterFieldName] || '{}'
+  localStorage.setItem(WeaponFieldName, data[WeaponFieldName]);
+  localStorage.setItem(ArtifactFieldName, data[ArtifactFieldName]);
+  localStorage.setItem(CharacterFieldName, data[CharacterFieldName]);
+
   for (var key in data) {
-      data[key] = JSON.parse(data[key]);
+    data[key] = JSON.parse(data[key]);
   }
-  
+
   return data;
 };
 class App extends React.Component {
   constructor(props) {
     super(props);
-    const characterSheet1 = "CharacterSheet1";
-    this.state = { view: "CharacterField1", ...loadPage(characterSheet1) };
+    this.state = { ...loadPage(characterSheet1), view: characterSheet1 };
+    window.addEventListener("unload", this.savePage);
   }
 
-  componentdidMount() {
-    window.addEventListener("beforeunload", this.savePage());
-  }
+  onChange = (field) => (key) => (value) => {
+    var fieldData = this.state[field];
+    fieldData[key] = value;
+    console.log(field, key, fieldData)
+    this.setState({ [field]: fieldData }, () => {
+      localStorage.setItem(field, JSON.stringify(fieldData));
+    });
+  };
 
   savePage = () => {
     var currentPage = this.state.view;
-    
+
     var data = JSON.stringify({
-      weapon: localStorage.getItem(localStorageWeaponField) || {},
-      artifact: localStorage.getItem(localStorageArtifactField) || {},
-      character: localStorage.getItem(localStoreCharacterField) || {},
+      [WeaponFieldName]: localStorage.getItem(WeaponFieldName) || {},
+      [ArtifactFieldName]: localStorage.getItem(ArtifactFieldName) || {},
+      [CharacterFieldName]: localStorage.getItem(CharacterFieldName) || {},
     });
 
     localStorage.setItem(currentPage, data);
@@ -42,29 +56,27 @@ class App extends React.Component {
 
   changePage = (page) => {
     this.savePage();
-    var { weapon, character, artifact } = loadPage(page);
+    var data = loadPage(page);
     this.setState(
       {
         view: undefined,
-        weapon: undefined,
-        artifact: undefined,
-        character: undefined,
+        [WeaponFieldName]: undefined,
+        [ArtifactFieldName]: undefined,
+        [CharacterFieldName]: undefined,
       },
       () => {
         this.setState({
           view: page,
-          weapon: weapon || {},
-          character: character || {},
-          artifact: artifact || {},
+          [WeaponFieldName]: data[WeaponFieldName] || {},
+          [ArtifactFieldName]: data[ArtifactFieldName] || {},
+          [CharacterFieldName]: data[CharacterFieldName] || {},
         });
       }
     );
   };
 
   render() {
-    const characterSheet1 = "CharacterSheet1";
-    const characterSheet2 = "CharacterSheet2";
-    const comparePage = "ComparePage";
+    console.log(this.state)
     return (
       <div className="App">
         <div className="App__row">
@@ -81,10 +93,10 @@ class App extends React.Component {
           </div>
           {this.state.view ? (
             <CharacterView
-              view={this.state.view}
-              character={this.state.character}
-              artifact={this.state.artifact}
-              weapon={this.state.weapon}
+              WeaponField={this.state[WeaponFieldName]}
+              ArtifactField={this.state[ArtifactFieldName]}
+              CharacterField={this.state[CharacterFieldName]}
+              onChange={this.onChange}
             />
           ) : (
             <> </>

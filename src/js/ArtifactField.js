@@ -6,20 +6,19 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-import { updateSelection } from "./utils/UpdateSelection.js";
 
 const aMainStatType = "aMainStatType";
 const aMainStatValue = "aMainStatValue";
 const aSubType = `aSubType`;
 const aSubValue = `aSubValue`;
 
-const localStorageArtifactField = "ArtifactField";
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);
     const artifactMainStatType = aMainStatType + "-" + props.index;
     this.state = {
       ...props.data,
+      onChange: props.onChange,
       mainStats: props.mainStats,
       index: props.index,
       artifactMainStatType: artifactMainStatType,
@@ -33,15 +32,6 @@ class ArtifactField extends React.Component {
     };
   }
 
-  onChange = (key) => (value) => {
-    this.setState({ [key]: value }, () => {
-      localStorage.setItem(
-        localStorageArtifactField,
-        JSON.stringify(this.state)
-      );
-    });
-  };
-
   artifactSubField = (id) => {
     const artifactSubType = this.state.artifactSubType + `-${id}`;
     const artifactSubValue = this.state.artifactSubValue + `-${id}`;
@@ -49,7 +39,7 @@ class ArtifactField extends React.Component {
       this.state[artifactSubType],
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.onChange(artifactSubValue)}
+        onChange={this.state.onChange(artifactSubValue)}
         defaultValue={this.state[artifactSubValue]}
       />
     );
@@ -57,7 +47,7 @@ class ArtifactField extends React.Component {
       <SelectionValueField
         key={artifactSubType}
         array={artifactSub}
-        onChange={updateSelection(this.onChange, artifactSubType)}
+        onChange={this.state.onChange(artifactSubType)}
         defaultValue={this.state[artifactSubType]}
         component={artifactSubFieldInputComponent}
       />
@@ -69,7 +59,7 @@ class ArtifactField extends React.Component {
     const artifactMainStatInputComponent = (
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.onChange(artifactMainStatValue)}
+        onChange={this.state.onChange(artifactMainStatValue)}
         defaultValue={this.state[artifactMainStatValue]}
       />
     );
@@ -79,7 +69,7 @@ class ArtifactField extends React.Component {
         <div className="section__artifactMainLines">
           <SelectionValueField
             array={this.state.mainStats}
-            onChange={updateSelection(this.onChange, artifactMainStatType)}
+            onChange={this.state.onChange(artifactMainStatType)}
             component={artifactMainStatInputComponent}
             defaultValue={this.state[artifactMainStatType]}
             hideable={false}

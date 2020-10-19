@@ -1,24 +1,17 @@
 import React from "react";
 import { characterAscensionStat, characterStats } from "./utils/Effects.js";
-import { SelectionValueField, hideIfFalsyOrNone } from "./utils/SelectionValueField.js";
+import {
+  SelectionValueField,
+  hideIfFalsyOrNone,
+} from "./utils/SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
-import { updateSelection } from "./utils/UpdateSelection.js";
 
-const localStoreCharacterField = "CharacterField";
 class CharacterField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...props.data };
+    console.log(props.data)
+    this.state = { ...props.data, onChange: props.onChange };
   }
-
-  onChange = (key) => (value) => {
-    this.setState({ [key]: value }, () => {
-      localStorage.setItem(
-        localStoreCharacterField,
-        JSON.stringify(this.state)
-      );
-    });
-  };
 
   render = () => {
     const ascensionStatType = "ascensionStatType";
@@ -31,7 +24,7 @@ class CharacterField extends React.Component {
         </div>
         <NumberField
           defaultValue={this.state[ascensionStatValue]}
-          onChange={this.onChange(ascensionStatValue)}
+          onChange={this.state.onChange(ascensionStatValue)}
         />
       </>
     );
@@ -45,7 +38,7 @@ class CharacterField extends React.Component {
                 <NumberFieldOnLine
                   name={name}
                   defaultValue={this.state[name]}
-                  onChange={this.onChange(name)}
+                  onChange={this.state.onChange(name)}
                 />
               </div>
             );
@@ -57,7 +50,7 @@ class CharacterField extends React.Component {
           <div className="section__textAlignEnd">
             <SelectionValueField
               array={characterAscensionStat}
-              onChange={updateSelection(this.onChange, ascensionStatType)}
+              onChange={this.state.onChange(ascensionStatType)}
               component={ascensionStatInputComponent}
               defaultValue={this.state[ascensionStatType]}
             />
