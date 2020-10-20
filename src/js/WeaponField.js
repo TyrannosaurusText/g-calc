@@ -7,6 +7,9 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 
+const weaponPassivesType = "weaponPassivesType";
+const weaponPassivesValue = "weaponPassivesValue";
+
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +27,11 @@ class WeaponField extends React.Component {
     };
   }
 
-  
+  componentWillReceiveProps(props){
+    this.setState({...props.data})
+  }
+
   WeaponPassiveInput = (id, index) => {
-    const weaponPassivesType = "weaponPassivesType";
-    const weaponPassivesValue = "weaponPassivesValue";
     var onPassiveChange = (key, index) => (value) => {
       var passives = this.state[key];
       passives[index] = value;
@@ -59,8 +63,8 @@ class WeaponField extends React.Component {
 
   AddEffect = () => {
     var ids = this.state.weaponPassivesID;
-    var type = this.state.weaponPassivesType;
-    var value = this.state.weaponPassivesValue;
+    var type = this.state[weaponPassivesType];
+    var value = this.state[weaponPassivesValue];
     ids.push(this.state.counter);
     type.push("None");
     value.push(undefined);
@@ -74,24 +78,14 @@ class WeaponField extends React.Component {
 
   RemoveEffect = (index) => {
     var ids = this.state.weaponPassivesID;
-    var type = this.state.weaponPassivesType;
-    var value = this.state.weaponPassivesValue;
+    var type = this.state[weaponPassivesType];
+    var value = this.state[weaponPassivesValue];
     ids.splice(index, 1);
     type.splice(index, 1);
     value.splice(index, 1);
-    this.setState(
-      {
-        weaponPassivesID: ids,
-        weaponPassivesType: type,
-        weaponPassivesValue: value,
-      },
-      () => {
-        localStorage.setItem(
-          localStorageWeaponField,
-          JSON.stringify(this.state)
-        );
-      }
-    );
+    this.setState({ weaponPassivesID: ids });
+    this.state.onChange(weaponPassivesType)(type);
+    this.state.onChange(weaponPassivesValue)(value);
   };
 
   render = () => {

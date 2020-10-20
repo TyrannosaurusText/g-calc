@@ -9,13 +9,17 @@ import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 class CharacterField extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.data)
     this.state = { ...props.data, onChange: props.onChange };
+  }
+
+  componentWillReceiveProps(props){
+    this.setState({...props.data})
   }
 
   render = () => {
     const ascensionStatType = "ascensionStatType";
     const ascensionStatValue = "ascensionStatValue";
+    console.log(this.state)
     const ascensionStatInputComponent = hideIfFalsyOrNone(
       this.state[ascensionStatType],
       <>

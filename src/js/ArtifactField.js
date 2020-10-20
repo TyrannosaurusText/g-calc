@@ -32,6 +32,10 @@ class ArtifactField extends React.Component {
     };
   }
 
+  componentWillReceiveProps(props){
+    this.setState({...props.data})
+  }
+
   artifactSubField = (id) => {
     const artifactSubType = this.state.artifactSubType + `-${id}`;
     const artifactSubValue = this.state.artifactSubValue + `-${id}`;

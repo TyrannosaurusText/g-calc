@@ -36,7 +36,6 @@ class App extends React.Component {
   onChange = (field) => (key) => (value) => {
     var fieldData = this.state[field];
     fieldData[key] = value;
-    console.log(field, key, fieldData)
     this.setState({ [field]: fieldData }, () => {
       localStorage.setItem(field, JSON.stringify(fieldData));
     });
@@ -76,7 +75,6 @@ class App extends React.Component {
   };
 
   render() {
-    console.log(this.state)
     return (
       <div className="App">
         <div className="App__row">
