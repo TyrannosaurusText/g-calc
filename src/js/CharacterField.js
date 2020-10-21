@@ -9,26 +9,20 @@ import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 class CharacterField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...props.data, onChange: props.onChange };
-  }
-
-  componentWillReceiveProps(props){
-    this.setState({...props.data})
   }
 
   render = () => {
     const ascensionStatType = "ascensionStatType";
     const ascensionStatValue = "ascensionStatValue";
-    console.log(this.state)
     const ascensionStatInputComponent = hideIfFalsyOrNone(
-      this.state[ascensionStatType],
+      this.props[ascensionStatType],
       <>
         <div className="section__textAlignStart">
-          {this.state ? this.state[ascensionStatType] : ""} Value
+          {this.props ? this.props[ascensionStatType] : ""} Value
         </div>
         <NumberField
-          defaultValue={this.state[ascensionStatValue]}
-          onChange={this.state.onChange(ascensionStatValue)}
+          defaultValue={this.props[ascensionStatValue]}
+          onChange={this.props.onChange(ascensionStatValue)}
         />
       </>
     );
@@ -41,8 +35,8 @@ class CharacterField extends React.Component {
               <div key={name}>
                 <NumberFieldOnLine
                   name={name}
-                  defaultValue={this.state[name]}
-                  onChange={this.state.onChange(name)}
+                  defaultValue={this.props[name]}
+                  onChange={this.props.onChange(name)}
                 />
               </div>
             );
@@ -54,9 +48,9 @@ class CharacterField extends React.Component {
           <div className="section__textAlignEnd">
             <SelectionValueField
               array={characterAscensionStat}
-              onChange={this.state.onChange(ascensionStatType)}
+              onChange={this.props.onChange(ascensionStatType)}
               component={ascensionStatInputComponent}
-              defaultValue={this.state[ascensionStatType]}
+              defaultValue={this.props[ascensionStatType]}
             />
           </div>
         </div>

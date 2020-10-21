@@ -13,11 +13,11 @@ var CharacterView = (props) => {
     <div className="App__column section__body">
       <div className="App__row section__characterTop">
         <CharacterField
-          data={props[CharacterFieldName]}
+          {...props[CharacterFieldName]}
           onChange={props.onChange(CharacterFieldName)}
         />
         <WeaponField
-          data={props[WeaponFieldName]}
+          {...props[WeaponFieldName]}
           onChange={props.onChange(WeaponFieldName)}
         />
       </div>

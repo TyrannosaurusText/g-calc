@@ -20,7 +20,7 @@ const options = [flowerMain, plumeMain, sandsMain, gobletMain, circletMain];
 class ArtifactsView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { view: views[0], data: props.data, onChange: props.onChange };
+    this.state = { view: views[0] };
   }
 
   renderOnView = (name, component) => {
@@ -55,8 +55,8 @@ class ArtifactsView extends React.Component {
           return this.renderOnView(
             views[index],
             <ArtifactField
-              data={this.state.data}
-              onChange={this.state.onChange}
+              {...this.props.data}
+              onChange={this.props.onChange}
               key={index}
               index={index}
               mainStats={options[index]}
