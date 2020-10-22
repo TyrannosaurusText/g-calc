@@ -11,6 +11,7 @@ import {
 var CharacterView = (props) => {
   return (
     <div className="App__column section__body">
+
       <div className="App__row section__characterTop">
         <CharacterField
           {...props[CharacterFieldName]}

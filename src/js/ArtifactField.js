@@ -15,48 +15,50 @@ const aSubValue = `aSubValue`;
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);
-    const artifactMainStatType = aMainStatType + "-" + props.index;
+    const artifactTypesString = `artifactTypes-${props.index}`;
+    const artifactValuesString = `artifactValues-${props.index}`;
+    if (props[artifactTypesString][0] == undefined)
+      props[artifactTypesString][0] = props.mainStats[0];
     this.state = {
-      artifactMainStatType: artifactMainStatType,
-      artifactMainStatValue: aMainStatValue + "-" + props.index,
-      artifactSubType: aSubType + "-" + props.index,
-      artifactSubValue: aSubValue + "-" + props.index,
-      artifactMainStatType:
-        props[artifactMainStatType] == undefined
-          ? props.mainStats[0]
-          : props[artifactMainStatType],
+      artifactTypesString,
+      artifactValuesString,
     };
   }
-
+  onSubstatChange = (key, index) => (value) => {
+    var substat = this.props[key];
+    substat[index] = value;
+    this.props.onChange(key)(substat);
+  };
   artifactSubField = (id) => {
-    const artifactSubType = this.state.artifactSubType + `-${id}`;
-    const artifactSubValue = this.state.artifactSubValue + `-${id}`;
+    const artifactSubType = this.state.artifactTypesString;
+    const artifactSubValue = this.state.artifactValuesString;
+
     const artifactSubFieldInputComponent = hideIfFalsyOrNone(
-      this.props[artifactSubType],
+      this.props[artifactSubType][id],
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.props.onChange(artifactSubValue)}
-        defaultValue={this.props[artifactSubValue]}
+        onChange={this.onSubstatChange(artifactSubValue, id)}
+        defaultValue={this.props[artifactSubValue][id]}
       />
     );
     return (
       <SelectionValueField
-        key={artifactSubType}
+        key={id}
         array={artifactSub}
-        onChange={this.props.onChange(artifactSubType)}
-        defaultValue={this.props[artifactSubType]}
+        onChange={this.onSubstatChange(artifactSubType, id)}
+        defaultValue={this.props[artifactSubType][id]}
         component={artifactSubFieldInputComponent}
       />
     );
   };
   render = () => {
-    const artifactMainStatType = this.state.artifactMainStatType;
-    const artifactMainStatValue = this.state.artifactMainStatValue;
+    const artifactMainStatType = this.state.artifactTypesString;
+    const artifactMainStatValue = this.state.artifactValuesString;
     const artifactMainStatInputComponent = (
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.props.onChange(artifactMainStatValue)}
-        defaultValue={this.props[artifactMainStatValue]}
+        onChange={this.onSubstatChange(artifactMainStatValue, 0)}
+        defaultValue={this.props[artifactMainStatValue][0]}
       />
     );
     return (
@@ -65,9 +67,9 @@ class ArtifactField extends React.Component {
         <div className="section__artifactMainLines">
           <SelectionValueField
             array={this.props.mainStats}
-            onChange={this.props.onChange(artifactMainStatType)}
+            onChange={this.onSubstatChange(artifactMainStatType, 0)}
             component={artifactMainStatInputComponent}
-            defaultValue={this.props[artifactMainStatType]}
+            defaultValue={this.props[artifactMainStatType][0]}
             hideable={false}
           />
         </div>
@@ -75,7 +77,7 @@ class ArtifactField extends React.Component {
         <div className="section__artifactSubLines">
           {Array(4)
             .fill(0)
-            .map((_, index) => this.artifactSubField(index))}
+            .map((_, index) => this.artifactSubField(index + 1))}
         </div>
       </div>
     );

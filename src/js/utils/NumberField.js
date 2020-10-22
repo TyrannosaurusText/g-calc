@@ -5,7 +5,10 @@ var NumberField = (props) => {
     <input
       type="number"
       defaultValue={props.defaultValue}
-      onBlur={(e) => props.onChange(e.target.value)}
+      onBlur={(e) => {
+        e.target.value = parseFloat(e.target.value);
+        props.onChange(parseFloat(e.target.value));
+      }}
     />
   );
 };

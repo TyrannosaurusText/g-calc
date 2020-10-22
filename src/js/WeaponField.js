@@ -13,10 +13,7 @@ const weaponPassivesValue = "weaponPassivesValue";
 class WeaponField extends React.Component {
   constructor(props) {
     super(props);
-    var data = props.data || {};
-    data.weaponPassivesType = data.weaponPassivesType || [];
-    data.weaponPassivesValue = data.weaponPassivesValue || [];
-    var weaponPassivesID = Array(data.weaponPassivesType.length)
+    var weaponPassivesID = Array(props.weaponPassivesType.length)
       .fill(0)
       .map((_, index) => index);
     this.state = {
