@@ -12,6 +12,7 @@ const characterSheet1 = "CharacterSheet1";
 const characterSheet2 = "CharacterSheet2";
 const comparePage = "ComparePage";
 const newWeaponField = JSON.stringify({
+  weaponSubstatType: "None",
   weaponPassivesType: [],
   weaponPassivesValue: [],
 });

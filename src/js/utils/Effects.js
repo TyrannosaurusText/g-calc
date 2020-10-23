@@ -17,6 +17,8 @@ var effects = {
   healb: "Healing Bonus (%)",
   Normal: "Normal Attack (%)",
   Charge: "Charge Attack (%)",
+  Skill: "Elemental Skill Damage (%)",
+  Burst: "Elemental Burst Damage (%)",
   Total: "Total Damage (%)",
   ATKSPD: "Attack Speed (%)",
   CDR: "Cool Down (%)",
@@ -39,12 +41,20 @@ var plumeMain = [effects.ART_ATK];
 var sandsMain = [effects.er].concat(artifactMain);
 var gobletMain = [effects.ele, effects.phys].concat(artifactMain);
 var circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
-var weaponSub = [effects.None, effects.phys, effects.Normal, effects.Charge, effects.Total, effects.MVSPD].concat(generalSubs);
+var weaponSub = [effects.None, effects.phys].concat(generalSubs);
 var characterAscensionStat = [].concat(generalSubs);
 var characterStats = [effects.HP, effects.DEF, effects.ATK];
-var weaponPassives = [effects.None, effects.ele, effects.phys].concat(
-  generalSubs
-);
+var weaponPassives = [
+  effects.None,
+  effects.ele,
+  effects.phys,
+  effects.Skill,
+  effects.Burst,
+  effects.Normal,
+  effects.Charge,
+  effects.Total,
+  effects.MVSPD,
+].concat(generalSubs);
 var artifactSub = [
   effects.None,
   effects.ART_HP,
