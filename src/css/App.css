@@ -8,25 +8,30 @@
 }
 
 .section__textAlignEnd {
-  /* width: 164px; */
   text-align: end;
-  /* flex-shrink: 0; */
-  /* z-index: 1000; */
-  /* box-sizing: border-box; */
+}
+.section__textAlignCenter {
+  text-align: center;
 }
 .section__textAlignStart {
   text-align: start;
 }
 .section__characterTop {
-  min-height: 30vh;
+  width: 100%;
+  justify-content: flex-start !important;
+}
+
+.block__characterTop--margin {
+  margin-left: 1vw;
 }
 
 .section__navbar {
   margin-top: 3vh;
-  margin-left: 1vw;
+  margin-left: .5vw;
+  max-width: 8vw;
 }
 .section__body {
-  margin-left: 1vw;
+  width:100%
 }
 
 .center {
@@ -38,8 +43,7 @@
   min-height: 0vh;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  /* justify-content: center; */
+  justify-content: center;
 }
 
 .App__column {

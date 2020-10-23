@@ -5,7 +5,7 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
-
+import "../css/CharacterField.css";
 class CharacterField extends React.Component {
   constructor(props) {
     super(props);
@@ -27,12 +27,12 @@ class CharacterField extends React.Component {
       </>
     );
     return (
-      <div>
+      <div className="block__characterTop--margin">
         <div> Character Stats </div>
-        <div className="section__textAlignEnd">
+        <div className="section_StatsMap--shrink">
           {characterStats.map((name) => {
             return (
-              <div key={name}>
+              <div key={name} className="input_NumberField--spacing">
                 <NumberFieldOnLine
                   name={name}
                   defaultValue={this.props[name]}
@@ -45,7 +45,7 @@ class CharacterField extends React.Component {
         <div>
           Ascension Stat
           <div />
-          <div className="section__textAlignEnd">
+          <div className="section__center">
             <SelectionValueField
               array={characterAscensionStat}
               onChange={this.props.onChange(ascensionStatType)}

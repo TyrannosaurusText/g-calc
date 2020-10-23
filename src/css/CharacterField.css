@@ -1,0 +1,8 @@
+.input_NumberField--spacing{
+    display: flex;
+    justify-content: space-between;
+}
+
+.section_StatsMap--shrink{
+    max-width: 12vw;
+}

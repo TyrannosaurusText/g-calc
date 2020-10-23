@@ -172,15 +172,21 @@ class TotalStats extends React.Component {
             {key}: {displayStats[key]}%
           </div>
         ))}
-        <div>Attack Ratios </div>
-        <div>
-          {Object.keys(Ratios).map((key, index) => (
-            <div key={key} className="text__Ratio-space-even">
-              <div>{key}:</div>
-              <div>{Ratios[key]}</div>
+        {totalAtkPercent > 0 ? (
+          <>
+            <div>Attack Ratios </div>
+            <div>
+              {Object.keys(Ratios).map((key, index) => (
+                <div key={key} className="text__Ratio-space-even">
+                  <div>{key}:</div>
+                  <div>{Ratios[key]}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        ) : (
+          <> </>
+        )}
       </div>
     );
   };

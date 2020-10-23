@@ -43,7 +43,7 @@ class ArtifactsView extends React.Component {
 
   render = () => {
     return (
-      <div>
+      <div >
         <div>Artifact Stats</div>
         <div className="App__row">
           {options.map((_, index) => {
