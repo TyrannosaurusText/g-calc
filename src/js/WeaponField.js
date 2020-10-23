@@ -6,7 +6,7 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-
+import { Button } from "./utils/Button.js";
 const weaponPassivesType = "weaponPassivesType";
 const weaponPassivesValue = "weaponPassivesValue";
 
@@ -37,7 +37,9 @@ class WeaponField extends React.Component {
             defaultValue={this.props[weaponPassivesValue][index]}
           />
         )}
-        <button onClick={() => this.RemoveEffect(index)}>Remove</button>
+        <Button onClick={() => this.RemoveEffect(index)}>
+          Remove
+        </Button>
       </>
     );
     return (
@@ -102,7 +104,7 @@ class WeaponField extends React.Component {
         </div>
         <div>
           Weapon Passive
-          <button onClick={() => this.AddEffect()}>Add Passive</button>
+          <Button onClick={() => this.AddEffect()}>Add Passive</Button>
         </div>
         <div>
           <div

@@ -7,6 +7,7 @@ import {
   gobletMain,
   circletMain,
 } from "./utils/Effects.js";
+import { Button } from "./utils/Button.js";
 
 const views = [
   "Flower of Life",
@@ -29,13 +30,13 @@ class ArtifactsView extends React.Component {
 
   selectionButton = (elem) => {
     return (
-      <button
+      <Button
         key={elem}
         disabled={this.state.view === elem}
         onClick={() => this.setView(elem)}
       >
         {elem}
-      </button>
+      </Button>
     );
   };
 

@@ -6,6 +6,7 @@ var SelectionValueField = (props) => {
   return (
     <div>
       <select
+        tabIndex={-1}
         defaultValue={defaultValue}
         onChange={(e) => onChange(e.target.value)}
       >
@@ -25,7 +26,11 @@ var SelectionValueField = (props) => {
 };
 
 var hideIfFalsyOrNone = (val, component) => {
-  return val == undefined || val.localeCompare("None") === 0 ? <Fragment/> : component
+  return val == undefined || val.localeCompare("None") === 0 ? (
+    <Fragment />
+  ) : (
+    component
+  );
 };
 
 export { SelectionValueField, hideIfFalsyOrNone };

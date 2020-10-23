@@ -7,6 +7,7 @@ import {
   CharacterFieldName,
 } from "./js/Names.js";
 import TotalStats from "./js/TotalStats.js";
+import { Button } from "./js/utils/Button.js";
 
 const characterSheet1 = "CharacterSheet1";
 const characterSheet2 = "CharacterSheet2";
@@ -108,13 +109,13 @@ class App extends React.Component {
         <div className="App__row">
           <div className="section__navbar">
             <div className="App__column">
-              <button onClick={() => this.changePage(characterSheet1)}>
+              <Button onClick={() => this.changePage(characterSheet1)}>
                 Character Sheet 1
-              </button>
-              <button onClick={() => this.changePage(characterSheet2)}>
+              </Button>
+              <Button onClick={() => this.changePage(characterSheet2)}>
                 Character Sheet 2
-              </button>
-              <button onClick={() => this.comparePage()}>Compare</button>
+              </Button>
+              <Button onClick={() => this.comparePage()}>Compare</Button>
             </div>
           </div>
           {this.state.view ? (
