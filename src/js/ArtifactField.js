@@ -7,11 +7,6 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 
-const aMainStatType = "aMainStatType";
-const aMainStatValue = "aMainStatValue";
-const aSubType = `aSubType`;
-const aSubValue = `aSubValue`;
-
 class ArtifactField extends React.Component {
   constructor(props) {
     super(props);

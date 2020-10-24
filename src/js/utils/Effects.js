@@ -23,6 +23,14 @@ var effects = {
   ATKSPD: "Attack Speed (%)",
   CDR: "Cool Down (%)",
   MVSPD: "Movement Speed (%)",
+  LVL: "LVL",
+  Swirl: "Swirl",
+  Overload: "Overload",
+  Eletrocharge: "Eletrocharge",
+  Superconduct: "Superconduct",
+  Melt: "Melt",
+  Vaporize: "Vaporize",
+  Crystalize: "Crystalize",
   None: "None",
 };
 var longestArtifactName = effects.er;
@@ -43,7 +51,7 @@ var gobletMain = [effects.ele, effects.phys].concat(artifactMain);
 var circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
 var weaponSub = [effects.None, effects.phys].concat(generalSubs);
 var characterAscensionStat = [].concat(generalSubs);
-var characterStats = [effects.HP, effects.DEF, effects.ATK];
+var characterStats = [effects.LVL, effects.HP, effects.DEF, effects.ATK];
 var weaponPassives = [
   effects.None,
   effects.ele,
@@ -55,15 +63,17 @@ var weaponPassives = [
   effects.Total,
   effects.MVSPD,
 ].concat(generalSubs);
+var setEffects = weaponPassives;
 var artifactSub = [
   effects.None,
   effects.ART_HP,
-  effects.ART_DEF,
   effects.ART_ATK,
+  effects.ART_DEF,
 ].concat(generalSubs);
 
 export {
   effects,
+  setEffects,
   weaponSub,
   longestArtifactName,
   characterAscensionStat,

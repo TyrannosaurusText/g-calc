@@ -1,5 +1,6 @@
 import React from "react";
 import ArtifactField from "./ArtifactField.js";
+import SetEffectField from "./SetEffectField.js";
 import {
   flowerMain,
   plumeMain,
@@ -44,7 +45,7 @@ class ArtifactsView extends React.Component {
 
   render = () => {
     return (
-      <div >
+      <div>
         <div>Artifact Stats</div>
         <div className="App__row">
           {options.map((_, index) => {
@@ -53,17 +54,20 @@ class ArtifactsView extends React.Component {
           {this.selectionButton(setEffect)}
         </div>
         {options.map((_, index) => {
-          return this.renderOnView(
-            views[index],
-            <ArtifactField
-              {...this.props.data}
-              onChange={this.props.onChange}
-              key={index}
-              index={index}
-              mainStats={options[index]}
-            />
-          );
+          var props = {
+            ...this.props.data,
+            onChange: this.props.onChange,
+            key: index,
+            index: index,
+            mainStats: options[index],
+          };
+          return this.renderOnView(views[index], <ArtifactField {...props} />);
         })}
+
+        {this.renderOnView(
+          setEffect,
+          <SetEffectField {...this.props.data} onChange={this.props.onChange} />
+        )}
       </div>
     );
   };

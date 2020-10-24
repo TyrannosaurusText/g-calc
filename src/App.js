@@ -25,6 +25,8 @@ const newArtifactField = (() => {
       obj[`artifactTypes-${index}`] = Array(5).fill(null);
       obj[`artifactValues-${index}`] = Array(5).fill(0);
     });
+  obj[`artifactTypes-5`] = [];
+  obj[`artifactTypes-5`] = [];
   return JSON.stringify(obj);
 })();
 const newCharacterField = JSON.stringify({
@@ -55,7 +57,7 @@ var loadPage = (page) => {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...loadPage(characterSheet1), view: characterSheet1 };
+    this.state = { ...loadPage(characterSheet1), characterData: characterSheet1 };
     window.addEventListener("unload", this.savePage);
   }
 
@@ -68,7 +70,7 @@ class App extends React.Component {
   };
 
   savePage = () => {
-    var currentPage = this.state.view;
+    var currentPage = this.state.characterData;
 
     var data = JSON.stringify({
       [WeaponFieldName]:
@@ -87,14 +89,14 @@ class App extends React.Component {
     var data = loadPage(page);
     this.setState(
       {
-        view: undefined,
+        characterData: undefined,
         [WeaponFieldName]: undefined,
         [ArtifactFieldName]: undefined,
         [CharacterFieldName]: undefined,
       },
       () => {
         this.setState({
-          view: page,
+          characterData: page,
           [WeaponFieldName]: data[WeaponFieldName] || {},
           [ArtifactFieldName]: data[ArtifactFieldName] || {},
           [CharacterFieldName]: data[CharacterFieldName] || {},
@@ -118,7 +120,7 @@ class App extends React.Component {
               <Button onClick={() => this.comparePage()}>Compare</Button>
             </div>
           </div>
-          {this.state.view ? (
+          {this.state.characterData ? (
             <CharacterView
               WeaponField={this.state[WeaponFieldName]}
               ArtifactField={this.state[ArtifactFieldName]}
