@@ -17,8 +17,17 @@
 .section__textAlignStart {
   text-align: start;
 }
-.section__characterTop {
+.section__mainBody {
   width: 100%;
+}
+.section__mainBody--row {
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-start !important;
+}
+.section__mainBody--col {
+  display:flex;
+  flex-direction: row;
   justify-content: flex-start !important;
 }
 
@@ -28,11 +37,11 @@
 
 .section__navbar {
   margin-top: 3vh;
-  margin-left: .5vw;
+  margin-left: 0.5vw;
   max-width: 8vw;
 }
 .section__body {
-  width:100%
+  width: 100%;
 }
 
 .center {
@@ -40,14 +49,14 @@
   width: 70%;
 }
 
-.App__row {
+.section__App--row {
   min-height: 0vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.App__column {
+.section__App--column {
   display: flex;
   flex-direction: column;
   /* margin-left: 100px; */

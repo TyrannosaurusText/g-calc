@@ -50,8 +50,8 @@ var sandsMain = [effects.er].concat(artifactMain);
 var gobletMain = [effects.ele, effects.phys].concat(artifactMain);
 var circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
 var weaponSub = [effects.None, effects.phys].concat(generalSubs);
-var characterAscensionStat = [].concat(generalSubs);
-var characterStats = [effects.LVL, effects.HP, effects.DEF, effects.ATK];
+var characterAscensionStat = [effects.None].concat(generalSubs);
+var characterStats = [effects.LVL, effects.HP, effects.ATK, effects.DEF];
 var weaponPassives = [
   effects.None,
   effects.ele,

@@ -2,8 +2,13 @@ import React from "react";
 import { Button } from "./utils/Button.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
-
-var Trunc = (value) => Math.trunc(value * 100) / 100;
+import {
+  Overload,
+  Electrocharge,
+  Superconduct,
+  Swirl,
+} from "./utils/ReactionLevelDMG.js";
+import { Trunc } from "./utils/Trunc.js";
 class AttackPowerCalc extends React.Component {
   constructor(props) {
     super(props);
@@ -14,9 +19,9 @@ class AttackPowerCalc extends React.Component {
       var val = this.props[stat] || 0;
       return val;
     };
-    var { totalATK, totalCrit, totalCritDMG } = this.props;
+    var { totalATK, totalCrit, totalCritDMG, EQA, EQB, EQC } = this.props;
     var totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)) * 100);
-    if (totalAtkPercent <= 0) return;
+    if (totalAtkPercent <= 0) return <></>;
     var normalAtkPercent = 1 - totalCrit / 100;
     var critDmgPercent =
       Trunc(normalAtkPercent + (totalCrit / 100) * (1 + totalCritDMG / 100)) *
@@ -59,35 +64,18 @@ class AttackPowerCalc extends React.Component {
       "Ele. Skill": Skill,
       "Ele. Burst": Burst,
     };
-    var LevelCalc = (x) => ({
-      EQA: Trunc(
-        0.0000556 * Math.pow(x, 4) -
-          0.0046801 * Math.pow(x, 3) +
-          0.2997675 * Math.pow(x, 2) +
-          1.0962838 * x +
-          26.4887857
-      ),
-      EQB: Trunc(
-        0.0000265 * Math.pow(x, 4) -
-          0.0016607 * Math.pow(x, 3) +
-          0.1205241 * Math.pow(x, 2) +
-          1.5494266 * x +
-          14.6657471
-      ),
-      EQC: Trunc(
-        0.0008476 * Math.pow(x, 3) -
-          0.0166807 * Math.pow(x, 2) +
-          1.5968103 * x +
-          3.2636734
-      ),
-      EQD: Trunc(
-        0.0009943 * Math.pow(x, 3) -
-          0.0187566 * Math.pow(x, 2) +
-          1.9236568 * x +
-          2.0633444
-      ),
-    });
-    
+    var charLevel = this.props[effects.LVL] || 0;
+
+    var reactions = {
+      "Swirl Dmg": Trunc(Swirl(charLevel) * (1 + EQA / 100)),
+      "Overload Dmg": Trunc(Overload(charLevel) * (1 + EQA / 100)),
+      "Electrocharge Dmg": Trunc(Electrocharge(charLevel) * (1 + EQA / 100)),
+      "Superconduct Dmg": Trunc(Superconduct(charLevel) * (1 + EQA / 100)),
+      "Pyro Melt / Hydro Vaporize": `${Trunc(2 * (1 + EQB / 100))}x`,
+      "Cryo Melt / Pyro Vaporize": `${Trunc(1.5 * (1 + EQB / 100))}x`,
+      Crystalize: EQC,
+    };
+
     return (
       <>
         <div>
@@ -119,6 +107,13 @@ class AttackPowerCalc extends React.Component {
             </div>
           )}
         </div>
+        {Object.keys(reactions).map((reaction) => {
+          return (
+            <div key={reaction}>
+              {reaction}: {reactions[reaction]}{" "}
+            </div>
+          );
+        })}
       </>
     );
   };

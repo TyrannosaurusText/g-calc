@@ -57,7 +57,7 @@ class SetEffectField extends React.Component {
     var value = this.props[artifactSetValue];
     ids.push(this.state.counter);
     type.push("None");
-    value.push(undefined);
+    value.push(0);
     this.setState({
       artifactPassiveID: ids,
       artifactSetType: type,

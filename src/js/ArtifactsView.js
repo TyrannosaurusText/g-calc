@@ -47,7 +47,7 @@ class ArtifactsView extends React.Component {
     return (
       <div>
         <div>Artifact Stats</div>
-        <div className="App__row">
+        <div className="section__App--row">
           {options.map((_, index) => {
             return this.selectionButton(views[index]);
           })}

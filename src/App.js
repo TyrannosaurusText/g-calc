@@ -11,6 +11,9 @@ import { Button } from "./js/utils/Button.js";
 
 const characterSheet1 = "CharacterSheet1";
 const characterSheet2 = "CharacterSheet2";
+const characterSheet3 = "CharacterSheet3";
+const characterSheet4 = "CharacterSheet4";
+const characterSheet5 = "CharacterSheet5";
 const comparePage = "ComparePage";
 const newWeaponField = JSON.stringify({
   weaponSubstatType: "None",
@@ -26,7 +29,7 @@ const newArtifactField = (() => {
       obj[`artifactValues-${index}`] = Array(5).fill(0);
     });
   obj[`artifactTypes-5`] = [];
-  obj[`artifactTypes-5`] = [];
+  obj[`artifactValues-5`] = [];
   return JSON.stringify(obj);
 })();
 const newCharacterField = JSON.stringify({
@@ -108,14 +111,23 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="App__row">
+        <div className="section__App--row">
           <div className="section__navbar">
-            <div className="App__column">
+            <div className="section__App--column">
               <Button onClick={() => this.changePage(characterSheet1)}>
                 Character Sheet 1
               </Button>
               <Button onClick={() => this.changePage(characterSheet2)}>
                 Character Sheet 2
+              </Button>
+              <Button onClick={() => this.changePage(characterSheet3)}>
+                Character Sheet 3
+              </Button>
+              <Button onClick={() => this.changePage(characterSheet4)}>
+                Character Sheet 4
+              </Button>
+              <Button onClick={() => this.changePage(characterSheet5)}>
+                Character Sheet 5
               </Button>
               <Button onClick={() => this.comparePage()}>Compare</Button>
             </div>

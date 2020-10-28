@@ -2,7 +2,7 @@ import React from "react";
 import AttackPowerCalc from "./AttackPowerCalc.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
-var Trunc = (value) => Math.trunc(value * 100) / 100;
+import { Trunc } from "./utils/Trunc.js";
 class TotalStats extends React.Component {
   getStats = (props) => {
     const { WeaponField, ArtifactField, CharacterField } = props.data;
