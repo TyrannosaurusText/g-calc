@@ -65,6 +65,7 @@ var DamageFieldNameRender = (props) => (
 );
 class CharacterView extends React.PureComponent {
   render = () => {
+    console.log(this.props)
     const currentView = this.props.view || StatsView;
     var obj = {
       [StatsView]: StatsViewRender(this.props),

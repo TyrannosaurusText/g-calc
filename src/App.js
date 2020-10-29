@@ -1,6 +1,5 @@
 import React from "react";
 import "./css/App.css";
-import CharacterView from "./js/CharacterView.js";
 import {
   WeaponFieldName,
   ArtifactFieldName,
@@ -111,9 +110,14 @@ class App extends React.Component {
     this.setState({ view: view });
   };
   render() {
-    const CharacterViewProps = {};
+    const characterViewProps = {
+      setView: this.setView,
+      view: this.state.view,
+      currentPage: this.state.characterData,
+      onChange: this.onChange,
+    };
     avaliableFields.map((fieldName) => {
-      CharacterViewProps[fieldName] = this.state[fieldName];
+      characterViewProps[fieldName] = this.state[fieldName];
     });
     return (
       <div className="App">
@@ -140,14 +144,7 @@ class App extends React.Component {
           </div>
           {this.state.characterData ? (
             <>
-              <CharacterView
-                setView={this.setView}
-                view={this.state.view}
-                currentPage={this.state.characterData}
-                {...CharacterViewProps}
-                onChange={this.onChange}
-              />
-              <TotalStats data={this.state}></TotalStats>
+              <TotalStats data={this.state} characterViewProps={characterViewProps}></TotalStats>
             </>
           ) : (
             <> </>

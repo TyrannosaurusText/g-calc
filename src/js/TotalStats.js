@@ -3,6 +3,8 @@ import AttackPowerCalc from "./AttackPowerCalc.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
 import { Trunc } from "./utils/Trunc.js";
+import CharacterView from "./CharacterView.js";
+
 class TotalStats extends React.Component {
   getStats = (props) => {
     const { WeaponField, ArtifactField, CharacterField } = props.data;
@@ -63,21 +65,24 @@ class TotalStats extends React.Component {
     sumStats.totalATKSPD = 100 + getVal(effects.ATKSPD);
     sumStats.totalRecharge = 100 + getVal(effects.er);
     var EMCalc = (x) => ({
-      EQA:
-        Trunc(0.00000009 * Math.pow(x, 3) -
-        0.0002767 * Math.pow(x, 2) +
-        0.46647865 * x +
-        0.19667643),
-      EQB:
-        Trunc(0.00000004 * Math.pow(x, 3) -
-        0.00011561 * Math.pow(x, 2) +
-        0.19487198 * x +
-        0.07024967),
-      EQC:
-        Trunc(0.00000006 * Math.pow(x, 3) -
-        0.00018527 * Math.pow(x, 2) +
-        0.3113969 * x +
-        0.1159055),
+      EQA: Trunc(
+        0.00000009 * Math.pow(x, 3) -
+          0.0002767 * Math.pow(x, 2) +
+          0.46647865 * x +
+          0.19667643
+      ),
+      EQB: Trunc(
+        0.00000004 * Math.pow(x, 3) -
+          0.00011561 * Math.pow(x, 2) +
+          0.19487198 * x +
+          0.07024967
+      ),
+      EQC: Trunc(
+        0.00000006 * Math.pow(x, 3) -
+          0.00018527 * Math.pow(x, 2) +
+          0.3113969 * x +
+          0.1159055
+      ),
     });
     var EMPercent = EMCalc(getVal(effects.em));
     for (var eq in EMPercent) {
@@ -127,26 +132,29 @@ class TotalStats extends React.Component {
     } = displayStats;
 
     return (
-      <div>
-        <div> Total HP: {totalHP}</div>
-        <div> Total ATK: {totalATK}</div>
-        <div> Total DEF: {totalDEF}</div>
+      <div className="section__App--row section__mainBody">
+        <CharacterView {...this.props.characterViewProps} />
         <div>
-          {effects.em}: {totalEM}
-        </div>
-        <div> Critical Rate: {totalCrit}%</div>
-        <div> Critical Damage: {totalCritDMG}%</div>
-        <div> Attack Speed: {totalATKSPD}%</div>
-        <div>
-          {effects.er}: {totalRecharge}%
-        </div>
-        {Object.keys(displayStats).map((key, index) => (
-          <div key={index}>
-            {key}: {displayStats[key]}%
+          <div> Total HP: {totalHP}</div>
+          <div> Total ATK: {totalATK}</div>
+          <div> Total DEF: {totalDEF}</div>
+          <div>
+            {effects.em}: {totalEM}
           </div>
-        ))}
-        {attackPowerCalcComponent}
-        {/* <SelectionValueField></SelectionValueField> */}
+          <div> Critical Rate: {totalCrit}%</div>
+          <div> Critical Damage: {totalCritDMG}%</div>
+          <div> Attack Speed: {totalATKSPD}%</div>
+          <div>
+            {effects.er}: {totalRecharge}%
+          </div>
+          {Object.keys(displayStats).map((key, index) => (
+            <div key={index}>
+              {key}: {displayStats[key]}%
+            </div>
+          ))}
+          {attackPowerCalcComponent}
+          {/* <SelectionValueField></SelectionValueField> */}
+        </div>
       </div>
     );
   };
