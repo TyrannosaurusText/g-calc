@@ -83,7 +83,6 @@ class TotalStats extends React.Component {
     for (var eq in EMPercent) {
       sumStats[eq] = EMPercent[eq];
     }
-    console.log(sumStats);
     return sumStats;
   };
 

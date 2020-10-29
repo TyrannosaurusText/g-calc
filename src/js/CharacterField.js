@@ -28,7 +28,7 @@ class CharacterField extends React.Component {
     );
     return (
       <div className="block__characterTop--margin">
-        <div> Character Stats </div>
+        <div> Base Stats </div>
         <div className="section_StatsMap--shrink">
           {characterStats.map((name) => {
             return (

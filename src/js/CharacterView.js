@@ -6,15 +6,67 @@ import {
   WeaponFieldName,
   ArtifactFieldName,
   CharacterFieldName,
+  DamageFieldName,
 } from "./Names.js";
 import { Button } from "./utils/Button.js";
-const StatsView = "StatsView";
-const BuffView = "BuffView";
-const TalentView = "TalentView";
+import DamageCalc from "./DamageCalc.js";
+
+const StatsView = "Stats";
+const BuffView = "Buff";
+const DamageView = "Damage Calc";
+
+// var LoadComponent = (Component, fieldName) => (
+//   <Component {...props[fieldName]} onChange={props.onchange(fieldName)} />
+// );
+var StatsViewRender = (props) => (
+  <>
+    <div className="section__mainBody--row">
+      <CharacterField
+        {...props[CharacterFieldName]}
+        onChange={props.onChange(CharacterFieldName)}
+      />
+      <WeaponField
+        {...props[WeaponFieldName]}
+        onChange={props.onChange(WeaponFieldName)}
+      />
+    </div>
+    <ArtifactsView
+      data={props[ArtifactFieldName]}
+      onChange={props.onChange(ArtifactFieldName)}
+    />
+  </>
+);
+var BuffViewRender = (props) => (
+  <>
+    <div className="section__mainBody--row">
+      <CharacterField
+        {...props[CharacterFieldName]}
+        onChange={props.onChange(CharacterFieldName)}
+      />
+      <WeaponField
+        {...props[WeaponFieldName]}
+        onChange={props.onChange(WeaponFieldName)}
+      />
+    </div>
+    <ArtifactsView
+      data={props[ArtifactFieldName]}
+      onChange={props.onChange(ArtifactFieldName)}
+    />
+  </>
+);
+var DamageFieldNameRender = (props) => (
+  <>
+    <DamageCalc
+      {...props[DamageFieldName]}
+      onChange={props.onChange(DamageFieldName)}
+    />
+  </>
+);
 class CharacterView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { view: StatsView };
+    // this.state = { view: StatsView };
+    this.state = { view: DamageView };
   }
 
   setView = (view) => {
@@ -22,36 +74,27 @@ class CharacterView extends React.Component {
   };
 
   render = () => {
-    var StatsViewRender = () => (
-      <>
-        <div className="section__mainBody--row">
-          <CharacterField
-            {...this.props[CharacterFieldName]}
-            onChange={this.props.onChange(CharacterFieldName)}
-          />
-          <WeaponField
-            {...this.props[WeaponFieldName]}
-            onChange={this.props.onChange(WeaponFieldName)}
-          />
-        </div>
-        <ArtifactsView
-          data={this.props[ArtifactFieldName]}
-          onChange={this.props.onChange(ArtifactFieldName)}
-        />
-      </>
-    );
+    var obj = {
+      [StatsView]: StatsViewRender(this.props),
+      [BuffView]: BuffViewRender(this.props),
+      [DamageView]: DamageFieldNameRender(this.props),
+    };
     return (
       <div className="section__mainBody">
         <div className="section__mainBody--row">
-          <Button onClick={() => this.setView(StatsView)}>Stats</Button>
-          <Button onClick={() => this.setView(BuffView)}>Buffs</Button>
-          <Button onClick={() => this.setView(TalentView)}>Damage Calc</Button>
+          {Object.keys(obj).map((view) => (
+            <Button key={view} onClick={() => this.setView(view)}>
+              {view}
+            </Button>
+          ))}
         </div>
         <div className="section__mainBody--column">
-          {this.state.view.localeCompare(StatsView) === 0 ? (
-            StatsViewRender()
-          ) : (
-            <></>
+          {Object.keys(obj).map((view) =>
+            this.state.view.localeCompare(view) === 0 ? (
+              <div key={view}>{obj[view]}</div>
+            ) : (
+              <div key={view}></div>
+            )
           )}
         </div>
       </div>

@@ -60,10 +60,10 @@ class SetEffectField extends React.Component {
     value.push(0);
     this.setState({
       artifactPassiveID: ids,
-      artifactSetType: type,
-      artifactSetValue: value,
       counter: this.state.counter + 1,
     });
+    this.props.onChange(artifactSetType)(type);
+    this.props.onChange(artifactSetValue)(value);
   };
 
   RemoveEffect = (index) => {
@@ -82,7 +82,7 @@ class SetEffectField extends React.Component {
     return (
       <div>
         <div>
-          Passive Set Effect
+          Passive Set Effects
           <Button onClick={() => this.AddEffect()}>Add Passive</Button>
         </div>
         <div>
