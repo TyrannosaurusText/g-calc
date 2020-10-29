@@ -41,15 +41,12 @@ class DamageCalc extends React.Component {
     };
     return (
       <div key={id}>
-        <div>
           Skill Name:
           <input
             type={"text"}
             defaultValue={this.props[TalentName][index]}
             onBlur={(e) => onValueChange(TalentName, index)(e.target.value)}
           ></input>
-        </div>
-        <div>
           Skill Type:
           <SelectionValueField
             array={[
@@ -72,7 +69,6 @@ class DamageCalc extends React.Component {
             }
             defaultValue={"Phys. Normal"}
           />
-        </div>
       </div>
     );
     return (

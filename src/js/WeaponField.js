@@ -37,20 +37,20 @@ class WeaponField extends React.Component {
             defaultValue={this.props[weaponPassivesValue][index]}
           />
         )}
-        <Button onClick={() => this.RemoveEffect(index)}>
-          Remove
-        </Button>
+        <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
       </>
     );
     return (
-      <SelectionValueField
-        key={id}
-        selectionName={weaponPassivesType}
-        onChange={onPassiveChange(weaponPassivesType, index)}
-        array={weaponPassives}
-        component={weaponPassiveInputComponent}
-        defaultValue={this.props[weaponPassivesType][index]}
-      />
+      <div key={id}>
+        <SelectionValueField
+          key={id}
+          selectionName={weaponPassivesType}
+          onChange={onPassiveChange(weaponPassivesType, index)}
+          array={weaponPassives}
+          component={weaponPassiveInputComponent}
+          defaultValue={this.props[weaponPassivesType][index]}
+        />
+      </div>
     );
   };
 

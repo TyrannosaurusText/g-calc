@@ -3,3 +3,7 @@
     overflow-y: scroll;
 }
 
+.section__MultiField--spacing{
+    display: flex;
+    justify-content: space-between;
+}

@@ -49,8 +49,10 @@ class MultiField extends React.Component {
 
   ComponentRenderer = (id, index, Component) => (
     <div key={id}>
-      <Component id={id} index={index} />
-      <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
+      <div className="section__MultiField--spacing">
+        <Component id={id} index={index} />
+        <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
+      </div>
     </div>
   );
 

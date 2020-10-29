@@ -46,12 +46,14 @@ class CharacterField extends React.PureComponent {
           Ascension Stat
           <div />
           <div className="section__center">
-            <SelectionValueField
-              array={characterAscensionStat}
-              onChange={this.props.onChange(ascensionStatType)}
-              component={ascensionStatInputComponent}
-              defaultValue={this.props[ascensionStatType]}
-            />
+            <div>
+              <SelectionValueField
+                array={characterAscensionStat}
+                onChange={this.props.onChange(ascensionStatType)}
+                component={ascensionStatInputComponent}
+                defaultValue={this.props[ascensionStatType]}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { longestArtifactName } from "./Effects.js";
 var SelectionValueField = (props) => {
   var { onChange, array, component, defaultValue } = props;
   return (
-    <div>
+    <span>
       <select
         tabIndex={-1}
         defaultValue={defaultValue}
@@ -21,7 +21,7 @@ var SelectionValueField = (props) => {
         {/* Just to keep selection field lengths consistent. */}
       </select>
       {component}
-    </div>
+    </span>
   );
 };
 

@@ -37,13 +37,15 @@ class ArtifactField extends React.Component {
       />
     );
     return (
-      <SelectionValueField
-        key={id}
-        array={artifactSub}
-        onChange={this.onSubstatChange(artifactSubType, id)}
-        defaultValue={this.props[artifactSubType][id]}
-        component={artifactSubFieldInputComponent}
-      />
+      <div key={id}>
+        <SelectionValueField
+          key={id}
+          array={artifactSub}
+          onChange={this.onSubstatChange(artifactSubType, id)}
+          defaultValue={this.props[artifactSubType][id]}
+          component={artifactSubFieldInputComponent}
+        />
+      </div>
     );
   };
   render = () => {
@@ -60,13 +62,15 @@ class ArtifactField extends React.Component {
       <div className="section__artifactBody">
         Main Stat
         <div className="section__artifactMainLines">
-          <SelectionValueField
-            array={this.props.mainStats}
-            onChange={this.onSubstatChange(artifactMainStatType, 0)}
-            component={artifactMainStatInputComponent}
-            defaultValue={this.props[artifactMainStatType][0]}
-            hideable={false}
-          />
+          <div>
+            <SelectionValueField
+              array={this.props.mainStats}
+              onChange={this.onSubstatChange(artifactMainStatType, 0)}
+              component={artifactMainStatInputComponent}
+              defaultValue={this.props[artifactMainStatType][0]}
+              hideable={false}
+            />
+          </div>
         </div>
         Sub Stats
         <div className="section__artifactSubLines">

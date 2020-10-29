@@ -40,14 +40,15 @@ class SetEffectField extends React.Component {
       </>
     );
     return (
-      <SelectionValueField
-        key={id}
-        selectionName={artifactSetType}
-        onChange={onPassiveChange(artifactSetType, index)}
-        array={setEffects}
-        component={PassiveInputComponent}
-        defaultValue={this.props[artifactSetType][index]}
-      />
+      <div key={id}>
+        <SelectionValueField
+          selectionName={artifactSetType}
+          onChange={onPassiveChange(artifactSetType, index)}
+          array={setEffects}
+          component={PassiveInputComponent}
+          defaultValue={this.props[artifactSetType][index]}
+        />
+      </div>
     );
   };
 
