@@ -46,15 +46,20 @@ var loadPage = (page) => {
   var data = localStorage.getItem(page);
   data = data === null ? {} : JSON.parse(data);
 
-  // localStorage.setItem(WeaponFieldName, data[WeaponFieldName]);
-  // localStorage.setItem(ArtifactFieldName, data[ArtifactFieldName]);
-  // localStorage.setItem(CharacterFieldName, data[CharacterFieldName]);
+  avaliableFields.map((fieldName) => {
+    //update localStorage for saved pages
+    localStorage.setItem(fieldName, data[fieldName]);
+  });
 
   for (var key in data) {
-    data[key] = JSON.parse(data[key]);
+    try {
+      data[key] = JSON.parse(data[key]);
+    } catch (e) {
+      data[key] = {};
+    }
   }
-  //update for older versions
   avaliableFields.map((fieldName) => {
+    //fill in any data that may be required for newer versions
     init(data, fieldName, initialValues[fieldName]);
   });
   return data;
@@ -62,6 +67,9 @@ var loadPage = (page) => {
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.baseState = {
+      characterData: undefined,
+    };
     this.state = {
       ...loadPage(characterSheet1),
       characterData: characterSheet1,
@@ -73,8 +81,6 @@ class App extends React.Component {
     var fieldData = this.state[field];
     if (undefined == fieldData) fieldData = {};
     fieldData[key] = value;
-    console.log(field, fieldData);
-
     this.setState({ [field]: fieldData }, () => {
       localStorage.setItem(field, JSON.stringify(fieldData));
     });
@@ -92,19 +98,18 @@ class App extends React.Component {
   changePage = (page) => {
     this.savePage();
     var data = loadPage(page);
-    var unloadData = { characterData: undefined };
+    var loadNewData = { view: this.state.view, characterData: page };
     avaliableFields.map((fieldName) => {
-      unloadData[fieldName] = undefined;
+      loadNewData[fieldName] = data[fieldName] || {};
     });
-    var loadNewData = { characterData: page };
-    avaliableFields.map((fieldName) => {
-      unloadData[fieldName] = data[fieldName] || {};
-    });
-    this.setState(unloadData, () => {
+    this.setState(this.baseState, () => {
+      this.forceUpdate();
       this.setState(loadNewData);
     });
   };
-
+  setView = (view) => {
+    this.setState({ view: view });
+  };
   render() {
     const CharacterViewProps = {};
     avaliableFields.map((fieldName) => {
@@ -134,11 +139,19 @@ class App extends React.Component {
             </div>
           </div>
           {this.state.characterData ? (
-            <CharacterView {...CharacterViewProps} onChange={this.onChange} />
+            <>
+              <CharacterView
+                setView={this.setView}
+                view={this.state.view}
+                currentPage={this.state.characterData}
+                {...CharacterViewProps}
+                onChange={this.onChange}
+              />
+              <TotalStats data={this.state}></TotalStats>
+            </>
           ) : (
             <> </>
           )}
-          <TotalStats data={this.state}></TotalStats>
         </div>
       </div>
     );

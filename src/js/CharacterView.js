@@ -14,6 +14,7 @@ import DamageCalc from "./DamageCalc.js";
 const StatsView = "Stats";
 const BuffView = "Buff";
 const DamageView = "Damage Calc";
+const validViews = [StatsView, BuffView, DamageView];
 
 // var LoadComponent = (Component, fieldName) => (
 //   <Component {...props[fieldName]} onChange={props.onchange(fieldName)} />
@@ -62,18 +63,9 @@ var DamageFieldNameRender = (props) => (
     />
   </>
 );
-class CharacterView extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.state = { view: StatsView };
-    this.state = { view: DamageView };
-  }
-
-  setView = (view) => {
-    this.setState({ view: view });
-  };
-
+class CharacterView extends React.PureComponent {
   render = () => {
+    const currentView = this.props.view || StatsView;
     var obj = {
       [StatsView]: StatsViewRender(this.props),
       [BuffView]: BuffViewRender(this.props),
@@ -83,14 +75,14 @@ class CharacterView extends React.Component {
       <div className="section__mainBody">
         <div className="section__mainBody--row">
           {Object.keys(obj).map((view) => (
-            <Button key={view} onClick={() => this.setView(view)}>
+            <Button key={view} onClick={() => this.props.setView(view)}>
               {view}
             </Button>
           ))}
         </div>
         <div className="section__mainBody--column">
           {Object.keys(obj).map((view) =>
-            this.state.view.localeCompare(view) === 0 ? (
+            currentView.localeCompare(view) === 0 ? (
               <div key={view}>{obj[view]}</div>
             ) : (
               <div key={view}></div>

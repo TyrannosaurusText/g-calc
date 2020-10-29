@@ -6,7 +6,7 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
-class CharacterField extends React.Component {
+class CharacterField extends React.PureComponent {
   constructor(props) {
     super(props);
   }

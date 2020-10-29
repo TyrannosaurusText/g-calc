@@ -37,7 +37,6 @@ class DamageCalc extends React.Component {
     var onValueChange = (key, index) => (value) => {
       var passives = this.props[key];
       passives[index] = value;
-      console.log(key, passives);
       this.props.onChange(key)(passives);
     };
     return (
@@ -46,6 +45,7 @@ class DamageCalc extends React.Component {
           Skill Name:
           <input
             type={"text"}
+            defaultValue={this.props[TalentName][index]}
             onBlur={(e) => onValueChange(TalentName, index)(e.target.value)}
           ></input>
         </div>
@@ -87,7 +87,6 @@ class DamageCalc extends React.Component {
     );
   };
   render = () => {
-    console.log(this.props);
     return (
       <div>
         <MultiField

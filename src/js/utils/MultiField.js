@@ -9,12 +9,12 @@ import "../../css/MultiField.css";
 const addEffect = (props, name, mutator, value = undefined) => {
   var updatedProp = props[name];
   updatedProp.push(value);
-  mutator(name, updatedProp);
+  mutator(name)(updatedProp);
 };
 const removeEffect = (props, name, mutator, index) => {
   var updatedProp = props[name];
-  updatedProp.slice(index, 1);
-  mutator(name, updatedProp);
+  updatedProp.splice(index, 1);
+  mutator(name)(updatedProp);
 };
 class MultiField extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class MultiField extends React.Component {
       fieldIDArray: ids,
       counter: this.state.counter + 1,
     });
-    this.props.addEffect()
+    this.props.addEffect();
   };
 
   RemoveEffect = (index) => {
