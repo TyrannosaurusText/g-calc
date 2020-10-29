@@ -7,10 +7,13 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { Button } from "./utils/Button.js";
+import withFieldProps from "./withFieldProps.js";
+import { WeaponFieldName } from "./Names.js";
+
 const weaponPassivesType = "weaponPassivesType";
 const weaponPassivesValue = "weaponPassivesValue";
 
-class WeaponField extends React.Component {
+class WeaponField extends React.PureComponent {
   constructor(props) {
     super(props);
     var weaponPassivesID = Array(props.weaponPassivesType.length)
@@ -126,4 +129,4 @@ class WeaponField extends React.Component {
   };
 }
 
-export default WeaponField;
+export default withFieldProps(WeaponField, WeaponFieldName);

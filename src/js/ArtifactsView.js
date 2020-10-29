@@ -9,6 +9,7 @@ import {
   circletMain,
 } from "./utils/Effects.js";
 import { Button } from "./utils/Button.js";
+import { ArtifactFieldName } from "./Names.js";
 
 const views = [
   "Flower of Life",
@@ -48,25 +49,26 @@ class ArtifactsView extends React.Component {
       <div>
         <div>Artifact Stats</div>
         <div className="section__App--row">
-          {options.map((_, index) => {
-            return this.selectionButton(views[index]);
+          {options.map((_, ButtonIndex) => {
+            return this.selectionButton(views[ButtonIndex]);
           })}
           {this.selectionButton(setEffect)}
         </div>
-        {options.map((_, index) => {
+        {options.map((_, ArtifactNum) => {
           var props = {
-            ...this.props.data,
             onChange: this.props.onChange,
-            key: index,
-            index: index,
-            mainStats: options[index],
           };
-          return this.renderOnView(views[index], <ArtifactField {...props} />);
+          props[ArtifactFieldName] = {
+            ...this.props[ArtifactFieldName],
+            ArtifactNum: ArtifactNum,
+            mainStats: options[ArtifactNum],
+          };
+          return this.renderOnView(views[ArtifactNum], <ArtifactField key={ArtifactNum} {...props} />);
         })}
 
         {this.renderOnView(
           setEffect,
-          <SetEffectField {...this.props.data} onChange={this.props.onChange} />
+          <SetEffectField {...this.props}/>
         )}
       </div>
     );

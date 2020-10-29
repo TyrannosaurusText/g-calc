@@ -5,7 +5,7 @@ import "../css/TotalStats.css";
 import { Trunc } from "./utils/Trunc.js";
 import CharacterView from "./CharacterView.js";
 
-class TotalStats extends React.Component {
+class TotalStats extends React.PureComponent {
   getStats = (props) => {
     const { WeaponField, ArtifactField, CharacterField } = props.data;
     if (null == WeaponField || null == ArtifactField || null == CharacterField)

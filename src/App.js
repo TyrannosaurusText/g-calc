@@ -63,6 +63,7 @@ var loadPage = (page) => {
   });
   return data;
 };
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -80,9 +81,10 @@ class App extends React.Component {
     var fieldData = this.state[field];
     if (undefined == fieldData) fieldData = {};
     fieldData[key] = value;
-    this.setState({ [field]: fieldData }, () => {
-      localStorage.setItem(field, JSON.stringify(fieldData));
+    this.setState({
+      [field]: fieldData,
     });
+    localStorage.setItem(field, JSON.stringify(fieldData));
   };
 
   savePage = () => {
@@ -97,14 +99,14 @@ class App extends React.Component {
   changePage = (page) => {
     this.savePage();
     var data = loadPage(page);
-    var loadNewData = { view: this.state.view, characterData: page };
+    var loadNewData = {
+      view: this.state.view,
+      characterData: page,
+    };
     avaliableFields.map((fieldName) => {
       loadNewData[fieldName] = data[fieldName] || {};
     });
-    this.setState(this.baseState, () => {
-      this.forceUpdate();
-      this.setState(loadNewData);
-    });
+    this.setState(loadNewData);
   };
   setView = (view) => {
     this.setState({ view: view });
@@ -144,7 +146,10 @@ class App extends React.Component {
           </div>
           {this.state.characterData ? (
             <>
-              <TotalStats data={this.state} characterViewProps={characterViewProps}></TotalStats>
+              <TotalStats
+                data={this.state}
+                characterViewProps={characterViewProps}
+              ></TotalStats>
             </>
           ) : (
             <> </>

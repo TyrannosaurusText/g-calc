@@ -6,6 +6,9 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
+import withFieldProps from "./withFieldProps.js";
+import { CharacterFieldName } from "./Names.js";
+
 class CharacterField extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -61,4 +64,4 @@ class CharacterField extends React.PureComponent {
   };
 }
 
-export default CharacterField;
+export default withFieldProps(CharacterField, CharacterFieldName);

@@ -6,12 +6,14 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
+import withFieldProps from "./withFieldProps.js";
+import { ArtifactFieldName } from "./Names.js";
 
-class ArtifactField extends React.Component {
+class ArtifactField extends React.PureComponent {
   constructor(props) {
     super(props);
-    const artifactTypesString = `artifactTypes-${props.index}`;
-    const artifactValuesString = `artifactValues-${props.index}`;
+    const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
+    const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
     if (props[artifactTypesString][0] == undefined)
       props[artifactTypesString][0] = props.mainStats[0];
     this.state = {
@@ -19,10 +21,10 @@ class ArtifactField extends React.Component {
       artifactValuesString,
     };
   }
-  onSubstatChange = (key, index) => (value) => {
-    var substat = this.props[key];
-    substat[index] = value;
-    this.props.onChange(key)(substat);
+  onSubstatChange = (ArtifactName, LineNumber) => (value) => {
+    var substat = this.props[ArtifactName];
+    substat[LineNumber] = value;
+    this.props.onChange(ArtifactName)(substat);
   };
   artifactSubField = (id) => {
     const artifactSubType = this.state.artifactTypesString;
@@ -83,4 +85,4 @@ class ArtifactField extends React.Component {
   };
 }
 
-export default ArtifactField;
+export default withFieldProps(ArtifactField, ArtifactFieldName);

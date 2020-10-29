@@ -8,7 +8,7 @@ var SelectionValueField = (props) => {
       <select
         tabIndex={-1}
         defaultValue={defaultValue}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value, true)}
       >
         {array.map((arrayName) => {
           return (

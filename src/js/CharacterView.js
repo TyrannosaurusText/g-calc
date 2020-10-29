@@ -9,7 +9,7 @@ import {
   DamageFieldName,
 } from "./Names.js";
 import { Button } from "./utils/Button.js";
-import DamageCalc from "./DamageCalc.js";
+import DamageCalc from "./DamageField.js";
 
 const StatsView = "Stats";
 const BuffView = "Buff";
@@ -19,53 +19,25 @@ const validViews = [StatsView, BuffView, DamageView];
 // var LoadComponent = (Component, fieldName) => (
 //   <Component {...props[fieldName]} onChange={props.onchange(fieldName)} />
 // );
+
 var StatsViewRender = (props) => (
   <>
     <div className="section__mainBody--row">
-      <CharacterField
-        {...props[CharacterFieldName]}
-        onChange={props.onChange(CharacterFieldName)}
-      />
-      <WeaponField
-        {...props[WeaponFieldName]}
-        onChange={props.onChange(WeaponFieldName)}
-      />
+      <CharacterField {...props} />
+
+      <WeaponField {...props} />
     </div>
-    <ArtifactsView
-      data={props[ArtifactFieldName]}
-      onChange={props.onChange(ArtifactFieldName)}
-    />
+    <ArtifactsView {...props} />
   </>
 );
-var BuffViewRender = (props) => (
-  <>
-    <div className="section__mainBody--row">
-      <CharacterField
-        {...props[CharacterFieldName]}
-        onChange={props.onChange(CharacterFieldName)}
-      />
-      <WeaponField
-        {...props[WeaponFieldName]}
-        onChange={props.onChange(WeaponFieldName)}
-      />
-    </div>
-    <ArtifactsView
-      data={props[ArtifactFieldName]}
-      onChange={props.onChange(ArtifactFieldName)}
-    />
-  </>
-);
+var BuffViewRender = (props) => <></>;
 var DamageFieldNameRender = (props) => (
   <>
-    <DamageCalc
-      {...props[DamageFieldName]}
-      onChange={props.onChange(DamageFieldName)}
-    />
+    <DamageCalc {...props} />
   </>
 );
 class CharacterView extends React.PureComponent {
   render = () => {
-    console.log(this.props)
     const currentView = this.props.view || StatsView;
     var obj = {
       [StatsView]: StatsViewRender(this.props),

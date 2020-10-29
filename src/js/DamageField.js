@@ -7,11 +7,12 @@ import {
 import { DamageFieldName } from "./Names.js";
 import { NumberField } from "./utils/NumberField.js";
 import { MultiField, addEffect, removeEffect } from "./utils/MultiField.js";
+import withFieldProps from "./withFieldProps.js";
 
 const TalentName = "TalentName";
 const SetTypeStr = "DamageType";
 const SetValueStr = "DamageValue";
-class DamageCalc extends React.Component {
+class DamageField extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -96,4 +97,4 @@ class DamageCalc extends React.Component {
   };
 }
 
-export default DamageCalc;
+export default withFieldProps(DamageField, DamageFieldName);
