@@ -6,7 +6,7 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { Button } from "./utils/Button.js";
-import withFieldProps from "./withFieldProps.js";
+import withFieldProps from "./utils/withFieldProps.js";
 import { ArtifactFieldName } from "./Names.js";
 const artifactSetType = "artifactTypes-5";
 const artifactSetValue = "artifactValues-5";

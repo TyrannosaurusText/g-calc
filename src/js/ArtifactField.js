@@ -6,7 +6,7 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-import withFieldProps from "./withFieldProps.js";
+import withFieldProps from "./utils/withFieldProps.js";
 import { ArtifactFieldName } from "./Names.js";
 
 class ArtifactField extends React.PureComponent {

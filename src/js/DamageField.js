@@ -7,7 +7,7 @@ import {
 import { DamageFieldName } from "./Names.js";
 import { NumberField } from "./utils/NumberField.js";
 import { MultiField, addEffect, removeEffect } from "./utils/MultiField.js";
-import withFieldProps from "./withFieldProps.js";
+import withFieldProps from "./utils/withFieldProps.js";
 
 const TalentName = "TalentName";
 const SetTypeStr = "DamageType";
@@ -42,34 +42,34 @@ class DamageField extends React.Component {
     };
     return (
       <div key={id}>
-          Skill Name:
-          <input
-            type={"text"}
-            defaultValue={this.props[TalentName][index]}
-            onBlur={(e) => onValueChange(TalentName, index)(e.target.value)}
-          ></input>
-          Skill Type:
-          <SelectionValueField
-            array={[
-              "Phys. Normal",
-              "Phys. Charge",
-              "Ele. Normal",
-              "Ele. Charge",
-              "Ele Skill",
-              "Ele Burst",
-            ]}
-            onChange={onValueChange(SetTypeStr, index)}
-            component={
-              <>
-                Skill Damage:
-                <NumberField
-                  onChange={onValueChange(SetValueStr, index)}
-                  defaultValue={this.props[SetValueStr][index]}
-                />
-              </>
-            }
-            defaultValue={"Phys. Normal"}
-          />
+        Skill Name:
+        <input
+          type={"text"}
+          defaultValue={this.props[TalentName][index]}
+          onBlur={(e) => onValueChange(TalentName, index)(e.target.value)}
+        ></input>
+        Skill Type:
+        <SelectionValueField
+          array={[
+            "Phys. Normal",
+            "Phys. Charge",
+            "Ele. Normal",
+            "Ele. Charge",
+            "Ele Skill",
+            "Ele Burst",
+          ]}
+          onChange={onValueChange(SetTypeStr, index)}
+          component={
+            <>
+              Skill Damage (%):
+              <NumberField
+                onChange={onValueChange(SetValueStr, index)}
+                defaultValue={this.props[SetValueStr][index]}
+              />
+            </>
+          }
+          defaultValue={"Phys. Normal"}
+        />
       </div>
     );
     return (
@@ -84,8 +84,22 @@ class DamageField extends React.Component {
     );
   };
   render = () => {
+    const monsterLevelStr = "monsterLevelStr";
+    const monsterResStr = "monsterLevelStr";
+    const monsterDamageReduction = this.props[monsterResStr] * (100+this.props[monsterLevelStr])/(100+this.props[])
     return (
       <div>
+        Monster Level:
+        <NumberField
+          onChange={this.props.onChange(monsterLevelStr)}
+          defaultValue={this.props[monsterLevelStr]}
+        />
+        Monster Res:
+        <NumberField
+          onChange={this.props.onChange(monsterResStr)}
+          defaultValue={this.props[monsterResStr]}
+        />
+        Total Damage Reduction: {monsterDamageReduction}
         <MultiField
           initialLength={this.props[TalentName].length}
           component={this.PassiveInput}

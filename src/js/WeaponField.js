@@ -7,7 +7,7 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { Button } from "./utils/Button.js";
-import withFieldProps from "./withFieldProps.js";
+import withFieldProps from "./utils/withFieldProps.js";
 import { WeaponFieldName } from "./Names.js";
 
 const weaponPassivesType = "weaponPassivesType";
