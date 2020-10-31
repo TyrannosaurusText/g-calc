@@ -2,15 +2,9 @@ import React from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
 import ArtifactsView from "./ArtifactsView.js";
-import {
-  WeaponFieldName,
-  ArtifactFieldName,
-  CharacterFieldName,
-  DamageFieldName,
-} from "./Names.js";
+import { avaliableFields } from "./Names.js";
 import { Button } from "./utils/Button.js";
 import DamageCalc from "./DamageField.js";
-
 const StatsView = "Stats";
 const BuffView = "Buff";
 const DamageView = "Damage Calc";
@@ -34,6 +28,11 @@ const BuffViewRender = (props) => <></>;
 const DamageFieldNameRender = (props) => (
   <>
     <DamageCalc {...props} />
+  </>
+);
+const Export = (props) => (
+  <>
+    <textarea>{avaliableFields.map((val) => props[val]).join(",")}</textarea>
   </>
 );
 class CharacterView extends React.PureComponent {

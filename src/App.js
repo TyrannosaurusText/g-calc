@@ -5,6 +5,7 @@ import {
   ArtifactFieldName,
   CharacterFieldName,
   DamageFieldName,
+  avaliableFields,
 } from "./js/Names.js";
 import TotalStats from "./js/TotalStats.js";
 import { Button } from "./js/utils/Button.js";
@@ -25,12 +26,6 @@ const characterSheet4 = "CharacterSheet4";
 const characterSheet5 = "CharacterSheet5";
 const comparePage = "ComparePage";
 
-const avaliableFields = [
-  WeaponFieldName,
-  ArtifactFieldName,
-  CharacterFieldName,
-  DamageFieldName,
-];
 const initialValues = {
   [WeaponFieldName]: initialWeaponField,
   [ArtifactFieldName]: initialArtifactField,

@@ -6,36 +6,36 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-import withFieldProps from "./utils/withFieldProps.js";
 import { ArtifactFieldName } from "./Names.js";
+import withFieldPropsV2 from "./utils/withFieldPropsV2.js";
 
-class ArtifactField extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
-    const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
-    if (props[artifactTypesString][0] == undefined)
-      props[artifactTypesString][0] = props.mainStats[0];
-    this.state = {
-      artifactTypesString,
-      artifactValuesString,
-    };
-  }
-  onSubstatChange = (ArtifactName, LineNumber) => (value) => {
-    var substat = this.props[ArtifactName];
-    substat[LineNumber] = value;
-    this.props.onChange(ArtifactName)(substat);
+const ArtifactField = ({ updateValue, updateType, ...props }) => {
+  const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
+  const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
+  const onSubstatChange = (ArtifactName, LineNumber, skipRender = false) => (
+    value
+  ) => {
+    const effectName = props[artifactTypesString][LineNumber];
+    const prevValue = props[artifactValuesString][LineNumber];
+    const newFieldValue = props[ArtifactName];
+    newFieldValue[LineNumber] = value;
+    const params = [
+      effectName,
+      prevValue,
+      ArtifactName,
+      LineNumber,
+      skipRender,
+    ];
+    if (ArtifactName === artifactTypesString) updateType(...params)(value);
+    else updateValue(...params)(newFieldValue);
   };
-  artifactSubField = (id) => {
-    const artifactSubType = this.state.artifactTypesString;
-    const artifactSubValue = this.state.artifactValuesString;
-
+  const artifactSubField = (id) => {
     const artifactSubFieldInputComponent = hideIfFalsyOrNone(
-      this.props[artifactSubType][id],
+      props[artifactTypesString][id],
       <NumberFieldOnLine
         name={"Value"}
-        onChange={this.onSubstatChange(artifactSubValue, id)}
-        defaultValue={this.props[artifactSubValue][id]}
+        onChange={onSubstatChange(artifactValuesString, id)}
+        defaultValue={props[artifactValuesString][id]}
       />
     );
     return (
@@ -43,46 +43,42 @@ class ArtifactField extends React.PureComponent {
         <SelectionValueField
           key={id}
           array={artifactSub}
-          onChange={this.onSubstatChange(artifactSubType, id)}
-          defaultValue={this.props[artifactSubType][id]}
+          onChange={onSubstatChange(artifactTypesString, id)}
+          defaultValue={props[artifactTypesString][id]}
           component={artifactSubFieldInputComponent}
         />
       </div>
     );
   };
-  render = () => {
-    const artifactMainStatType = this.state.artifactTypesString;
-    const artifactMainStatValue = this.state.artifactValuesString;
-    const artifactMainStatInputComponent = (
-      <NumberFieldOnLine
-        name={"Value"}
-        onChange={this.onSubstatChange(artifactMainStatValue, 0)}
-        defaultValue={this.props[artifactMainStatValue][0]}
-      />
-    );
-    return (
-      <div className="section__artifactBody">
-        Main Stat
-        <div className="section__artifactMainLines">
-          <div>
-            <SelectionValueField
-              array={this.props.mainStats}
-              onChange={this.onSubstatChange(artifactMainStatType, 0)}
-              component={artifactMainStatInputComponent}
-              defaultValue={this.props[artifactMainStatType][0]}
-              hideable={false}
-            />
-          </div>
-        </div>
-        Sub Stats
-        <div className="section__artifactSubLines">
-          {Array(4)
-            .fill(0)
-            .map((_, index) => this.artifactSubField(index + 1))}
+  const artifactMainStatInputComponent = (
+    <NumberFieldOnLine
+      name={"Value"}
+      onChange={onSubstatChange(artifactValuesString, 0)}
+      defaultValue={props[artifactValuesString][0]}
+    />
+  );
+  return (
+    <div className="section__artifactBody">
+      Main Stat
+      <div className="section__artifactMainLines">
+        <div>
+          <SelectionValueField
+            array={props.mainStats}
+            onChange={onSubstatChange(artifactTypesString, 0)}
+            component={artifactMainStatInputComponent}
+            defaultValue={props[artifactTypesString][0]}
+            hideable={false}
+          />
         </div>
       </div>
-    );
-  };
-}
+      Sub Stats
+      <div className="section__artifactSubLines">
+        {Array(4)
+          .fill(0)
+          .map((_, index) => artifactSubField(index + 1))}
+      </div>
+    </div>
+  );
+};
 
-export default withFieldProps(ArtifactField, ArtifactFieldName);
+export default withFieldPropsV2(ArtifactField, ArtifactFieldName);

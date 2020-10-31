@@ -75,25 +75,32 @@ const PlayerStatsContext = React.createContext(undefined);
 
 const PlayerStats = ({ children, ...props }) => {
   const [state, setState] = useState(calcTotals(getStats(props)));
-
-  const updateValue = (field) => (effectName, prevValue, fieldInputName) => (
-    newValue
-  ) => {
+  const updateValue = (field) => (
+    effectName,
+    prevValue,
+    fieldInputName,
+    index = -1,
+    skipRender = false
+  ) => (value) => {
     const newState = state;
+    const newValue = index >= 0 ? value[index] : value;
     newState[effectName] = state[effectName] - prevValue + newValue;
-    console.log(effectName, prevValue, newValue);
-    console.log(state, newState);
-    setState(calcTotals(newState));
-    props.onChange(field)(fieldInputName)(newValue);
+    if (!skipRender) setState(calcTotals(newState));
+    props.onChange(field)(fieldInputName)(value);
   };
-  const updateType = (field) => (effectName, prevValue, fieldInputName) => (
-    newEffect
-  ) => {
+  const updateType = (field) => (
+    effectName,
+    prevValue,
+    fieldInputName,
+    index = -1,
+    skipRender = false
+  ) => (value) => {
     const newState = state;
+    const newValue = index >= 0 ? value[index] : value;
     newState[effectName] = state[effectName] - prevValue;
-    newState[effectName] = state[newEffect] + prevValue;
-    setState(calcTotals(newState));
-    props.onChange(field)(fieldInputName)(newEffect);
+    newState[effectName] = state[newValue] + prevValue;
+    if (!skipRender) setState(calcTotals(newState));
+    props.onChange(field)(fieldInputName)(value);
   };
   const data = { state, updateType, updateValue };
   return (
