@@ -86,7 +86,9 @@ class DamageField extends React.Component {
   render = () => {
     const monsterLevelStr = "monsterLevelStr";
     const monsterResStr = "monsterLevelStr";
-    const monsterDamageReduction = this.props[monsterResStr] * (100+this.props[monsterLevelStr])/(100+this.props[])
+    // const monsterDamageReduction =
+    //   (this.props[monsterResStr] * (100 + this.props[monsterLevelStr])) /
+    //   (100 + this.props[characterLevel]);
     return (
       <div>
         Monster Level:
@@ -99,7 +101,7 @@ class DamageField extends React.Component {
           onChange={this.props.onChange(monsterResStr)}
           defaultValue={this.props[monsterResStr]}
         />
-        Total Damage Reduction: {monsterDamageReduction}
+        {/* Total Damage Reduction: {monsterDamageReduction} */}
         <MultiField
           initialLength={this.props[TalentName].length}
           component={this.PassiveInput}

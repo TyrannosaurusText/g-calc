@@ -6,62 +6,69 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
-import withFieldProps from "./utils/withFieldProps.js";
 import { CharacterFieldName } from "./Names.js";
+import withFieldPropsV2 from "./utils/withFieldPropsV2.js";
 
-class CharacterField extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
-  render = () => {
-    const ascensionStatType = "ascensionStatType";
-    const ascensionStatValue = "ascensionStatValue";
-    const ascensionStatInputComponent = hideIfFalsyOrNone(
-      this.props[ascensionStatType],
+const CharacterField = ({ updateValue, updateType, ...props }) => {
+  const ascensionStatType = "ascensionStatType";
+  const ascensionStatValue = "ascensionStatValue";
+  const ascensionStatInputComponent = (ascStatType, ascStatValue) =>
+    hideIfFalsyOrNone(
+      ascStatType,
       <>
-        <div className="section__textAlignStart">
-          {this.props ? this.props[ascensionStatType] : ""} Value
-        </div>
+        <div className="section__textAlignStart">{ascStatType || ""} Value</div>
         <NumberField
-          defaultValue={this.props[ascensionStatValue]}
-          onChange={this.props.onChange(ascensionStatValue)}
+          defaultValue={ascStatValue}
+          onChange={updateValue(
+            ascStatType,
+            ascStatValue,
+            ascensionStatValue
+          )}
+          // onChange={props.onChange(ascensionStatValue)}
         />
       </>
     );
-    return (
-      <div className="block__characterTop--margin">
-        <div> Base Stats </div>
-        <div className="section_StatsMap--shrink">
-          {characterStats.map((name) => {
-            return (
-              <div key={name} className="input_NumberField--spacing">
-                <NumberFieldOnLine
-                  name={name}
-                  defaultValue={this.props[name]}
-                  onChange={this.props.onChange(name)}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <div>
-          Ascension Stat
-          <div />
-          <div className="section__center">
-            <div>
-              <SelectionValueField
-                array={characterAscensionStat}
-                onChange={this.props.onChange(ascensionStatType)}
-                component={ascensionStatInputComponent}
-                defaultValue={this.props[ascensionStatType]}
+  return (
+    <div className="block__characterTop--margin">
+      <div> Base Stats </div>
+      <div className="section_StatsMap--shrink">
+        {characterStats.map((name) => {
+          return (
+            <div key={name} className="input_NumberField--spacing">
+              <NumberFieldOnLine
+                name={name}
+                defaultValue={props[name]}
+                onChange={updateValue(name, props[name], name)}
+                // onChange={props.onChange(name)}
               />
             </div>
+          );
+        })}
+      </div>
+      <div>
+        Ascension Stat
+        <div />
+        <div className="section__center">
+          <div>
+            <SelectionValueField
+              array={characterAscensionStat}
+              onChange={updateType(
+                props[ascensionStatType],
+                props[ascensionStatValue],
+                ascensionStatType
+              )}
+              // onChange={props.onChange(ascensionStatType)}
+              component={ascensionStatInputComponent(
+                props[ascensionStatType],
+                props[ascensionStatValue]
+              )}
+              defaultValue={props[ascensionStatType]}
+            />
           </div>
         </div>
       </div>
-    );
-  };
-}
+    </div>
+  );
+};
 
-export default withFieldProps(CharacterField, CharacterFieldName);
+export default withFieldPropsV2(CharacterField, CharacterFieldName);

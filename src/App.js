@@ -14,8 +14,9 @@ import {
   initialArtifactField,
   initialWeaponField,
 } from "./js/utils/initialValues.js";
-
+import CharacterView from "./js/CharacterView.js";
 import { init } from "./js/utils/fieldInitializer.js";
+import { PlayerStats } from "./js/utils/PlayerStatsContext";
 
 const characterSheet1 = "CharacterSheet1";
 const characterSheet2 = "CharacterSheet2";
@@ -145,12 +146,12 @@ class App extends React.Component {
             </div>
           </div>
           {this.state.characterData ? (
-            <>
-              <TotalStats
-                data={this.state}
-                characterViewProps={characterViewProps}
-              ></TotalStats>
-            </>
+            <PlayerStats {...this.state} onChange={this.onChange}>
+              <div className="section__mainBody section__App--row">
+                <CharacterView {...characterViewProps} />
+                <TotalStats />
+              </div>
+            </PlayerStats>
           ) : (
             <> </>
           )}

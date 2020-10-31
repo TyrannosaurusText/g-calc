@@ -20,7 +20,7 @@ const validViews = [StatsView, BuffView, DamageView];
 //   <Component {...props[fieldName]} onChange={props.onchange(fieldName)} />
 // );
 
-var StatsViewRender = (props) => (
+const StatsViewRender = (props) => (
   <>
     <div className="section__mainBody--row">
       <CharacterField {...props} />
@@ -30,8 +30,8 @@ var StatsViewRender = (props) => (
     <ArtifactsView {...props} />
   </>
 );
-var BuffViewRender = (props) => <></>;
-var DamageFieldNameRender = (props) => (
+const BuffViewRender = (props) => <></>;
+const DamageFieldNameRender = (props) => (
   <>
     <DamageCalc {...props} />
   </>
