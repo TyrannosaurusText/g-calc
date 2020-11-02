@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { weaponSub, weaponPassives } from "./utils/Effects.js";
 import "../css/WeaponField.css";
 import {
@@ -7,37 +7,33 @@ import {
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { Button } from "./utils/Button.js";
-import withFieldProps from "./utils/withFieldProps.js";
-import { WeaponFieldName } from "./Names.js";
+import { selectSheet } from "../features/sheet/sheetSlice.js";
+import { useSelector } from "react-redux";
 
 const weaponPassivesType = "weaponPassivesType";
 const weaponPassivesValue = "weaponPassivesValue";
 
-class WeaponField extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    var weaponPassivesID = Array(props.weaponPassivesType.length)
-      .fill(0)
-      .map((_, index) => index);
-    this.state = {
-      weaponPassivesID: weaponPassivesID,
-      counter: weaponPassivesID.length,
-    };
-  }
+const WeaponField = () => {
+  const props = { ...(useSelector(selectSheet).sheet) }
+  props.onChange = () => { };
+  var [weaponPassivesID, setWPID] = useState(Array(props.weaponPassivesType ? props.weaponPassivesType.length : 0)
+    .fill(0)
+    .map((_, index) => index));
+  var [counter, setCount] = useState(0)
 
-  WeaponPassiveInput = (id, index) => {
+  const WeaponPassiveInput = (id, index) => {
     var onPassiveChange = (key, index) => (value) => {
-      var passives = this.props[key];
+      var passives = props[key];
       passives[index] = value;
-      this.props.onChange(key)(passives);
+      props.onChange(key)(passives);
     };
     const weaponPassiveInputComponent = (
       <>
         {hideIfFalsyOrNone(
-          this.props[weaponPassivesType][index],
+          props[weaponPassivesType][index],
           <NumberFieldOnLine
             onChange={onPassiveChange(weaponPassivesValue, index)}
-            defaultValue={this.props[weaponPassivesValue][index]}
+            defaultValue={props[weaponPassivesValue][index]}
           />
         )}
         <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
@@ -51,82 +47,80 @@ class WeaponField extends React.PureComponent {
           onChange={onPassiveChange(weaponPassivesType, index)}
           array={weaponPassives}
           component={weaponPassiveInputComponent}
-          defaultValue={this.props[weaponPassivesType][index]}
+          defaultValue={props[weaponPassivesType][index]}
         />
       </div>
     );
   };
 
-  AddEffect = () => {
-    var ids = this.state.weaponPassivesID;
-    var type = this.props[weaponPassivesType];
-    var value = this.props[weaponPassivesValue];
-    ids.push(this.state.counter);
+  const AddEffect = () => {
+    var ids = weaponPassivesID;
+    var type = props[weaponPassivesType];
+    var value = props[weaponPassivesValue];
+    ids.push(counter);
     type.push("None");
     value.push(undefined);
     this.setState({
       weaponPassivesID: ids,
       weaponPassivesType: type,
       weaponPassivesValue: value,
-      counter: this.state.counter + 1,
+      counter: counter + 1,
     });
   };
 
-  RemoveEffect = (index) => {
-    var ids = this.state.weaponPassivesID;
-    var type = this.props[weaponPassivesType];
-    var value = this.props[weaponPassivesValue];
+  const RemoveEffect = (index) => {
+    var ids = weaponPassivesID;
+    var type = props[weaponPassivesType];
+    var value = props[weaponPassivesValue];
     ids.splice(index, 1);
     type.splice(index, 1);
     value.splice(index, 1);
     this.setState({ weaponPassivesID: ids });
-    this.props.onChange(weaponPassivesType)(type);
-    this.props.onChange(weaponPassivesValue)(value);
+    props.onChange(weaponPassivesType)(type);
+    props.onChange(weaponPassivesValue)(value);
   };
 
-  render = () => {
-    const weaponSubstatType = "weaponSubstatType";
-    const weaponSubstatValue = "weaponSubstatValue";
-    const weaponSubstatInputComponent = hideIfFalsyOrNone(
-      this.props[weaponSubstatType],
-      <NumberFieldOnLine
-        onChange={this.props.onChange(weaponSubstatValue)}
-        defaultValue={this.props[weaponSubstatValue]}
-      />
-    );
-    return (
+  const weaponSubstatType = "weaponSubstatType";
+  const weaponSubstatValue = "weaponSubstatValue";
+  const weaponSubstatInputComponent = hideIfFalsyOrNone(
+    props[weaponSubstatType],
+    <NumberFieldOnLine
+      onChange={props.onChange(weaponSubstatValue)}
+      defaultValue={props[weaponSubstatValue]}
+    />
+  );
+  return (
+    <div>
       <div>
-        <div>
-          <div> Weapon Substat </div>
-          <SelectionValueField
-            array={weaponSub}
-            onChange={this.props.onChange(weaponSubstatType)}
-            component={weaponSubstatInputComponent}
-            defaultValue={this.props[weaponSubstatType]}
-          />
-        </div>
-        <div>
-          Weapon Passive
+        <div> Weapon Substat </div>
+        <SelectionValueField
+          array={weaponSub}
+          onChange={props.onChange(weaponSubstatType)}
+          component={weaponSubstatInputComponent}
+          defaultValue={props[weaponSubstatType]}
+        />
+      </div>
+      <div>
+        Weapon Passive
           <Button onClick={() => this.AddEffect()}>Add Passive</Button>
-        </div>
-        <div>
-          <div
-            className={
-              this.state.weaponPassivesID.length > 3
-                ? "section__weaponPassive--scrollView"
-                : "section__weaponPassive"
-            }
-          >
-            {this.state.weaponPassivesID
-              ? this.state.weaponPassivesID.map((id, index) => {
-                  return this.WeaponPassiveInput(id, index);
-                })
-              : null}
-          </div>
+      </div>
+      <div>
+        <div
+          className={
+            weaponPassivesID.length > 3
+              ? "section__weaponPassive--scrollView"
+              : "section__weaponPassive"
+          }
+        >
+          {weaponPassivesID
+            ? weaponPassivesID.map((id, index) => {
+              return this.WeaponPassiveInput(id, index);
+            })
+            : null}
         </div>
       </div>
-    );
-  };
-}
+    </div>
+  );
+};
 
-export default withFieldProps(WeaponField, WeaponFieldName);
+export default WeaponField

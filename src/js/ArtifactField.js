@@ -6,10 +6,13 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-import { ArtifactFieldName } from "./Names.js";
-import withFieldPropsV2 from "./utils/withFieldPropsV2.js";
+import { selectSheet } from "../features/sheet/sheetSlice.js";
+import { useSelector } from "react-redux";
+const updateValue = () => { }
+const updateType = () => { }
+const ArtifactField = (props) => {
+  props = { ...(useSelector(selectSheet).sheet), ...props }
 
-const ArtifactField = ({ updateValue, updateType, ...props }) => {
   const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
   const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
   const onSubstatChange = (ArtifactName, LineNumber, skipRender = false) => (
@@ -81,4 +84,4 @@ const ArtifactField = ({ updateValue, updateType, ...props }) => {
   );
 };
 
-export default withFieldPropsV2(ArtifactField, ArtifactFieldName);
+export default ArtifactField;

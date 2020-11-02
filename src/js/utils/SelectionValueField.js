@@ -26,11 +26,11 @@ var SelectionValueField = (props) => {
 };
 
 var hideIfFalsyOrNone = (val, component) => {
-  return val == undefined || val.localeCompare("None") === 0 ? (
+  return val === undefined || val === null || val.localeCompare("None") === 0 ? (
     <Fragment />
   ) : (
-    component
-  );
+      component
+    );
 };
 
 export { SelectionValueField, hideIfFalsyOrNone };

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Trunc } from "./Trunc.js";
 import { effects } from "./Effects.js";
 import { EMCalc } from "./ReactionLevelDMG.js";
+import { useSelector } from "react-redux";
+import { selectSheet } from "../../features/sheet/sheetSlice.js";
 
 var getStats = (props) => {
   const { WeaponField, ArtifactField, CharacterField } = props;
   if (null == WeaponField || null == ArtifactField || null == CharacterField)
-    return null;
+    return {};
   var increment = (source, value) =>
     source ? source + (value || 0) : value || 0;
   var sumStats = {};
@@ -21,7 +23,7 @@ var getStats = (props) => {
   );
   Array(6)
     .fill(0)
-    .map((_, artifactIndex) => {
+    .forEach((_, artifactIndex) => {
       var aTypes = `artifactTypes-${artifactIndex}`;
       var aVals = `artifactValues-${artifactIndex}`;
       var artifactType = ArtifactField[aTypes];
@@ -73,7 +75,9 @@ const calcTotals = (state) => {
 };
 const PlayerStatsContext = React.createContext(undefined);
 
-const PlayerStats = ({ children, ...props }) => {
+const PlayerStats = ({ children }) => {
+  const props = { ...(useSelector(selectSheet).sheet) }
+  console.log(props);
   const [state, setState] = useState(calcTotals(getStats(props)));
   const updateValue = (field) => (
     effectName,

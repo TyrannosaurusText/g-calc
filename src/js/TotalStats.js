@@ -41,7 +41,7 @@ var TotalStats = () => {
     totalATKSPD,
     totalRecharge,
     totalEM,
-    ...displayStats
+    ...remainder
   } = displayStats;
 
   return (
@@ -59,9 +59,9 @@ var TotalStats = () => {
         <div>
           {effects.er}: {totalRecharge}%
         </div>
-        {Object.keys(displayStats).map((key, index) => (
+        {Object.keys(remainder).map((key, index) => (
           <div key={index}>
-            {key}: {displayStats[key]}%
+            {key}: {remainder[key]}%
           </div>
         ))}
         {attackPowerCalcComponent}

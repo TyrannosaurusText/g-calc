@@ -1,51 +1,45 @@
 import React from "react";
-import { Button } from "./utils/Button.js";
 import {
   SelectionValueField,
-  hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
-import { DamageFieldName } from "./Names.js";
 import { NumberField } from "./utils/NumberField.js";
 import { MultiField, addEffect, removeEffect } from "./utils/MultiField.js";
-import withFieldProps from "./utils/withFieldProps.js";
+import { useSelector } from "react-redux";
+import { selectSheet } from "../features/sheet/sheetSlice.js";
 
 const TalentName = "TalentName";
 const SetTypeStr = "DamageType";
 const SetValueStr = "DamageValue";
-class DamageField extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  setView = (view) => {
-    this.setState({ view: view });
-  };
+const DamageField = () => {
+  const props = { ...(useSelector(selectSheet).sheet) }
+  props.onChange = () => { };
 
-  add = () => {
+  const add = () => {
     var keys = [TalentName, SetTypeStr, SetValueStr];
     var vals = [undefined, "Phys. Normal", undefined];
-    keys.map((name, index) => {
-      addEffect(this.props, name, this.props.onChange, vals[index]);
+    keys.forEach((name, index) => {
+      addEffect(props, name, props.onChange, vals[index]);
     });
   };
-  remove = (index) => {
+  const remove = (index) => {
     var keys = [TalentName, SetTypeStr, SetValueStr];
-    keys.map((name) => {
-      removeEffect(this.props, name, this.props.onChange, index);
+    keys.forEach((name) => {
+      removeEffect(props, name, props.onChange, index);
     });
   };
-  PassiveInput = (props) => {
+  const PassiveInput = (props) => {
     const { id, index } = props;
     var onValueChange = (key, index) => (value) => {
-      var passives = this.props[key];
+      var passives = props[key];
       passives[index] = value;
-      this.props.onChange(key)(passives);
+      props.onChange(key)(passives);
     };
     return (
       <div key={id}>
         Skill Name:
         <input
           type={"text"}
-          defaultValue={this.props[TalentName][index]}
+          defaultValue={props[TalentName][index]}
           onBlur={(e) => onValueChange(TalentName, index)(e.target.value)}
         ></input>
         Skill Type:
@@ -64,7 +58,7 @@ class DamageField extends React.Component {
               Skill Damage (%):
               <NumberField
                 onChange={onValueChange(SetValueStr, index)}
-                defaultValue={this.props[SetValueStr][index]}
+                defaultValue={props[SetValueStr][index]}
               />
             </>
           }
@@ -72,45 +66,33 @@ class DamageField extends React.Component {
         />
       </div>
     );
-    return (
-      <SelectionValueField
-        key={id}
-        selectionName={SetTypeStr}
-        onChange={onPassiveChange(SetTypeStr, index)}
-        array={setEffects}
-        component={PassiveInputComponent}
-        defaultValue={this.props[SetTypeStr][index]}
+  };
+  const monsterLevelStr = "monsterLevelStr";
+  const monsterResStr = "monsterLevelStr";
+  // const monsterDamageReduction =
+  //   (props[monsterResStr] * (100 + props[monsterLevelStr])) /
+  //   (100 + props[characterLevel]);
+  return (
+    <div>
+      Monster Level:
+      <NumberField
+        onChange={props.onChange(monsterLevelStr)}
+        defaultValue={props[monsterLevelStr]}
       />
-    );
-  };
-  render = () => {
-    const monsterLevelStr = "monsterLevelStr";
-    const monsterResStr = "monsterLevelStr";
-    // const monsterDamageReduction =
-    //   (this.props[monsterResStr] * (100 + this.props[monsterLevelStr])) /
-    //   (100 + this.props[characterLevel]);
-    return (
-      <div>
-        Monster Level:
-        <NumberField
-          onChange={this.props.onChange(monsterLevelStr)}
-          defaultValue={this.props[monsterLevelStr]}
-        />
         Monster Res:
-        <NumberField
-          onChange={this.props.onChange(monsterResStr)}
-          defaultValue={this.props[monsterResStr]}
-        />
-        {/* Total Damage Reduction: {monsterDamageReduction} */}
-        <MultiField
-          initialLength={this.props[TalentName].length}
-          component={this.PassiveInput}
-          addEffect={this.add}
-          removeEffect={this.remove}
-        />
-      </div>
-    );
-  };
+      <NumberField
+        onChange={props.onChange(monsterResStr)}
+        defaultValue={props[monsterResStr]}
+      />
+      {/* Total Damage Reduction: {monsterDamageReduction} */}
+      <MultiField
+        initialLength={props[TalentName].length}
+        component={PassiveInput}
+        addEffect={add}
+        removeEffect={remove}
+      />
+    </div>
+  );
 }
 
-export default withFieldProps(DamageField, DamageFieldName);
+export default DamageField;

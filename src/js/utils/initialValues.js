@@ -12,7 +12,7 @@ const initialArtifactField = (() => {
   var obj = {};
   Array(5)
     .fill(0)
-    .map((_, index) => {
+    .forEach((_, index) => {
       obj[`artifactTypes-${index}`] = Array(5).fill(null);
       obj[`artifactValues-${index}`] = Array(5).fill(0);
     });
