@@ -77,7 +77,8 @@ export const totalStatsSlice = createSlice({
         calcDelta: (state, action) => {
             console.log(action.payload)
             const { oldType, oldValue, newType, newValue } = action.payload
-            state[oldType] = (state[oldType] || 0) - (oldValue || 0);
+            if (oldType)
+                state[oldType] = (state[oldType] || 0) - (oldValue || 0);
             state[newType] = (state[newType] || 0) + (newValue || 0);
             const newTotals = calcTotals(state)
             for (var key in newTotals)

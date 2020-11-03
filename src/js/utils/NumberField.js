@@ -5,6 +5,7 @@ var NumberField = (props) => {
     <input
       className="input__NumberField"
       type="number"
+      key={props.defaultValue}
       defaultValue={props.defaultValue || ""}
       onBlur={(e) => {
         const value = parseFloat(e.target.value);

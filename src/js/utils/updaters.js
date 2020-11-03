@@ -11,7 +11,7 @@ const updateStatValueFactory = (dispatch) => (oldType, oldValue, sheetKey, index
         delta.newType = oldType;
         delta.newValue = value;
     }
-    dispatch(calcDelta(delta))
+    if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
 const updateStatTypeFactory = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
@@ -24,7 +24,7 @@ const updateStatTypeFactory = (dispatch) => (oldType, oldValue, sheetKey, index 
         delta.newType = value;
         delta.newValue = oldValue;
     }
-    dispatch(calcDelta(delta))
+    if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
 const updateSheetValue = (dispatch) => (key) => (value) => {

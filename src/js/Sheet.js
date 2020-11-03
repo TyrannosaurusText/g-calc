@@ -28,20 +28,19 @@ const Sheet = () => {
   //         return;
   //     }
   // // };
-  // const savePage = () => {
-  //   localStorage.setItem(sheet.name, JSON.stringify(sheet));
-  // };
-  // window.addEventListener("unload", savePage);
+  const savePage = () => {
+    localStorage.setItem(sheet.currentSheet, JSON.stringify(sheet));
+  };
+  window.addEventListener("unload", savePage);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { changePage(dispatch, characterSheet1) }, [])
   const changePage = (dispatch, page) => {
-    // savePage();
+    savePage();
     const state = loadPage(page);
     state.currentSheet = page;
     dispatch(loadSheet(state));
     dispatch(calcStats(sheet))
   };
-  // console.log(sheet)
   return (
     <div className="section__App--row">
       <div className="section__navbar">

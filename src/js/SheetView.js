@@ -65,10 +65,8 @@ const Export = (props) => {
 };
 const SheetView = () => {
   const props = { ...(useSelector(selectSheet)) }
-  const [state, setState] = useState(props.view)
   const dispatch = useDispatch();
   const setView = (dispatch, view) => {
-    setState(view);
     dispatch(updateSheet({ view: view }))
   }
   const currentView = props.view || StatsView;
