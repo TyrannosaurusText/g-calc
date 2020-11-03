@@ -8,15 +8,15 @@ import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { updateStatTypeFactory, updateStatValueFactory, sheetUpdater } from './utils/updaters.js'
+import { updateSheetAndStatsType, updateSheetAndStatsValue, sheetUpdater } from './utils/updaters.js'
 
 const CharacterField = () => {
   const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
   const ascensionStatType = "ascensionStatType";
   const ascensionStatValue = "ascensionStatValue";
-  const updateType = updateStatTypeFactory(dispatch);
-  const updateValue = updateStatValueFactory(dispatch);
+  const updateType = updateSheetAndStatsType(dispatch);
+  const updateValue = updateSheetAndStatsValue(dispatch);
   const ascStat = [ascensionStatType, ascensionStatValue]
   const updateAscType = sheetUpdater(ascStat, updateType, props);
   const updateAscValue = sheetUpdater(ascStat, updateValue, props);

@@ -67,6 +67,7 @@ class MultiField extends React.Component {
         </div>
         <div>
           <div
+            key={this.state.fieldIDArray.length}
             className={
               this.state.fieldIDArray.length > 3
                 ? "section__MultiField--scrollView"

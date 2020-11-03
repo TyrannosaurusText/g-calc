@@ -39,7 +39,7 @@ const Sheet = () => {
     const state = loadPage(page);
     state.currentSheet = page;
     dispatch(loadSheet(state));
-    dispatch(calcStats(sheet))
+    dispatch(calcStats(state))
   };
   return (
     <div className="section__App--row">
@@ -66,7 +66,7 @@ const Sheet = () => {
       {sheet.currentSheet ? (
         <div className="section__mainBody section__App--row">
           <CharacterView />
-          <TotalStats />
+          <TotalStats/>
         </div>
       ) : (
           <> </>

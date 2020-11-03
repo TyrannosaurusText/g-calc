@@ -32,6 +32,7 @@ var getStats = (props) => {
                 );
             }
         });
+    console.log(props);
     sumStats[props.weaponSubstatType] = increment(
         sumStats[props.weaponSubstatType],
         props.weaponSubstatValue

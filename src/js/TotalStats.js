@@ -2,7 +2,7 @@ import React from "react";
 import AttackPowerCalc from "./AttackPowerCalc.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectStats } from "../features/totalStats/totalStatsSlice.js";
 
 var TotalStats = () => {

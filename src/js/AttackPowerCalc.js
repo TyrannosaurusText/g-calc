@@ -110,7 +110,7 @@ class AttackPowerCalc extends React.Component {
         {Object.keys(reactions).map((reaction) => {
           return (
             <div key={reaction}>
-              {reaction}: {reactions[reaction]}{" "}
+              {reaction}: {reactions[reaction]}
             </div>
           );
         })}

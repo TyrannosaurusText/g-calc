@@ -7,7 +7,7 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { updateStatTypeFactory, updateStatValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
+import { updateSheetAndStatsType, updateSheetAndStatsValue, arrayUpdater, sheetUpdater } from './utils/updaters.js'
 import { MultiField } from "./utils/MultiField.js";
 import "../css/SetEffectField.css";
 const artifactSetEffectType = "artifactTypes-5";
@@ -16,8 +16,8 @@ const artifactSetEffectValue = "artifactValues-5";
 const SetEffectField = () => {
   const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
-  const updateType = updateStatTypeFactory(dispatch);
-  const updateValue = updateStatValueFactory(dispatch);
+  const updateType = updateSheetAndStatsType(dispatch);
+  const updateValue = updateSheetAndStatsValue(dispatch);
 
   const artifactSetEffectLength = props.artifactSetEffectType ? props.artifactSetEffectType.length : 0
   const artifactSetEffectTypeValue = [props[artifactSetEffectType], props[artifactSetEffectValue]]

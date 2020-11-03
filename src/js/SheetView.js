@@ -2,22 +2,18 @@ import React, { useState } from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
 import ArtifactsView from "./ArtifactsView.js";
-import { avaliableFields } from "./Names.js";
 import { Button } from "./utils/Button.js";
 import DamageCalc from "./DamageField.js";
 import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { calcStats } from "../features/totalStats/totalStatsSlice.js";
 
 const StatsView = "Stats";
 const BuffView = "Buff";
 const DamageView = "Damage Calc";
 const ExportView = "Export";
 // const validViews = [StatsView, BuffView, DamageView];
-
-// var LoadComponent = (Component, fieldName) => (
-//   <Component {...props[fieldName]} onChange={props.onchange(fieldName)} />
-// );
 
 const StatsViewRender = (props) => (
   <>
@@ -35,16 +31,15 @@ const DamageFieldNameRender = (props) => (
     <DamageCalc {...props} />
   </>
 );
-const Export = (props) => {
-  const keys = Object.keys(props).filter((key) =>
-    avaliableFields.includes(key)
-  );
-  const data = {};
-  keys.map((key) => (data[key] = props[key]));
-  const [textInput, setText] = useState(JSON.stringify(data));
+const Export = () => {
+  const props = { ...(useSelector(selectSheet)) }
+  const dispatch = useDispatch();
+  const [textInput, setText] = useState('');
+  console.log(props.currentSheet)
   return (
     <>
       <textarea
+        key={props.currentSheet}
         className="body__textarea"
         onChange={(e) => {
           setText(e.target.value);
@@ -54,10 +49,30 @@ const Export = (props) => {
       <div>
         <Button
           onClick={() => {
-            props.import(textInput);
+            try {
+              const input = JSON.parse(textInput)
+              input.currentSheet = props.currentSheet
+              input.view = StatsView
+              dispatch(updateSheet(input))
+              dispatch(calcStats(input))
+            }
+            catch (e) {
+              console.log(e)
+            }
           }}
         >
           Import
+      </Button>
+      </div>
+      <div>
+        <Button
+          onClick={() => {
+            props.currentSheet = undefined;
+            props.view = undefined;
+            setText(JSON.stringify(props))
+          }}
+        >
+          Export
       </Button>
       </div>
     </>
@@ -77,7 +92,7 @@ const SheetView = () => {
     [ExportView]: Export(props),
   };
   return (
-    <div className="section__mainBody">
+    <div key={props.currentSheet} className="section__mainBody">
       <div className="section__mainBody--row">
         {Object.keys(obj).map((view) => (
           <Button disabled={props.view === view} key={view} onClick={() => setView(dispatch, view)}>
