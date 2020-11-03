@@ -8,18 +8,18 @@ import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { updateTypeFactory, updateValueFactory, sheetUpdater } from './utils/updaters.js'
+import { updateStatTypeFactory, updateStatValueFactory, sheetUpdater } from './utils/updaters.js'
 
 const CharacterField = () => {
-  const props = { ...(useSelector(selectSheet).sheet) }
+  const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
   const ascensionStatType = "ascensionStatType";
   const ascensionStatValue = "ascensionStatValue";
-  const updateType = updateTypeFactory(dispatch);
-  const updateValue = updateValueFactory(dispatch);
+  const updateType = updateStatTypeFactory(dispatch);
+  const updateValue = updateStatValueFactory(dispatch);
   const ascStat = [ascensionStatType, ascensionStatValue]
-  const updateAscType = sheetUpdater(ascStat, updateType);
-  const updateAscValue = sheetUpdater(ascStat, updateValue);
+  const updateAscType = sheetUpdater(ascStat, updateType, props);
+  const updateAscValue = sheetUpdater(ascStat, updateValue, props);
   const ascensionStatInputComponent = (ascStatType, ascStatValue) =>
     hideIfFalsyOrNone(
       ascStatType,
@@ -31,7 +31,6 @@ const CharacterField = () => {
         />
       </>
     );
-  console.log(props)
   return (
     <div className="block__characterTop--margin">
       <div> Base Stats </div>

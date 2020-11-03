@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import "../css/App.css";
 import TotalStats from "./TotalStats.js";
 import { Button } from "./utils/Button.js";
 import CharacterView from "./SheetView.js";
-import { PlayerStats } from "./utils/PlayerStatsContext";
 import { useSelector, useDispatch } from 'react-redux';
 import { loadSheet, selectSheet } from "../features/sheet/sheetSlice";
 import { loadPage } from './utils/LoadPage.js'
+import { calcStats } from "../features/totalStats/totalStatsSlice";
 const characterSheet1 = "CharacterSheet1";
 const characterSheet2 = "CharacterSheet2";
 const characterSheet3 = "CharacterSheet3";
@@ -17,7 +17,7 @@ const Sheet = () => {
   const dispatch = useDispatch();
   // console.log(page);
   // dispatch(loadSheet(page));
-  const { sheet } = useSelector(selectSheet);
+  const sheet = useSelector(selectSheet);
   // const importFn = (data) => {
   //     try {
   //         const importedData = JSON.parse(data);
@@ -32,12 +32,14 @@ const Sheet = () => {
   //   localStorage.setItem(sheet.name, JSON.stringify(sheet));
   // };
   // window.addEventListener("unload", savePage);
-
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { changePage(dispatch, characterSheet1) }, [])
   const changePage = (dispatch, page) => {
     // savePage();
     const state = loadPage(page);
+    state.currentSheet = page;
     dispatch(loadSheet(state));
+    dispatch(calcStats(sheet))
   };
   // console.log(sheet)
   return (
@@ -63,12 +65,10 @@ const Sheet = () => {
         </div>
       </div>
       {sheet.currentSheet ? (
-        <PlayerStats>
-          <div className="section__mainBody section__App--row">
-            <CharacterView />
-            <TotalStats />
-          </div>
-        </PlayerStats>
+        <div className="section__mainBody section__App--row">
+          <CharacterView />
+          <TotalStats />
+        </div>
       ) : (
           <> </>
         )}

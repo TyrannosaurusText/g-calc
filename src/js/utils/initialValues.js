@@ -7,6 +7,10 @@ const initialDamageField = {
 const initialCharacterField = {
   ascensionStatType: "None",
   ascensionStatValue: 0,
+  HP: '',
+  LVL: '',
+  ATK: '',
+  DEF: '',
 };
 const initialArtifactField = (() => {
   var obj = {};

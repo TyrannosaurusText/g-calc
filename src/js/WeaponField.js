@@ -8,7 +8,7 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTypeFactory, updateValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
+import { updateStatTypeFactory, updateStatValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
 import { MultiField } from "./utils/MultiField.js";
 
 const weaponPassivesType = "weaponPassivesType";
@@ -17,11 +17,11 @@ const weaponSubstatType = "weaponSubstatType";
 const weaponSubstatValue = "weaponSubstatValue";
 
 const WeaponField = () => {
-  const props = { ...(useSelector(selectSheet).sheet) }
+  const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
-  const updateType = updateTypeFactory(dispatch);
-  const updateValue = updateValueFactory(dispatch);
-  const weaponPassiveTypeValue = [props[weaponPassivesType], props[weaponPassivesValue]]
+  const updateType = updateStatTypeFactory(dispatch);
+  const updateValue = updateStatValueFactory(dispatch);
+  const weaponPassiveTypeValue = [weaponPassivesType, weaponPassivesValue]
   const weaponPassiveLength = props.weaponPassivesType ? props.weaponPassivesType.length : 0
   const WeaponPassiveInput = ({ id, index }) => {
     const onPassiveValueChange = arrayUpdater(weaponPassiveTypeValue, updateValue, props);
@@ -51,8 +51,8 @@ const WeaponField = () => {
       </div>
     );
   };
-  const changePassiveType = sheetUpdater(weaponPassiveTypeValue, updateValue);
-  const changePassiveValue = sheetUpdater(weaponPassiveTypeValue, updateType);
+  const changePassiveType = sheetUpdater(weaponPassiveTypeValue, updateValue, props);
+  const changePassiveValue = sheetUpdater(weaponPassiveTypeValue, updateType, props);
   const add = () => {
     const typeUpdater = changePassiveType(weaponPassivesType)
     const valueUpdater = changePassiveValue(weaponPassivesValue)

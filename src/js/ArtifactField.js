@@ -8,13 +8,13 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { updateTypeFactory, updateValueFactory, arrayUpdater } from './utils/updaters.js'
+import { updateStatTypeFactory, updateStatValueFactory, arrayUpdater } from './utils/updaters.js'
 
 const ArtifactField = (props) => {
-  props = { ...(useSelector(selectSheet).sheet), ...props }
+  props = { ...(useSelector(selectSheet)), ...props }
   const dispatch = useDispatch();
-  const updateType = updateTypeFactory(dispatch);
-  const updateValue = updateValueFactory(dispatch);
+  const updateType = updateStatTypeFactory(dispatch);
+  const updateValue = updateStatValueFactory(dispatch);
   const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
   const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
   const artifactTypeValue = [artifactTypesString, artifactValuesString];

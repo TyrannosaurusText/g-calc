@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import AttackPowerCalc from "./AttackPowerCalc.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
-import { PlayerStatsContext } from "./utils/PlayerStatsContext.js";
+import { useDispatch, useSelector } from "react-redux";
+import { selectStats } from "../features/totalStats/totalStatsSlice.js";
 
 var TotalStats = () => {
-  const state = useContext(PlayerStatsContext);
+  const state = { ...(useSelector(selectStats)) }
+  console.log(state);
   var displayStats = JSON.parse(JSON.stringify(state));
-  console.log(displayStats)
-  if (null == displayStats) return <div></div>;
+  if (null == displayStats)
+    return <div></div>;
   var attackPowerCalcComponent = <AttackPowerCalc {...displayStats} />;
   [
     "null",

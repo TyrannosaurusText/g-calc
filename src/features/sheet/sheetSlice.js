@@ -16,21 +16,20 @@ const initialState = {
 }
 export const sheetSlice = createSlice({
     name: 'sheet',
-    initialState: loadPage('CharacterSheet1'),
+    initialState: { ...initialState, ...loadPage('CharacterSheet1') },
     reducers: {
         updateSheet: (state, action) => {
             for (var key in action.payload)
                 state[key] = action.payload[key];
         },
         loadSheet: (state, action) => {
-            for (var key in initialState)
-                state[key] = action.payload[key];
-            for (key in action.payload)
-                state[key] = action.payload[key];
+            const newState = { ...initialState, ...action.payload }
+            for (var key in newState)
+                state[key] = newState[key];
         }
     },
 });
 
 export const { updateSheet, loadSheet } = sheetSlice.actions;
-export const selectSheet = state => state;
+export const selectSheet = state => state.sheet;
 export default sheetSlice.reducer;

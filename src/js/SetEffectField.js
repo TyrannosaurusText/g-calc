@@ -7,21 +7,20 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTypeFactory, updateValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
+import { updateStatTypeFactory, updateStatValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
 import { MultiField } from "./utils/MultiField.js";
 import "../css/SetEffectField.css";
 const artifactSetEffectType = "artifactTypes-5";
 const artifactSetEffectValue = "artifactValues-5";
 
 const SetEffectField = () => {
-  const props = { ...(useSelector(selectSheet).sheet) }
+  const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
-  const updateType = updateTypeFactory(dispatch);
-  const updateValue = updateValueFactory(dispatch);
+  const updateType = updateStatTypeFactory(dispatch);
+  const updateValue = updateStatValueFactory(dispatch);
 
   const artifactSetEffectLength = props.artifactSetEffectType ? props.artifactSetEffectType.length : 0
   const artifactSetEffectTypeValue = [props[artifactSetEffectType], props[artifactSetEffectValue]]
-  console.log(artifactSetEffectTypeValue)
   const artifactSetEffectInputComponent = ({ id, index }) => {
     const onPassiveValueChange = arrayUpdater(artifactSetEffectTypeValue, updateValue, props);
     const onPassiveTypeChange = arrayUpdater(artifactSetEffectTypeValue, updateType, props);
@@ -48,8 +47,8 @@ const SetEffectField = () => {
       </div>
     );
   };
-  const changePassiveType = sheetUpdater(artifactSetEffectTypeValue, updateValue);
-  const changePassiveValue = sheetUpdater(artifactSetEffectTypeValue, updateType);
+  const changePassiveType = sheetUpdater(artifactSetEffectTypeValue, updateValue, props);
+  const changePassiveValue = sheetUpdater(artifactSetEffectTypeValue, updateType, props);
   const add = () => {
     const typeUpdater = changePassiveType(artifactSetEffectType)
     const valueUpdater = changePassiveValue(artifactSetEffectValue)
