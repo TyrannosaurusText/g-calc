@@ -27,8 +27,7 @@ const DamageField = () => {
       removeEffect(props, name, props.onChange, index);
     });
   };
-  const PassiveInput = (props) => {
-    const { id, index } = props;
+  const PassiveInput = ({ id, index }) => {
     var onValueChange = (key, index) => (value) => {
       var passives = props[key];
       passives[index] = value;

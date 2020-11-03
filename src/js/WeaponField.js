@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { weaponSub, weaponPassives } from "./utils/Effects.js";
 import "../css/WeaponField.css";
 import {
@@ -6,37 +6,36 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
-import { Button } from "./utils/Button.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTypeFactory, updateValueFactory, arrayUpdater, sheetUpdater } from './utils/updaters.js'
+import { MultiField } from "./utils/MultiField.js";
 
 const weaponPassivesType = "weaponPassivesType";
 const weaponPassivesValue = "weaponPassivesValue";
+const weaponSubstatType = "weaponSubstatType";
+const weaponSubstatValue = "weaponSubstatValue";
 
 const WeaponField = () => {
   const props = { ...(useSelector(selectSheet).sheet) }
-  props.onChange = () => { };
-  var [weaponPassivesID, setWPID] = useState(Array(props.weaponPassivesType ? props.weaponPassivesType.length : 0)
-    .fill(0)
-    .map((_, index) => index));
-  var [counter, setCount] = useState(0)
+  const dispatch = useDispatch();
+  const updateType = updateTypeFactory(dispatch);
+  const updateValue = updateValueFactory(dispatch);
+  const weaponPassiveTypeValue = [props[weaponPassivesType], props[weaponPassivesValue]]
+  const weaponPassiveLength = props.weaponPassivesType ? props.weaponPassivesType.length : 0
+  const WeaponPassiveInput = ({ id, index }) => {
+    const onPassiveValueChange = arrayUpdater(weaponPassiveTypeValue, updateValue, props);
+    const onPassiveTypeChange = arrayUpdater(weaponPassiveTypeValue, updateType, props);
 
-  const WeaponPassiveInput = (id, index) => {
-    var onPassiveChange = (key, index) => (value) => {
-      var passives = props[key];
-      passives[index] = value;
-      props.onChange(key)(passives);
-    };
     const weaponPassiveInputComponent = (
       <>
         {hideIfFalsyOrNone(
           props[weaponPassivesType][index],
           <NumberFieldOnLine
-            onChange={onPassiveChange(weaponPassivesValue, index)}
+            onChange={onPassiveValueChange(weaponPassivesValue, index)}
             defaultValue={props[weaponPassivesValue][index]}
           />
         )}
-        <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
       </>
     );
     return (
@@ -44,7 +43,7 @@ const WeaponField = () => {
         <SelectionValueField
           key={id}
           selectionName={weaponPassivesType}
-          onChange={onPassiveChange(weaponPassivesType, index)}
+          onChange={onPassiveTypeChange(weaponPassivesType, index)}
           array={weaponPassives}
           component={weaponPassiveInputComponent}
           defaultValue={props[weaponPassivesType][index]}
@@ -52,40 +51,32 @@ const WeaponField = () => {
       </div>
     );
   };
-
-  const AddEffect = () => {
-    var ids = weaponPassivesID;
-    var type = props[weaponPassivesType];
-    var value = props[weaponPassivesValue];
-    ids.push(counter);
-    type.push("None");
-    value.push(undefined);
-    this.setState({
-      weaponPassivesID: ids,
-      weaponPassivesType: type,
-      weaponPassivesValue: value,
-      counter: counter + 1,
-    });
+  const changePassiveType = sheetUpdater(weaponPassiveTypeValue, updateValue);
+  const changePassiveValue = sheetUpdater(weaponPassiveTypeValue, updateType);
+  const add = () => {
+    const typeUpdater = changePassiveType(weaponPassivesType)
+    const valueUpdater = changePassiveValue(weaponPassivesValue)
+    typeUpdater(props[weaponPassivesType].concat(undefined))
+    valueUpdater(props[weaponPassivesValue].concat(undefined))
   };
-
-  const RemoveEffect = (index) => {
-    var ids = weaponPassivesID;
-    var type = props[weaponPassivesType];
-    var value = props[weaponPassivesValue];
-    ids.splice(index, 1);
-    type.splice(index, 1);
-    value.splice(index, 1);
-    this.setState({ weaponPassivesID: ids });
-    props.onChange(weaponPassivesType)(type);
-    props.onChange(weaponPassivesValue)(value);
+  const remove = (index) => {
+    const typeUpdater = changePassiveType(weaponPassivesType)
+    const valueUpdater = changePassiveValue(weaponPassivesValue)
+    var weaponPassiveValueArray = [...props[weaponPassivesValue]]
+    var weaponPassiveTypeArray = [...props[weaponPassivesType]]
+    weaponPassiveTypeArray.splice(index, 1)
+    weaponPassiveValueArray.splice(index, 1)
+    typeUpdater(weaponPassiveTypeArray)
+    valueUpdater(weaponPassiveValueArray)
   };
-
-  const weaponSubstatType = "weaponSubstatType";
-  const weaponSubstatValue = "weaponSubstatValue";
   const weaponSubstatInputComponent = hideIfFalsyOrNone(
     props[weaponSubstatType],
     <NumberFieldOnLine
-      onChange={props.onChange(weaponSubstatValue)}
+      onChange={updateValue(
+        props[weaponSubstatType],
+        props[weaponSubstatValue],
+        weaponSubstatValue
+      )}
       defaultValue={props[weaponSubstatValue]}
     />
   );
@@ -95,30 +86,23 @@ const WeaponField = () => {
         <div> Weapon Substat </div>
         <SelectionValueField
           array={weaponSub}
-          onChange={props.onChange(weaponSubstatType)}
+          onChange={updateType(
+            props[weaponSubstatType],
+            props[weaponSubstatValue],
+            weaponSubstatType
+          )}
           component={weaponSubstatInputComponent}
           defaultValue={props[weaponSubstatType]}
         />
       </div>
-      <div>
-        Weapon Passive
-          <Button onClick={() => this.AddEffect()}>Add Passive</Button>
-      </div>
-      <div>
-        <div
-          className={
-            weaponPassivesID.length > 3
-              ? "section__weaponPassive--scrollView"
-              : "section__weaponPassive"
-          }
-        >
-          {weaponPassivesID
-            ? weaponPassivesID.map((id, index) => {
-              return this.WeaponPassiveInput(id, index);
-            })
-            : null}
-        </div>
-      </div>
+      <MultiField
+        initialLength={weaponPassiveLength}
+        title="Weapon Passive"
+        buttonText="Add Passive"
+        component={WeaponPassiveInput}
+        addEffect={add}
+        removeEffect={remove}
+      />
     </div>
   );
 };

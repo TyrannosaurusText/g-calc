@@ -4,7 +4,7 @@ import { Button } from "./Button.js";
 import "../../css/MultiField.css";
 
 /**
- * props: initialLength, title, buttonText
+ * props: initialLength, title, buttonText, addEffect, removeEffect
  */
 const addEffect = (props, name, mutator, value = undefined) => {
   var updatedProp = props[name];
@@ -49,7 +49,7 @@ class MultiField extends React.Component {
 
   ComponentRenderer = (id, index, Component) => (
     <div key={id}>
-      <div className="section__MultiField--spacing">
+      <div className={this.props.wrapperClass || "section__MultiField--spacing"}>
         <Component id={id} index={index} />
         <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
       </div>
@@ -75,12 +75,12 @@ class MultiField extends React.Component {
           >
             {this.state.fieldIDArray
               ? this.state.fieldIDArray.map((id, index) => {
-                  return this.ComponentRenderer(
-                    id,
-                    index,
-                    this.props.component
-                  );
-                })
+                return this.ComponentRenderer(
+                  id,
+                  index,
+                  this.props.component
+                );
+              })
               : null}
           </div>
         </div>

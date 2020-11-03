@@ -23,7 +23,6 @@ export const sheetSlice = createSlice({
                 state[key] = action.payload[key];
         },
         loadSheet: (state, action) => {
-            console.log(action)
             for (var key in initialState)
                 state[key] = action.payload[key];
             for (key in action.payload)

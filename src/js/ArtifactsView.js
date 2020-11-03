@@ -20,8 +20,8 @@ const views = [
 const setEffect = "Set Effect";
 const options = [flowerMain, plumeMain, sandsMain, gobletMain, circletMain];
 
-const ArtifactsView = (props) => {
-  const [view, setView] = useState({ view: views[0] });
+const ArtifactsView = () => {
+  const [view, setView] = useState(views[0]);
   const renderOnView = (name, component) => {
     return view === name ? component : <div key={name} />;
   };

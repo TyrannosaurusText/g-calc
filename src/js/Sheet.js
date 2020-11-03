@@ -39,7 +39,7 @@ const Sheet = () => {
     const state = loadPage(page);
     dispatch(loadSheet(state));
   };
-  console.log(sheet)
+  // console.log(sheet)
   return (
     <div className="section__App--row">
       <div className="section__navbar">

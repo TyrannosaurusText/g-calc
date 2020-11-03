@@ -8,7 +8,8 @@ import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { updateTypeFactory, updateValueFactory } from './utils/updaters.js'
+import { updateTypeFactory, updateValueFactory, sheetUpdater } from './utils/updaters.js'
+
 const CharacterField = () => {
   const props = { ...(useSelector(selectSheet).sheet) }
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ const CharacterField = () => {
   const ascensionStatValue = "ascensionStatValue";
   const updateType = updateTypeFactory(dispatch);
   const updateValue = updateValueFactory(dispatch);
+  const ascStat = [ascensionStatType, ascensionStatValue]
+  const updateAscType = sheetUpdater(ascStat, updateType);
+  const updateAscValue = sheetUpdater(ascStat, updateValue);
   const ascensionStatInputComponent = (ascStatType, ascStatValue) =>
     hideIfFalsyOrNone(
       ascStatType,
@@ -23,17 +27,16 @@ const CharacterField = () => {
         <div className="section__textAlignStart">{ascStatType || ""} Value</div>
         <NumberField
           defaultValue={ascStatValue}
-          onChange={updateValue(ascStatType, ascStatValue, ascensionStatValue)}
-        // onChange={props.onChange(ascensionStatValue)}
+          onChange={updateAscValue(ascensionStatValue)}
         />
       </>
     );
+  console.log(props)
   return (
     <div className="block__characterTop--margin">
       <div> Base Stats </div>
       <div className="section_StatsMap--shrink">
         {characterStats.map((name) => {
-          console.log(name, props[name], props)
           return (
             <div key={name} className="input_NumberField--spacing">
               <NumberFieldOnLine
@@ -53,12 +56,7 @@ const CharacterField = () => {
           <div>
             <SelectionValueField
               array={characterAscensionStat}
-              onChange={updateType(
-                props[ascensionStatType],
-                props[ascensionStatValue],
-                ascensionStatType
-              )}
-              // onChange={props.onChange(ascensionStatType)}
+              onChange={updateAscType(ascensionStatType)}
               component={ascensionStatInputComponent(
                 props[ascensionStatType],
                 props[ascensionStatValue]

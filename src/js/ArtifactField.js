@@ -6,48 +6,36 @@ import {
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
 import { NumberFieldOnLine } from "./utils/NumberField.js";
+import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { useSelector } from "react-redux";
-const updateValue = () => { }
-const updateType = () => { }
+import { updateTypeFactory, updateValueFactory, arrayUpdater } from './utils/updaters.js'
+
 const ArtifactField = (props) => {
   props = { ...(useSelector(selectSheet).sheet), ...props }
-
+  const dispatch = useDispatch();
+  const updateType = updateTypeFactory(dispatch);
+  const updateValue = updateValueFactory(dispatch);
   const artifactTypesString = `artifactTypes-${props.ArtifactNum}`;
   const artifactValuesString = `artifactValues-${props.ArtifactNum}`;
-  const onSubstatChange = (ArtifactName, LineNumber, skipRender = false) => (
-    value
-  ) => {
-    const effectName = props[artifactTypesString][LineNumber];
-    const prevValue = props[artifactValuesString][LineNumber];
-    const newFieldValue = props[ArtifactName];
-    newFieldValue[LineNumber] = value;
-    const params = [
-      effectName,
-      prevValue,
-      ArtifactName,
-      LineNumber,
-      skipRender,
-    ];
-    if (ArtifactName === artifactTypesString) updateType(...params)(value);
-    else updateValue(...params)(newFieldValue);
-  };
-  const artifactSubField = (id) => {
+  const artifactTypeValue = [artifactTypesString, artifactValuesString];
+  const updateArtifactType = arrayUpdater(artifactTypeValue, updateType, props);
+  const updateArtifactValue = arrayUpdater(artifactTypeValue, updateValue, props);
+  const artifactSubField = (subStatIndex) => {
     const artifactSubFieldInputComponent = hideIfFalsyOrNone(
-      props[artifactTypesString][id],
+      props[artifactTypesString][subStatIndex],
       <NumberFieldOnLine
         name={"Value"}
-        onChange={onSubstatChange(artifactValuesString, id)}
-        defaultValue={props[artifactValuesString][id]}
+        onChange={updateArtifactValue(artifactValuesString, subStatIndex)}
+        defaultValue={props[artifactValuesString][subStatIndex]}
       />
     );
     return (
-      <div key={id}>
+      <div key={subStatIndex}>
         <SelectionValueField
-          key={id}
+          key={subStatIndex}
           array={artifactSub}
-          onChange={onSubstatChange(artifactTypesString, id)}
-          defaultValue={props[artifactTypesString][id]}
+          onChange={updateArtifactType(artifactTypesString, subStatIndex)}
+          defaultValue={props[artifactTypesString][subStatIndex]}
           component={artifactSubFieldInputComponent}
         />
       </div>
@@ -56,7 +44,7 @@ const ArtifactField = (props) => {
   const artifactMainStatInputComponent = (
     <NumberFieldOnLine
       name={"Value"}
-      onChange={onSubstatChange(artifactValuesString, 0)}
+      onChange={updateArtifactValue(artifactValuesString, 0)}
       defaultValue={props[artifactValuesString][0]}
     />
   );
@@ -67,7 +55,7 @@ const ArtifactField = (props) => {
         <div>
           <SelectionValueField
             array={props.mainStats}
-            onChange={onSubstatChange(artifactTypesString, 0)}
+            onChange={updateArtifactType(artifactTypesString, 0)}
             component={artifactMainStatInputComponent}
             defaultValue={props[artifactTypesString][0]}
             hideable={false}

@@ -6,14 +6,13 @@ import { useSelector } from "react-redux";
 import { selectSheet } from "../../features/sheet/sheetSlice.js";
 
 var getStats = (props) => {
-  const { WeaponField, ArtifactField, CharacterField } = props;
-  if (null == WeaponField || null == ArtifactField || null == CharacterField)
-    return {};
-  var increment = (source, value) =>
+  const increment = (source, value) =>
     source ? source + (value || 0) : value || 0;
-  var sumStats = {};
+  const sumStats = {};
 
-  var { ascensionStatType, ascensionStatValue, ...Char } = CharacterField;
+  const { LVL, HP, DEF, ATK } = props;
+  const Char = { LVL, HP, DEF, ATK };
+  const { ascensionStatType, ascensionStatValue } = props;
   for (var key in Char) {
     sumStats[key] = increment(sumStats[key], Char[key]);
   }
@@ -21,13 +20,14 @@ var getStats = (props) => {
     sumStats[ascensionStatType],
     ascensionStatValue
   );
+  console.log(sumStats)
   Array(6)
     .fill(0)
     .forEach((_, artifactIndex) => {
-      var aTypes = `artifactTypes-${artifactIndex}`;
-      var aVals = `artifactValues-${artifactIndex}`;
-      var artifactType = ArtifactField[aTypes];
-      var artifactValue = ArtifactField[aVals];
+      const aTypes = `artifactTypes-${artifactIndex}`;
+      const aVals = `artifactValues-${artifactIndex}`;
+      const artifactType = props[aTypes];
+      const artifactValue = props[aVals];
       for (var index = 0; index < artifactType.length; index++) {
         sumStats[artifactType[index]] = increment(
           sumStats[artifactType[index]],
@@ -35,29 +35,28 @@ var getStats = (props) => {
         );
       }
     });
-  sumStats[WeaponField.weaponSubstatType] = increment(
-    sumStats[WeaponField.weaponSubstatType],
-    WeaponField.weaponSubstatValue
+  sumStats[props.weaponSubstatType] = increment(
+    sumStats[props.weaponSubstatType],
+    props.weaponSubstatValue
   );
-  var { weaponPassivesType, weaponPassivesValue } = WeaponField;
+  const { weaponPassivesType, weaponPassivesValue } = props;
   for (var index = 0; index < weaponPassivesType.length; index++) {
     sumStats[weaponPassivesType[index]] = increment(
       sumStats[weaponPassivesType[index]],
       weaponPassivesValue[index]
     );
   }
-  return sumStats;
+  return calcTotals(sumStats);
 };
 const calcTotals = (state) => {
-  var calcStat = (stat) => {
-    var base = getVal(stat) || 0;
-    var percent = getVal("%" + stat) / 100;
-    var flat = getVal("+" + stat) || 0;
+  const calcStat = (stat) => {
+    const base = getVal(stat) || 0;
+    const percent = getVal("%" + stat) / 100;
+    const flat = getVal("+" + stat) || 0;
     return Trunc(base * (1 + percent) + flat);
   };
-  var getVal = (stat) => {
-    var val = state[stat] || 0;
-    return val;
+  const getVal = (stat) => {
+    return state[stat] || 0;
   };
   state.totalHP = calcStat(effects.HP);
   state.totalATK = calcStat(effects.ATK);
@@ -78,35 +77,37 @@ const PlayerStatsContext = React.createContext(undefined);
 const PlayerStats = ({ children }) => {
   const props = { ...(useSelector(selectSheet).sheet) }
   console.log(props);
-  const [state, setState] = useState(calcTotals(getStats(props)));
-  const updateValue = (field) => (
-    effectName,
-    prevValue,
-    fieldInputName,
-    index = -1,
-    skipRender = false
-  ) => (value) => {
-    const newState = state;
-    const newValue = index >= 0 ? value[index] : value;
-    newState[effectName] = state[effectName] - prevValue + newValue;
-    if (!skipRender) setState(calcTotals(newState));
-    props.onChange(field)(fieldInputName)(value);
-  };
-  const updateType = (field) => (
-    effectName,
-    prevValue,
-    fieldInputName,
-    index = -1,
-    skipRender = false
-  ) => (value) => {
-    const newState = state;
-    const newValue = index >= 0 ? value[index] : value;
-    newState[effectName] = state[effectName] - prevValue;
-    newState[effectName] = state[newValue] + prevValue;
-    if (!skipRender) setState(calcTotals(newState));
-    props.onChange(field)(fieldInputName)(value);
-  };
-  const data = { state, updateType, updateValue };
+  // const [state, setState] = useState(calcTotals());
+  // const updateValue = (field) => (
+  //   effectName,
+  //   prevValue,
+  //   fieldInputName,
+  //   index = -1,
+  //   skipRender = false
+  // ) => (value) => {
+  //   const newState = state;
+  //   const newValue = index >= 0 ? value[index] : value;
+  //   newState[effectName] = state[effectName] - prevValue + newValue;
+  //   if (!skipRender) setState(calcTotals(newState));
+  //   props.onChange(field)(fieldInputName)(value);
+  // };
+  // const updateType = (field) => (
+  //   effectName,
+  //   prevValue,
+  //   fieldInputName,
+  //   index = -1,
+  //   skipRender = false
+  // ) => (value) => {
+  //   const newState = state;
+  //   const newValue = index >= 0 ? value[index] : value;
+  //   newState[effectName] = state[effectName] - prevValue;
+  //   newState[effectName] = state[newValue] + prevValue;
+  //   if (!skipRender) setState(calcTotals(newState));
+  //   props.onChange(field)(fieldInputName)(value);
+  // };
+  // const data = { state, updateType, updateValue };
+  const data = getStats(props);
+  console.log(data)
   return (
     <PlayerStatsContext.Provider value={data}>
       {children}
