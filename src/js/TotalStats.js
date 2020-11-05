@@ -1,5 +1,4 @@
 import React from "react";
-import AttackPowerCalc from "./AttackPowerCalc.js";
 import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
 import { useSelector } from "react-redux";
@@ -10,30 +9,29 @@ var TotalStats = () => {
   var displayStats = JSON.parse(JSON.stringify(state));
   if (null == displayStats)
     return <div></div>;
-  var attackPowerCalcComponent = <AttackPowerCalc {...displayStats} />;
-  [
-    "null",
-    "None",
-    effects.cr,
-    effects.cd,
-    effects.er,
-    effects.ATKSPD,
-    effects.er,
-    effects.em,
-    effects.HP,
-    effects.PHP,
-    effects.ART_HP,
-    effects.ATK,
-    effects.PATK,
-    effects.ART_ATK,
-    effects.DEF,
-    effects.PDEF,
-    effects.ART_DEF,
-    effects.LVL,
-    "EQA",
-    "EQB",
-    "EQC",
-  ].map((key) => delete displayStats[key]);
+  // [
+  //   "null",
+  //   "None",
+  //   effects.cr,
+  //   effects.cd,
+  //   effects.er,
+  //   effects.ATKSPD,
+  //   effects.er,
+  //   effects.em,
+  //   effects.HP,
+  //   effects.PHP,
+  //   effects.ART_HP,
+  //   effects.ATK,
+  //   effects.PATK,
+  //   effects.ART_ATK,
+  //   effects.DEF,
+  //   effects.PDEF,
+  //   effects.ART_DEF,
+  //   effects.LVL,
+  //   "EQA",
+  //   "EQB",
+  //   "EQC",
+  // ].map((key) => delete displayStats[key]);
   var {
     totalHP,
     totalATK,
@@ -43,7 +41,7 @@ var TotalStats = () => {
     totalATKSPD,
     totalRecharge,
     totalEM,
-    ...remainder
+    // ...remainder
   } = displayStats;
 
   return (
@@ -61,11 +59,11 @@ var TotalStats = () => {
         <div>
           {effects.er}: {totalRecharge}%
         </div>
-        {Object.keys(remainder).map((key, index) => (
+        {/* {Object.keys(remainder).map((key, index) => (
           <div key={index}>
             {key}: {remainder[key]}%
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
+import AttackTable from "./AttackTable.js";
 
 const StatsView = "Stats";
 const BuffView = "Buff";
@@ -15,20 +16,20 @@ const DamageView = "Damage Calc";
 const ExportView = "Export";
 // const validViews = [StatsView, BuffView, DamageView];
 
-const StatsViewRender = (props) => (
+const StatsViewRender = () => (
   <>
     <div className="section__mainBody--row">
-      <CharacterField {...props} />
-
-      <WeaponField {...props} />
+      <CharacterField />
+      <WeaponField />
+      <AttackTable />
     </div>
-    <ArtifactsView {...props} />
+    <ArtifactsView />
   </>
 );
 const BuffViewRender = (props) => <></>;
-const DamageFieldNameRender = (props) => (
+const DamageFieldNameRender = () => (
   <>
-    <DamageCalc {...props} />
+    <DamageCalc />
   </>
 );
 const Export = () => {
@@ -85,14 +86,14 @@ const SheetView = () => {
   }
   const currentView = props.view || StatsView;
   var obj = {
-    [StatsView]: StatsViewRender(props),
-    [BuffView]: BuffViewRender(props),
-    [DamageView]: DamageFieldNameRender(props),
-    [ExportView]: Export(props),
+    [StatsView]: StatsViewRender(),
+    [BuffView]: BuffViewRender(),
+    [DamageView]: DamageFieldNameRender(),
+    [ExportView]: Export(),
   };
   return (
     <div key={props.currentSheet} className="section__mainBody">
-      <div className="section__mainBody--row">
+      <div>
         {Object.keys(obj).map((view) => (
           <Button disabled={props.view === view} key={view} onClick={() => setView(dispatch, view)}>
             {view}

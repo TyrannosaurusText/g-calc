@@ -1,4 +1,4 @@
-var effects = {
+const effects = {
   phys: "Phys. DMG (%)",
   ele: "Elemental DMG (%)",
   em: "Elemental Mastery",
@@ -24,17 +24,17 @@ var effects = {
   CDR: "Cool Down (%)",
   MVSPD: "Movement Speed (%)",
   LVL: "LVL",
-  Swirl: "Swirl",
-  Overload: "Overload",
-  Eletrocharge: "Eletrocharge",
-  Superconduct: "Superconduct",
-  Melt: "Melt",
-  Vaporize: "Vaporize",
-  Crystalize: "Crystalize",
+  Swirl: "Swirl DMG (%)",
+  Overload: "Overload DMG (%)",
+  Eletrocharge: "Eletrocharge DMG (%)",
+  Superconduct: "Superconduct DMG (%)",
+  Melt: "Melt DMG (%)",
+  Vaporize: "Vaporize DMG (%)",
+  Crystalize: "Crystalize DMG (%)",
   None: "None",
 };
-var longestArtifactName = effects.er;
-var generalSubs = [
+const longestArtifactName = effects.er;
+const generalSubs = [
   effects.cr,
   effects.cd,
   effects.er,
@@ -43,16 +43,16 @@ var generalSubs = [
   effects.PDEF,
   effects.PHP,
 ];
-var artifactMain = [effects.em, effects.PATK, effects.PHP, effects.PDEF];
-var flowerMain = [effects.ART_HP];
-var plumeMain = [effects.ART_ATK];
-var sandsMain = [effects.er].concat(artifactMain);
-var gobletMain = [effects.ele, effects.phys].concat(artifactMain);
-var circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
-var weaponSub = [effects.None, effects.phys].concat(generalSubs);
-var characterAscensionStat = [effects.None].concat(generalSubs);
-var characterStats = [effects.LVL, effects.HP, effects.ATK, effects.DEF];
-var weaponPassives = [
+const artifactMain = [effects.em, effects.PATK, effects.PHP, effects.PDEF];
+const flowerMain = [effects.ART_HP];
+const plumeMain = [effects.ART_ATK];
+const sandsMain = [effects.er].concat(artifactMain);
+const gobletMain = [effects.ele, effects.phys].concat(artifactMain);
+const circletMain = [effects.cr, effects.cd, effects.healb].concat(artifactMain);
+const weaponSub = [effects.None, effects.phys].concat(generalSubs);
+const characterAscensionStat = [effects.None].concat(generalSubs);
+const characterStats = [effects.LVL, effects.HP, effects.ATK, effects.DEF];
+const weaponPassives = [
   effects.None,
   effects.ele,
   effects.phys,
@@ -63,8 +63,16 @@ var weaponPassives = [
   effects.Total,
   effects.MVSPD,
 ].concat(generalSubs);
-var setEffects = weaponPassives;
-var artifactSub = [
+const setEffectSubs = [
+  effects.Swirl,
+  effects.Overload,
+  effects.Eletrocharge,
+  effects.Superconduct,
+  effects.Melt,
+  effects.Vaporize,
+]
+const setEffects = [].concat(weaponPassives).concat(setEffectSubs);
+const artifactSub = [
   effects.None,
   effects.ART_HP,
   effects.ART_ATK,

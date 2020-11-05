@@ -47,6 +47,7 @@ const CharacterField = () => {
             </div>
           );
         })}
+
       </div>
       <div>
         Ascension Stat

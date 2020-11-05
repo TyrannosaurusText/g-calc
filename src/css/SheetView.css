@@ -1,5 +1,21 @@
-.body__textarea{
+.body__textarea {
     width: 746px;
     margin: 0px;
     height: 221px;
+}
+
+.section__mainBody {
+    width: 100%;
+}
+
+.section__mainBody--row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between !important;
+}
+
+.section__mainBody--col {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
 }

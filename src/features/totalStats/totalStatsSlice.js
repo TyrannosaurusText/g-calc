@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Trunc } from "../../js/utils/Trunc.js";
 import { effects } from "../../js/utils/Effects.js";
-import { EMCalc } from "../../js/utils/ReactionLevelDMG.js";
 
 var getStats = (props) => {
     const increment = (source, value) =>
@@ -63,10 +62,6 @@ const calcTotals = (state) => {
     state.totalCritDMG = 50 + getVal(effects.cd);
     state.totalATKSPD = 100 + getVal(effects.ATKSPD);
     state.totalRecharge = 100 + getVal(effects.er);
-    var EMPercent = EMCalc(getVal(effects.em));
-    for (var eq in EMPercent) {
-        state[eq] = EMPercent[eq];
-    }
     return state;
 };
 

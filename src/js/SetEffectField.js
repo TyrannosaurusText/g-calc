@@ -19,7 +19,7 @@ const SetEffectField = () => {
   const updateType = updateSheetAndStatsType(dispatch);
   const updateValue = updateSheetAndStatsValue(dispatch);
 
-  const artifactSetEffectLength = props.artifactSetEffectType ? props.artifactSetEffectType.length : 0
+  const artifactSetEffectLength = props[artifactSetEffectType] ? props[artifactSetEffectType].length : 0
   const artifactSetEffectTypeValue = [artifactSetEffectType, artifactSetEffectValue]
   const artifactSetEffectInputComponent = ({ id, index }) => {
     const onPassiveValueChange = arrayUpdater(artifactSetEffectTypeValue, updateValue, props);
@@ -35,6 +35,7 @@ const SetEffectField = () => {
         )}
       </>
     );
+    console.log(id)
     return (
       <div key={id}>
         <SelectionValueField

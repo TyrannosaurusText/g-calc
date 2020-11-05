@@ -17,11 +17,13 @@ const DamageTypes = [
   "Ele. Skill",
   "Ele. Burst",
 ]
+const ReactionTypes = ["Swirl", "Overload", "Electrocharge", "Superconduct"]
 export {
   WeaponFieldName,
   ArtifactFieldName,
   CharacterFieldName,
   DamageFieldName,
   avaliableFields,
-  DamageTypes
+  DamageTypes,
+  ReactionTypes
 };
