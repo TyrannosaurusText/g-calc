@@ -1,4 +1,11 @@
-.text__Ratio-space-even {
-  display: flex;
-  justify-content: space-between;
+.attackTable__table {
+  border: 1px solid white;
+  border-collapse: collapse;
+}
+
+.attackTable__th,
+.attackTable__td {
+  border: 1px solid white;
+  padding-left: 5px;
+  padding-bottom: 5px;
 }

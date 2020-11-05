@@ -9,7 +9,7 @@ import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSheetAndStatsType, updateSheetAndStatsValue, arrayUpdater, sheetUpdater } from './utils/updaters.js'
-import { MultiField } from "./utils/MultiField.js";
+import { MultiField, multifieldAdd, multifieldRemove } from "./utils/MultiField.js";
 
 const weaponPassivesType = "weaponPassivesType";
 const weaponPassivesValue = "weaponPassivesValue";
@@ -53,22 +53,10 @@ const WeaponField = () => {
   };
   const changePassiveType = sheetUpdater(weaponPassiveTypeValue, updateValue, props);
   const changePassiveValue = sheetUpdater(weaponPassiveTypeValue, updateType, props);
-  const add = () => {
-    const typeUpdater = changePassiveType(weaponPassivesType)
-    const valueUpdater = changePassiveValue(weaponPassivesValue)
-    typeUpdater(props[weaponPassivesType].concat(undefined))
-    valueUpdater(props[weaponPassivesValue].concat(undefined))
-  };
-  const remove = (index) => {
-    const typeUpdater = changePassiveType(weaponPassivesType)
-    const valueUpdater = changePassiveValue(weaponPassivesValue)
-    var weaponPassiveValueArray = [...props[weaponPassivesValue]]
-    var weaponPassiveTypeArray = [...props[weaponPassivesType]]
-    weaponPassiveTypeArray.splice(index, 1)
-    weaponPassiveValueArray.splice(index, 1)
-    typeUpdater(weaponPassiveTypeArray)
-    valueUpdater(weaponPassiveValueArray)
-  };
+  const multifieldFields = [
+    [changePassiveType, weaponPassivesType],
+    [changePassiveValue, weaponPassivesValue]
+  ];
   const weaponSubstatInputComponent = hideIfFalsyOrNone(
     props[weaponSubstatType],
     <NumberFieldOnLine
@@ -100,8 +88,8 @@ const WeaponField = () => {
         title="Weapon Passive"
         buttonText="Add Passive"
         component={WeaponPassiveInput}
-        addEffect={add}
-        removeEffect={remove}
+        addEffect={multifieldAdd(props, multifieldFields)}
+        removeEffect={multifieldRemove(props, multifieldFields)}
       />
     </div>
   );

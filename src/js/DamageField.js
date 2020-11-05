@@ -1,7 +1,7 @@
 import React from "react";
 
 import { NumberField } from "./utils/NumberField.js";
-import { MultiField } from "./utils/MultiField.js";
+import { MultiField, multifieldAdd, multifieldRemove } from "./utils/MultiField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -31,28 +31,13 @@ const DamageField = () => {
   const SetTypeLength = props[DamageTypeStr] ? props[DamageTypeStr].length : 0;
   const changeDamageType = sheetUpdater(SetTypeValue, updateValue, props);
   const changeDamageValue = sheetUpdater(SetTypeValue, updateType, props);
-  const add = () => {
-    const talentNameUpdater = changeDamageValue(TalentName);
-    const typeUpdater = changeDamageType(DamageTypeStr);
-    const valueUpdater = changeDamageValue(TalentMultiplierStr);
-    talentNameUpdater(props[TalentName].concat(undefined));
-    typeUpdater(props[DamageTypeStr].concat("None"));
-    valueUpdater(props[TalentMultiplierStr].concat(undefined));
-  };
-  const remove = (index) => {
-    const talentNameUpdater = changeDamageValue(TalentName);
-    const typeUpdater = changeDamageType(DamageTypeStr);
-    const valueUpdater = changeDamageValue(TalentMultiplierStr);
-    var talentNameArray = [...props[TalentName]];
-    var SetTypeArray = [...props[DamageTypeStr]];
-    var SetValueArray = [...props[TalentMultiplierStr]];
-    talentNameArray.splice(index, 1);
-    SetTypeArray.splice(index, 1);
-    SetValueArray.splice(index, 1);
-    talentNameUpdater(talentNameArray);
-    typeUpdater(SetTypeArray);
-    valueUpdater(SetValueArray);
-  };
+
+  const multifieldFields = [
+    [changeDamageValue, TalentName],
+    [changeDamageType, DamageTypeStr, "None"],
+    [changeDamageValue, TalentMultiplierStr]
+  ];
+
   const TableComponent = (tableProps) => {
     return (
       <table className="damageField__table">
@@ -62,7 +47,7 @@ const DamageField = () => {
               "Skill Name",
               "Type",
               "Damage Multiplier",
-              "Melt/Vaporize",
+              "Reaction Multiplier",
               "Normal Hit",
               "Critical Hit",
             ].map((rowName, index) => (
@@ -124,12 +109,12 @@ const DamageField = () => {
       {missingArray.length > 0 ? (
         <div> Missing : {`${missingArray.join()}`} </div>
       ) : (
-        <></>
-      )}
+          <></>
+        )}
       <MultiField
         initialLength={SetTypeLength}
-        addEffect={add}
-        removeEffect={remove}
+        addEffect={multifieldAdd(props, multifieldFields)}
+        removeEffect={multifieldRemove(props, multifieldFields)}
       >
         <TableComponent />
       </MultiField>

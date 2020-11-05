@@ -1,0 +1,3 @@
+.element__selectField--default{
+    width:calc(min(10vw, 150px));
+}

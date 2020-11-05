@@ -62,6 +62,7 @@ const weaponPassives = [
   effects.Charge,
   effects.Total,
   effects.MVSPD,
+  effects.ATKSPD,
 ].concat(generalSubs);
 const setEffectSubs = [
   effects.Swirl,

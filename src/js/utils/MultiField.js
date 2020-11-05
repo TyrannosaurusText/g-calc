@@ -7,6 +7,30 @@ import "../../css/MultiField.css";
  * props: initialLength, title, buttonText, addEffect, removeEffect
  */
 
+
+const multifieldAdd = (props, array) => () => {
+  const add = (mutator, name, value = undefined) => {
+    const updater = mutator(name)
+    updater(props[name].concat(value))
+  }
+  array.forEach((args) => {
+    add(...args)
+  })
+};
+const multifieldRemove = (props, array) => (index) => {
+  const remove = (mutator, name, value, sheetUpdater = () => () => { }) => {
+    const updater = mutator(name);
+    var newState = [...props[name]];
+    newState.splice(index, 1);
+    sheetUpdater(name, index)(0);
+    updater(newState);
+  }
+  array.forEach((args) => {
+    console.log(args)
+    remove(...args)
+  })
+};
+
 class MultiField extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +59,7 @@ class MultiField extends React.Component {
     var ids = this.state.fieldIDArray;
     ids.splice(index, 1);
     this.setState({ fieldIDArray: ids });
+    console.log(index)
     this.props.removeEffect(index);
   };
 
@@ -42,7 +67,7 @@ class MultiField extends React.Component {
     <div key={id}>
       <div className={this.props.wrapperClass || "section__MultiField--spacing"}>
         <Component id={id} index={index} />
-        <Button onClick={(index) => this.RemoveEffect(index)}>Remove</Button>
+        <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
       </div>
     </div>
   );
@@ -98,4 +123,4 @@ class MultiField extends React.Component {
   };
 }
 
-export { MultiField };
+export { MultiField, multifieldAdd, multifieldRemove };

@@ -8,7 +8,7 @@ import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSheetAndStatsType, updateSheetAndStatsValue, arrayUpdater, sheetUpdater } from './utils/updaters.js'
-import { MultiField } from "./utils/MultiField.js";
+import { MultiField, multifieldAdd, multifieldRemove } from "./utils/MultiField.js";
 import "../css/SetEffectField.css";
 const artifactSetEffectType = "artifactTypes-5";
 const artifactSetEffectValue = "artifactValues-5";
@@ -21,9 +21,9 @@ const SetEffectField = () => {
 
   const artifactSetEffectLength = props[artifactSetEffectType] ? props[artifactSetEffectType].length : 0
   const artifactSetEffectTypeValue = [artifactSetEffectType, artifactSetEffectValue]
+  const onPassiveValueChange = arrayUpdater(artifactSetEffectTypeValue, updateValue, props);
+  const onPassiveTypeChange = arrayUpdater(artifactSetEffectTypeValue, updateType, props);
   const artifactSetEffectInputComponent = ({ id, index }) => {
-    const onPassiveValueChange = arrayUpdater(artifactSetEffectTypeValue, updateValue, props);
-    const onPassiveTypeChange = arrayUpdater(artifactSetEffectTypeValue, updateType, props);
     const PassiveInputComponent = (
       <>
         {hideIfFalsyOrNone(
@@ -35,7 +35,6 @@ const SetEffectField = () => {
         )}
       </>
     );
-    console.log(id)
     return (
       <div key={id}>
         <SelectionValueField
@@ -50,22 +49,10 @@ const SetEffectField = () => {
   };
   const changePassiveType = sheetUpdater(artifactSetEffectTypeValue, updateValue, props);
   const changePassiveValue = sheetUpdater(artifactSetEffectTypeValue, updateType, props);
-  const add = () => {
-    const typeUpdater = changePassiveType(artifactSetEffectType)
-    const valueUpdater = changePassiveValue(artifactSetEffectValue)
-    typeUpdater(props[artifactSetEffectType].concat(undefined))
-    valueUpdater(props[artifactSetEffectValue].concat(undefined))
-  };
-  const remove = (index) => {
-    const typeUpdater = changePassiveType(artifactSetEffectType)
-    const valueUpdater = changePassiveValue(artifactSetEffectValue)
-    var weaponPassiveValueArray = [...props[artifactSetEffectValue]]
-    var weaponPassiveTypeArray = [...props[artifactSetEffectType]]
-    weaponPassiveTypeArray.splice(index, 1)
-    weaponPassiveValueArray.splice(index, 1)
-    typeUpdater(weaponPassiveTypeArray)
-    valueUpdater(weaponPassiveValueArray)
-  };
+  const multifieldFields = [
+    [changePassiveType, artifactSetEffectType],
+    [changePassiveValue, artifactSetEffectValue, 0, onPassiveValueChange]
+  ];
   return (
     <div >
       <MultiField
@@ -74,8 +61,8 @@ const SetEffectField = () => {
         buttonText="Add Passive"
         wrapperClass="setEffect--multifield"
         component={artifactSetEffectInputComponent}
-        addEffect={add}
-        removeEffect={remove}
+        addEffect={multifieldAdd(props, multifieldFields)}
+        removeEffect={multifieldRemove(props, multifieldFields)}
       />
     </div>
   );

@@ -3,36 +3,11 @@ import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
 import { useSelector } from "react-redux";
 import { selectStats } from "../features/totalStats/totalStatsSlice.js";
-
-var TotalStats = () => {
-  const state = { ...(useSelector(selectStats)) }
-  var displayStats = JSON.parse(JSON.stringify(state));
-  if (null == displayStats)
-    return <div></div>;
-  // [
-  //   "null",
-  //   "None",
-  //   effects.cr,
-  //   effects.cd,
-  //   effects.er,
-  //   effects.ATKSPD,
-  //   effects.er,
-  //   effects.em,
-  //   effects.HP,
-  //   effects.PHP,
-  //   effects.ART_HP,
-  //   effects.ATK,
-  //   effects.PATK,
-  //   effects.ART_ATK,
-  //   effects.DEF,
-  //   effects.PDEF,
-  //   effects.ART_DEF,
-  //   effects.LVL,
-  //   "EQA",
-  //   "EQB",
-  //   "EQC",
-  // ].map((key) => delete displayStats[key]);
-  var {
+import { Trunc } from "./utils/Trunc.js";
+import "../css/TotalStats.css";
+const TotalStats = () => {
+  const props = useSelector(selectStats);
+  const {
     totalHP,
     totalATK,
     totalDEF,
@@ -41,32 +16,92 @@ var TotalStats = () => {
     totalATKSPD,
     totalRecharge,
     totalEM,
-    // ...remainder
-  } = displayStats;
+  } = props;
 
+
+  const getVal = (stat) => {
+    const val = props[stat] || 0;
+    return val;
+  };
+  const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)) * 100);
+  if (totalAtkPercent <= 0) return <></>;
+  const normalAtkPercent = 1 - totalCrit / 100;
+  const critDmgPercent =
+    Trunc(normalAtkPercent + (totalCrit / 100) * (1 + totalCritDMG / 100)) *
+    100;
+
+  const sumEffects = (...effects) => {
+    var sum = 0;
+    for (const i in effects) {
+      sum += getVal(effects[i]);
+    }
+    return sum;
+  };
+  const normalAttackPercent =
+    100 + sumEffects(effects.Normal, effects.Total, effects.phys);
+  const chargeAttackPercent =
+    100 + sumEffects(effects.Charge, effects.Total, effects.phys);
+  const eleNormal =
+    100 + sumEffects(effects.Normal, effects.Total, effects.ele);
+  const eleCharge =
+    100 + sumEffects(effects.Charge, effects.Total, effects.ele);
+  const Skill = 100 + sumEffects(effects.Skill, effects.Total, effects.phys);
+  const Burst = 100 + sumEffects(effects.Burst, effects.Total, effects.phys);
+
+  const atkType = {
+    "P. Normal": normalAttackPercent,
+    "P. Charge": chargeAttackPercent,
+    "E. Normal": eleNormal,
+    "E. Charge": eleCharge,
+    "E. Skill": Skill,
+    "E. Burst": Burst,
+  };
+  const tableData = {
+    "Total HP": totalHP,
+    "Total ATK": totalATK,
+    "Total DEF": totalDEF,
+    "Elemental Mastery": totalEM,
+    "Critical Rate": `${totalCrit}%`,
+    "Critical Damage": `${totalCritDMG}%`,
+    "Attack Speed": `${totalATKSPD}%`,
+    "Energy Recharge": `${totalRecharge}%`,
+    "":null,
+    "Multipliers":null,
+    "ATK Multiplier": `${totalAtkPercent}%`,
+    "CRIT Multiplier": `${critDmgPercent}%`,
+  }
   return (
-    <div>
-      <div>
-        <div> Total HP: {totalHP}</div>
-        <div> Total ATK: {totalATK}</div>
-        <div> Total DEF: {totalDEF}</div>
-        <div>
-          {effects.em}: {totalEM}
-        </div>
-        <div> Critical Rate: {totalCrit}%</div>
-        <div> Critical Damage: {totalCritDMG}%</div>
-        <div> Attack Speed: {totalATKSPD}%</div>
-        <div>
-          {effects.er}: {totalRecharge}%
-        </div>
-        {/* {Object.keys(remainder).map((key, index) => (
-          <div key={index}>
-            {key}: {remainder[key]}%
-          </div>
-        ))} */}
-      </div>
-    </div>
+    <>
+      <table className="attackTable__table">
+        <tbody>
+          {Object.keys(tableData).map((rowName, index) => {
+            return (
+              <tr key={index}>
+                <td className="attackTable__td">
+                  {rowName}
+                </td>
+                <td className="attackTable__td">
+                  {tableData[rowName]}
+                </td>
+              </tr>
+            )
+          })}
+
+          <tr>
+            <th className="attackTable__th">Attack Type</th>
+            <th className="attackTable__th"></th>
+          </tr>
+          {Object.keys(atkType).map((atkName) => (
+            <tr key={atkName}>
+              <td className="attackTable__td">{atkName}</td>
+              <td className="attackTable__td">{atkType[atkName]}%</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 };
 
 export default TotalStats;
+

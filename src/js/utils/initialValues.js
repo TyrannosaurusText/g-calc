@@ -9,6 +9,12 @@ const initialDamageField = {
   resReduction: 0,
   defReduction: 0,
 };
+const initialBuffsField = {
+  BuffName: [],
+  BuffType: [],
+  BuffValue: [],
+  BuffToggle: [],
+}
 const initialCharacterField = {
   ascensionStatType: "None",
   ascensionStatValue: 0,
@@ -40,9 +46,10 @@ const initialWeaponField = {
   weaponPassivesValue: [],
 };
 
-export {
+export default {
   initialWeaponField,
   initialDamageField,
   initialCharacterField,
   initialArtifactField,
+  initialBuffsField,
 };

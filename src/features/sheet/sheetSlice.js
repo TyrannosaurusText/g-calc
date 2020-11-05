@@ -1,16 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-    initialDamageField,
-    initialCharacterField,
-    initialArtifactField,
-    initialWeaponField,
-} from "../../../src/js/utils/initialValues.js";
+import initialFields from "../../../src/js/utils/initialValues.js";
 import { loadPage } from '../../../src/js/utils/LoadPage.js';
 const initialState = {
-    ...initialDamageField,
-    ...initialCharacterField,
-    ...initialArtifactField,
-    ...initialWeaponField,
+    ...initialFields,
     currentSheet: 'null',
     view: '',
 }

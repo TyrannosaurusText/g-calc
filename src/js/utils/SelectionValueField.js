@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
 import { longestArtifactName } from "./Effects.js";
-
+import "./SelectionValueField.css"
 var SelectionValueField = (props) => {
   var { onChange, array, component, defaultValue } = props;
   return (
     <span>
       <select
+        className={props.className || "element__selectField--default"}
         tabIndex={-1}
         defaultValue={defaultValue}
         onChange={(e) => onChange(e.target.value, true)}
