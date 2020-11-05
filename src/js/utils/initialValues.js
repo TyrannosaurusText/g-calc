@@ -2,7 +2,12 @@ import { effects } from "./Effects.js";
 const initialDamageField = {
   TalentName: [],
   DamageType: [],
+  ReactionMultipliers: [],
   DamageValue: [],
+  monsterLevelStr: 0,
+  monsterResStr: 0,
+  resReduction: 0,
+  defReduction: 0,
 };
 const initialCharacterField = {
   ascensionStatType: "None",

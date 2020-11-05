@@ -25,20 +25,19 @@ var getStats = (props) => {
             const aVals = `artifactValues-${artifactIndex}`;
             const artifactType = props[aTypes];
             const artifactValue = props[aVals];
-            for (var index = 0; index < artifactType.length; index++) {
+            for (var index = 0; artifactType && index < artifactType.length; index++) {
                 sumStats[artifactType[index]] = increment(
                     sumStats[artifactType[index]],
                     artifactValue[index]
                 );
             }
         });
-    console.log(props);
     sumStats[props.weaponSubstatType] = increment(
         sumStats[props.weaponSubstatType],
         props.weaponSubstatValue
     );
     const { weaponPassivesType, weaponPassivesValue } = props;
-    for (var index = 0; index < weaponPassivesType.length; index++) {
+    for (var index = 0; weaponPassivesType && index < weaponPassivesType.length; index++) {
         sumStats[weaponPassivesType[index]] = increment(
             sumStats[weaponPassivesType[index]],
             weaponPassivesValue[index]
@@ -76,7 +75,6 @@ export const totalStatsSlice = createSlice({
     initialState: {},
     reducers: {
         calcDelta: (state, action) => {
-            console.log(action.payload)
             const { oldType, oldValue, newType, newValue } = action.payload
             if (oldType)
                 state[oldType] = (state[oldType] || 0) - (oldValue || 0);

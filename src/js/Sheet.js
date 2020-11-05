@@ -15,21 +15,10 @@ const characterSheet5 = "CharacterSheet5";
 
 const Sheet = () => {
   const dispatch = useDispatch();
-  // console.log(page);
-  // dispatch(loadSheet(page));
   const sheet = useSelector(selectSheet);
-  // const importFn = (data) => {
-  //     try {
-  //         const importedData = JSON.parse(data);
-  //         importedData.currentSheet = state.currentSheet;
-  //         useDispatch(updateSheet(importedData))
-  //     } catch (e) {
-  //         console.log(e);
-  //         return;
-  //     }
-  // // };
+
   const savePage = () => {
-    localStorage.setItem(sheet.currentSheet, JSON.stringify(sheet));
+    if (sheet.currentSheet !== 'null') { localStorage.setItem(sheet.currentSheet, JSON.stringify(sheet)); }
   };
   window.addEventListener("unload", savePage);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +55,7 @@ const Sheet = () => {
       {sheet.currentSheet ? (
         <div className="section__mainBody section__App--row">
           <CharacterView />
-          <TotalStats/>
+          <TotalStats />
         </div>
       ) : (
           <> </>

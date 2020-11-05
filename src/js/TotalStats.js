@@ -7,7 +7,6 @@ import { selectStats } from "../features/totalStats/totalStatsSlice.js";
 
 var TotalStats = () => {
   const state = { ...(useSelector(selectStats)) }
-  console.log(state);
   var displayStats = JSON.parse(JSON.stringify(state));
   if (null == displayStats)
     return <div></div>;
@@ -67,8 +66,6 @@ var TotalStats = () => {
             {key}: {remainder[key]}%
           </div>
         ))}
-        {attackPowerCalcComponent}
-        {/* <SelectionValueField></SelectionValueField> */}
       </div>
     </div>
   );

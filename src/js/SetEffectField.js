@@ -20,7 +20,7 @@ const SetEffectField = () => {
   const updateValue = updateSheetAndStatsValue(dispatch);
 
   const artifactSetEffectLength = props.artifactSetEffectType ? props.artifactSetEffectType.length : 0
-  const artifactSetEffectTypeValue = [props[artifactSetEffectType], props[artifactSetEffectValue]]
+  const artifactSetEffectTypeValue = [artifactSetEffectType, artifactSetEffectValue]
   const artifactSetEffectInputComponent = ({ id, index }) => {
     const onPassiveValueChange = arrayUpdater(artifactSetEffectTypeValue, updateValue, props);
     const onPassiveTypeChange = arrayUpdater(artifactSetEffectTypeValue, updateType, props);

@@ -6,16 +6,7 @@ import "../../css/MultiField.css";
 /**
  * props: initialLength, title, buttonText, addEffect, removeEffect
  */
-const addEffect = (props, name, mutator, value = undefined) => {
-  var updatedProp = props[name];
-  updatedProp.push(value);
-  mutator(name)(updatedProp);
-};
-const removeEffect = (props, name, mutator, index) => {
-  var updatedProp = props[name];
-  updatedProp.splice(index, 1);
-  mutator(name)(updatedProp);
-};
+
 class MultiField extends React.Component {
   constructor(props) {
     super(props);
@@ -51,43 +42,60 @@ class MultiField extends React.Component {
     <div key={id}>
       <div className={this.props.wrapperClass || "section__MultiField--spacing"}>
         <Component id={id} index={index} />
-        <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
+        <Button onClick={(index) => this.RemoveEffect(index)}>Remove</Button>
       </div>
     </div>
   );
-
   render = () => {
     return (
       <div>
-        <div>
-          {this.props.title || ""}
-          <Button onClick={() => this.AddEffect()}>
-            {this.props.buttonText || "Add"}
-          </Button>
-        </div>
-        <div>
-          <div
-            key={this.state.fieldIDArray.length}
-            className={
-              this.state.fieldIDArray.length > 3
-                ? "section__MultiField--scrollView"
-                : "section__MultiField"
-            }
-          >
-            {this.state.fieldIDArray
-              ? this.state.fieldIDArray.map((id, index) => {
-                return this.ComponentRenderer(
-                  id,
-                  index,
-                  this.props.component
-                );
-              })
-              : null}
+
+        {this.props.children ?
+          React.cloneElement(this.props.children, {
+            key: this.state.fieldIDArray.length,
+            className: this.state.fieldIDArray.length > 3
+              ? "section__MultiField--scrollView"
+              : "section__MultiField",
+            array: this.state.fieldIDArray,
+            remove: (index) => (
+              < Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
+            ),
+            add: () => (
+              <Button onClick={() => this.AddEffect()}>
+                {this.props.buttonText || "Add"}
+              </Button>
+            )
+          }) :
+          <div>
+            <div>
+              {this.props.title || ""}
+              <Button onClick={() => this.AddEffect()}>
+                {this.props.buttonText || "Add"}
+              </Button>
+            </div>
+            <div
+              key={this.state.fieldIDArray.length}
+              className={
+                this.state.fieldIDArray.length > 3
+                  ? "section__MultiField--scrollView"
+                  : "section__MultiField"
+              }
+            >
+              {this.state.fieldIDArray
+                ? this.state.fieldIDArray.map((id, index) => {
+                  return this.ComponentRenderer(
+                    id,
+                    index,
+                    this.props.component
+                  );
+                })
+                : null}
+            </div>
           </div>
-        </div>
-      </div>
+        }
+      </div >
     );
   };
 }
 
-export { MultiField, addEffect, removeEffect };
+export { MultiField };

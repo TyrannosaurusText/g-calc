@@ -35,7 +35,6 @@ const Export = () => {
   const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();
   const [textInput, setText] = useState('');
-  console.log(props.currentSheet)
   return (
     <>
       <textarea
