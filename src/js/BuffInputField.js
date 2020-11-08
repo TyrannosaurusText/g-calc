@@ -28,35 +28,35 @@ const BuffInputField = ({ id, index, remove }) => {
     const onToggleChange = arrayUpdater(BuffTypeValue, updateToggle, props);
     return (
         <tr key={id}>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 <input
                     type={"text"}
                     defaultValue={props[BuffName][index]}
                     onBlur={(e) => onNameChange(BuffName, index)(e.target.value)}
                 ></input>
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 <SelectionValueField
                     array={buffsList}
                     onChange={onTypeChange(BuffType, index)}
                     defaultValue={props[BuffType][index]}
                 />
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 <NumberField
                     onChange={onValueChange(BuffValue, index)}
                     defaultValue={props[BuffValue][index]}
                 />
             </td>
 
-            <td className="damageField__td" >
+            <td className="table__td" >
                 <Checkbox
                     onChange={onToggleChange(BuffToggle, index)}
                     defaultValue={props[BuffToggle][index]}
                 />
             </td>
 
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {remove(index)}
             </td>
         </tr>

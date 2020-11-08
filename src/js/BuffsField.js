@@ -77,7 +77,7 @@ const BuffsField = () => {
 
 const TableComponent = (tableProps) => {
   return (
-    <table className="damageField__table">
+    <table className="table__table">
       <thead>
         <tr>
           {[
@@ -86,7 +86,7 @@ const TableComponent = (tableProps) => {
             "Buff Amount",
             "Active?",
           ].map((rowName, index) => (
-            <th className="damageField__th" key={index}>
+            <th className="table__th" key={index}>
               {rowName}
             </th>
           ))}

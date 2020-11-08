@@ -1,8 +1,6 @@
-.input_NumberField--spacing{
-    display: flex;
-    justify-content: space-between;
+.characterField__inputUpper{
+    /* max-width: 100px; */
 }
-
 .section_StatsMap--shrink{
-    max-width: 12vw;
+    /* max-width: 12vw; */
 }

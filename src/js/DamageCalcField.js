@@ -7,7 +7,7 @@ import {
     Shattered,
 } from "./utils/ReactionLevelDMG.js";
 import { NumberField } from "./utils/NumberField.js";
-import { Trunc, Clamp } from "./utils/Trunc.js";
+import { Trunc } from "./utils/Trunc.js";
 import { effects } from "./utils/Effects.js";
 import { DamageTypes, ReactionTypes } from "./Names.js";
 import { updateSheetArray, arrayUpdater } from './utils/updaters.js'
@@ -95,7 +95,7 @@ const DamageCalcField = ({ id, index, remove }) => {
         Normal = calcReaction(props, index);
     return (
         <tr key={id}>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {DamageTypes.includes(props[DamageTypeStr][index]) ?
                     <input
                         type={"text"}
@@ -104,21 +104,21 @@ const DamageCalcField = ({ id, index, remove }) => {
                     ></input>
                     : <></>}
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 <SelectionValueField
                     array={DamageTypes.concat(ReactionTypes)}
                     onChange={onPassiveTypeChange(DamageTypeStr, index)}
                     defaultValue={props[DamageTypeStr][index]}
                 />
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {DamageTypes.includes(props[DamageTypeStr][index]) ?
                     <NumberField
                         onChange={onPassiveValueChange(TalentMultiplierStr, index)}
                         defaultValue={props[TalentMultiplierStr][index]}
                     /> : <></>}
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {DamageTypes.includes(props[DamageTypeStr][index]) ?
 
                     <SelectionValueField
@@ -128,13 +128,13 @@ const DamageCalcField = ({ id, index, remove }) => {
                     /> : <></>}
 
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {Normal ? Normal.toLocaleString() : ''}
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {Critical ? Critical.toLocaleString() : ''}
             </td>
-            <td className="damageField__td" >
+            <td className="table__td" >
                 {remove(index)}
             </td>
         </tr>

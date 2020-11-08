@@ -1,10 +1,10 @@
-.attackTable__table {
+.table__table {
   border: 1px solid white;
   border-collapse: collapse;
 }
 
-.attackTable__th,
-.attackTable__td {
+.table__th,
+.table__td {
   border: 1px solid white;
   padding-left: 5px;
   padding-bottom: 5px;

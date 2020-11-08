@@ -40,7 +40,7 @@ const DamageField = () => {
 
   const TableComponent = (tableProps) => {
     return (
-      <table className="damageField__table">
+      <table className="table__table">
         <thead>
           <tr>
             {[
@@ -51,7 +51,7 @@ const DamageField = () => {
               "Normal Hit",
               "Critical Hit",
             ].map((rowName, index) => (
-              <th className="damageField__th" key={index}>
+              <th className="table__th" key={index}>
                 {rowName}
               </th>
             ))}
@@ -85,7 +85,7 @@ const DamageField = () => {
     resReduction,
     defReduction].map((key, index) => {
       return (
-        <td key={index} className="damageField__td">
+        <td key={index} className="table__td">
           <NumberField
             onChange={updateSheet(key)}
             defaultValue={props[key]}
@@ -97,7 +97,7 @@ const DamageField = () => {
 
   return (
     <div>
-      <table className="damageField__table">
+      <table className="table__table">
         <thead>
           <tr>
             {
@@ -110,7 +110,7 @@ const DamageField = () => {
                 'Monster Defense'
               ].map((key, index) => {
                 return (
-                  <th key={index} className="damageField__th">
+                  <th key={index} className="table__th">
                     {key}
                   </th>
                 )
@@ -121,10 +121,10 @@ const DamageField = () => {
         <tbody>
           <tr>
             {mobDefInputFields}
-            <td className="damageField__td">
+            <td className="table__td">
               {totRes}%
             </td>
-            <td className="damageField__td">
+            <td className="table__td">
               {Trunc((1 - totDef) * 100)}%
             </td>
           </tr>

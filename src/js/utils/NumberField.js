@@ -3,7 +3,7 @@ import "./NumberField.css";
 var NumberField = (props) => {
   return (
     <input
-      className="input__NumberField"
+      className={props.className || "item__fillWidth"}
       type="number"
       key={props.defaultValue}
       defaultValue={props.defaultValue || 0}

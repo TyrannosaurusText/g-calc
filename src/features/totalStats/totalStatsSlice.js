@@ -43,7 +43,7 @@ var getStats = (props) => {
         );
     }
     const { BuffType, BuffValue, BuffToggle } = props;
-    for (var index = 0; BuffType && index < BuffType.length; index++) {
+    for (index = 0; BuffType && index < BuffType.length; index++) {
         if (BuffToggle[index]) {
             sumStats[BuffType[index]] = increment(
                 sumStats[BuffType[index]],

@@ -4,7 +4,7 @@ import {
   SelectionValueField,
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
-import { NumberField, NumberFieldOnLine } from "./utils/NumberField.js";
+import { NumberField } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
@@ -24,48 +24,70 @@ const CharacterField = () => {
     hideIfFalsyOrNone(
       ascStatType,
       <>
-        <div className="section__textAlignStart">{ascStatType || ""} Value</div>
-        <NumberField
-          defaultValue={ascStatValue}
-          onChange={updateAscValue(ascensionStatValue)}
-        />
+        {/* <tr>
+          <td className="table__td">
+            <div>VAL</div>
+          </td>
+        </tr> */}
+        <tr>
+          <td className={"table__td characterField__inputUpper"}>
+            <div
+
+            ></div>
+            <NumberField
+              className={"item__fillWidth"}
+              defaultValue={ascStatValue}
+              onChange={updateAscValue(ascensionStatValue)}
+            />
+          </td>
+        </tr>
+
       </>
     );
   return (
-    <div className="block__characterTop--margin">
+    <div>
       <div> Base Stats </div>
-      <div className="section_StatsMap--shrink">
-        {characterStats.map((name) => {
-          return (
-            <div key={name} className="input_NumberField--spacing">
-              <NumberFieldOnLine
-                name={name}
-                defaultValue={props[name]}
-                onChange={updateValue(name, props[name], name)}
-              // onChange={props.onChange(name)}
+      <table className="table__table item__fillWidth" >
+        <tbody>
+          {characterStats.map((name, index) => {
+            return (
+              <tr key={index}>
+                <td className="table__td">{name}</td>
+                <td className={"table__td"}>
+                  <NumberField
+                    name={name}
+                    className={"item__fillWidth"}
+                    defaultValue={props[name]}
+                    onChange={updateValue(name, props[name], name)}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <table className="table__table item__fillWidth">
+        <tbody>
+          <tr>
+            <td className="table__td">
+              Ascension Stat
+              </td>
+          </tr>
+          <tr>
+            <td className="table__td">
+              <SelectionValueField
+                array={characterAscensionStat}
+                onChange={updateAscType(ascensionStatType)}
+                defaultValue={props[ascensionStatType]}
               />
-            </div>
-          );
-        })}
-
-      </div>
-      <div>
-        Ascension Stat
-        <div />
-        <div className="section__center">
-          <div>
-            <SelectionValueField
-              array={characterAscensionStat}
-              onChange={updateAscType(ascensionStatType)}
-              component={ascensionStatInputComponent(
-                props[ascensionStatType],
-                props[ascensionStatValue]
-              )}
-              defaultValue={props[ascensionStatType]}
-            />
-          </div>
-        </div>
-      </div>
+            </td>
+          </tr>
+          {ascensionStatInputComponent(
+            props[ascensionStatType],
+            props[ascensionStatValue]
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

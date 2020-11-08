@@ -72,15 +72,15 @@ const TotalStats = () => {
   }
   return (
     <>
-      <table className="attackTable__table">
+      <table className="table__table">
         <tbody>
           {Object.keys(tableData).map((rowName, index) => {
             return (
               <tr key={index}>
-                <td className="attackTable__td">
+                <td className="table__td">
                   {rowName}
                 </td>
-                <td className="attackTable__td">
+                <td className="table__td">
                   {tableData[rowName]}
                 </td>
               </tr>
@@ -88,13 +88,13 @@ const TotalStats = () => {
           })}
 
           <tr>
-            <th className="attackTable__th">Attack Type</th>
-            <th className="attackTable__th"></th>
+            <th className="table__th">Attack Type</th>
+            <th className="table__th"></th>
           </tr>
           {Object.keys(atkType).map((atkName) => (
             <tr key={atkName}>
-              <td className="attackTable__td">{atkName}</td>
-              <td className="attackTable__td">{atkType[atkName]}%</td>
+              <td className="table__td">{atkName}</td>
+              <td className="table__td">{atkType[atkName]}%</td>
             </tr>
           ))}
         </tbody>

@@ -46,10 +46,11 @@ const initialWeaponField = {
   weaponPassivesValue: [],
 };
 
-export default {
+const initialField = {
   ...initialWeaponField,
   ...initialDamageField,
   ...initialCharacterField,
   ...initialArtifactField,
   ...initialBuffsField,
 };
+export default initialField;
