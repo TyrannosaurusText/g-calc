@@ -10,7 +10,6 @@ import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
 
-
 const StatsView = "Stats";
 const BuffView = "Buff";
 const DamageView = "Damage Calc";
@@ -22,16 +21,17 @@ const StatsViewRender = () => (
     <div className="section__mainBody--row">
       <CharacterField />
       <WeaponField />
+      <ArtifactsView />
     </div>
-    <ArtifactsView />
+    <BuffsField />
   </>
 );
-const BuffViewRender = () => <BuffsField/>;
-const DamageFieldNameRender = () => (<DamageCalc />);
+// const BuffViewRender = () => ;
+const DamageFieldNameRender = () => <DamageCalc />;
 const Export = () => {
-  const props = { ...(useSelector(selectSheet)) }
+  const props = { ...useSelector(selectSheet) };
   const dispatch = useDispatch();
-  const [textInput, setText] = useState('');
+  const [textInput, setText] = useState("");
   return (
     <>
       <textarea
@@ -46,44 +46,42 @@ const Export = () => {
         <Button
           onClick={() => {
             try {
-              const input = JSON.parse(textInput)
-              input.currentSheet = props.currentSheet
-              input.view = StatsView
-              dispatch(updateSheet(input))
-              dispatch(calcStats(input))
-            }
-            catch (e) {
-              console.log(e)
+              const input = JSON.parse(textInput);
+              input.currentSheet = props.currentSheet;
+              input.view = StatsView;
+              dispatch(updateSheet(input));
+              dispatch(calcStats(input));
+            } catch (e) {
+              console.log(e);
             }
           }}
         >
           Import
-      </Button>
+        </Button>
       </div>
       <div>
         <Button
           onClick={() => {
             props.currentSheet = undefined;
             props.view = undefined;
-            setText(JSON.stringify(props))
+            setText(JSON.stringify(props));
           }}
         >
           Export
-      </Button>
+        </Button>
       </div>
     </>
   );
 };
 const SheetView = () => {
-  const props = { ...(useSelector(selectSheet)) }
+  const props = { ...useSelector(selectSheet) };
   const dispatch = useDispatch();
   const setView = (dispatch, view) => {
-    dispatch(updateSheet({ view: view }))
-  }
+    dispatch(updateSheet({ view: view }));
+  };
   const currentView = props.view || StatsView;
   var obj = {
     [StatsView]: StatsViewRender(),
-    [BuffView]: BuffViewRender(),
     [DamageView]: DamageFieldNameRender(),
     [ExportView]: Export(),
   };
@@ -91,7 +89,11 @@ const SheetView = () => {
     <div key={props.currentSheet} className="section__mainBody">
       <div>
         {Object.keys(obj).map((view) => (
-          <Button disabled={props.view === view} key={view} onClick={() => setView(dispatch, view)}>
+          <Button
+            disabled={props.view === view}
+            key={view}
+            onClick={() => setView(dispatch, view)}
+          >
             {view}
           </Button>
         ))}
@@ -101,8 +103,8 @@ const SheetView = () => {
           currentView.localeCompare(view) === 0 ? (
             <div key={view}>{obj[view]}</div>
           ) : (
-              <div key={view}></div>
-            )
+            <div key={view}></div>
+          )
         )}
       </div>
     </div>

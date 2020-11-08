@@ -8,16 +8,20 @@ import { NumberField } from "./utils/NumberField.js";
 import "../css/CharacterField.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
-import { updateSheetAndStatsType, updateSheetAndStatsValue, sheetUpdater } from './utils/updaters.js'
+import {
+  updateSheetAndStatsType,
+  updateSheetAndStatsValue,
+  sheetUpdater,
+} from "./utils/updaters.js";
 
 const CharacterField = () => {
-  const props = { ...(useSelector(selectSheet)) }
+  const props = { ...useSelector(selectSheet) };
   const dispatch = useDispatch();
   const ascensionStatType = "ascensionStatType";
   const ascensionStatValue = "ascensionStatValue";
   const updateType = updateSheetAndStatsType(dispatch);
   const updateValue = updateSheetAndStatsValue(dispatch);
-  const ascStat = [ascensionStatType, ascensionStatValue]
+  const ascStat = [ascensionStatType, ascensionStatValue];
   const updateAscType = sheetUpdater(ascStat, updateType, props);
   const updateAscValue = sheetUpdater(ascStat, updateValue, props);
   const ascensionStatInputComponent = (ascStatType, ascStatValue) =>
@@ -30,10 +34,8 @@ const CharacterField = () => {
           </td>
         </tr> */}
         <tr>
-          <td className={"table__td characterField__inputUpper"}>
-            <div
-
-            ></div>
+          <td className={" characterField__inputUpper"}>
+            <div></div>
             <NumberField
               className={"item__fillWidth"}
               defaultValue={ascStatValue}
@@ -41,13 +43,12 @@ const CharacterField = () => {
             />
           </td>
         </tr>
-
       </>
     );
   return (
     <div>
       <div> Base Stats </div>
-      <table className="table__table item__fillWidth" >
+      <table className="table__table item__fillWidth">
         <tbody>
           {characterStats.map((name, index) => {
             return (
@@ -67,14 +68,12 @@ const CharacterField = () => {
         </tbody>
       </table>
       <table className="table__table item__fillWidth">
-        <tbody>
+        <tbody className="table__td">
           <tr>
-            <td className="table__td">
-              Ascension Stat
-              </td>
+            <td>Ascension Stat</td>
           </tr>
-          <tr>
-            <td className="table__td">
+          <tr >
+            <td>
               <SelectionValueField
                 array={characterAscensionStat}
                 onChange={updateAscType(ascensionStatType)}

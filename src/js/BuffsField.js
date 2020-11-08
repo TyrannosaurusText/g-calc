@@ -1,4 +1,3 @@
-
 import React from "react";
 import { artifactSub } from "./utils/Effects.js";
 import {
@@ -8,8 +7,17 @@ import {
 import { NumberFieldOnLine } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSheetAndStatsType, updateSheetAndStatsValue, arrayUpdater, sheetUpdater } from './utils/updaters.js'
-import { MultiField, multifieldAdd, multifieldRemove } from "./utils/MultiField.js";
+import {
+  updateSheetAndStatsType,
+  updateSheetAndStatsValue,
+  arrayUpdater,
+  sheetUpdater,
+} from "./utils/updaters.js";
+import {
+  MultiField,
+  multifieldAdd,
+  multifieldRemove,
+} from "./utils/MultiField.js";
 import "../css/SetEffectField.css";
 import BuffInputField from "./BuffInputField.js";
 
@@ -17,14 +25,14 @@ const BuffName = "BuffName";
 const BuffType = "BuffType";
 const BuffValue = "BuffValue";
 const BuffToggle = "BuffToggle";
-const BuffTypeValue = [BuffType, BuffValue]
+const BuffTypeValue = [BuffType, BuffValue];
 const BuffsField = () => {
-  const props = { ...(useSelector(selectSheet)) }
+  const props = { ...useSelector(selectSheet) };
   const dispatch = useDispatch();
   const updateType = updateSheetAndStatsType(dispatch);
   const updateValue = updateSheetAndStatsValue(dispatch);
 
-  const buffEffectLength = props[BuffType] ? props[BuffType].length : 0
+  const buffEffectLength = props[BuffType] ? props[BuffType].length : 0;
   const onPassiveTypeChange = arrayUpdater(BuffTypeValue, updateType, props);
   const onPassiveValueChange = arrayUpdater(BuffTypeValue, updateValue, props);
 
@@ -58,38 +66,38 @@ const BuffsField = () => {
     [changePassiveValue, BuffName],
     [changePassiveType, BuffType],
     [changePassiveValue, BuffValue, 0, onPassiveValueChange],
-    [changePassiveValue, BuffToggle]
+    [changePassiveValue, BuffToggle],
   ];
   return (
-    <div >
-      <MultiField
-        initialLength={buffEffectLength}
-        buttonText="Add Buff"
-        component={buffEffectInputComponent}
-        addEffect={multifieldAdd(props, multifieldFields)}
-        removeEffect={multifieldRemove(props, multifieldFields)}
-      >
-        <TableComponent />
-      </MultiField>
+    <div>
+      Buffs
+      <div>
+        <MultiField
+          initialLength={buffEffectLength}
+          buttonText="Add Buff"
+          component={buffEffectInputComponent}
+          addEffect={multifieldAdd(props, multifieldFields)}
+          removeEffect={multifieldRemove(props, multifieldFields)}
+        >
+          <TableComponent />
+        </MultiField>
+      </div>
     </div>
   );
-}
+};
 
 const TableComponent = (tableProps) => {
   return (
     <table className="table__table">
       <thead>
         <tr>
-          {[
-            "Buff Name",
-            "Buff",
-            "Buff Amount",
-            "Active?",
-          ].map((rowName, index) => (
-            <th className="table__th" key={index}>
-              {rowName}
-            </th>
-          ))}
+          {["Buff Name", "Buff", "Buff Amount", "Active?"].map(
+            (rowName, index) => (
+              <th className="table__th" key={index}>
+                {rowName}
+              </th>
+            )
+          )}
           <th> {tableProps.add()} </th>
         </tr>
       </thead>
@@ -102,4 +110,4 @@ const TableComponent = (tableProps) => {
   );
 };
 
-export default BuffsField 
+export default BuffsField;

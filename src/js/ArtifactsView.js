@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ArtifactField from "./ArtifactField.js";
 import SetEffectField from "./SetEffectField.js";
+import "../css/ArtifactView.css";
 import {
   flowerMain,
   plumeMain,
@@ -27,33 +28,40 @@ const ArtifactsView = () => {
   };
   const selectionButton = (elem) => {
     return (
-      <Button key={elem} disabled={view === elem} onClick={() => setView(elem)}>
+      <Button
+        className="artifact__buttons"
+        key={elem}
+        disabled={view === elem}
+        onClick={() => setView(elem)}
+      >
         {elem}
       </Button>
     );
   };
 
   return (
-    <div>
-      <div>Artifact Stats</div>
-      <div className="section__App--row">
-        {options.map((_, ButtonIndex) => {
-          return selectionButton(views[ButtonIndex]);
+    <>
+      <div>
+        <span className="section__App--row">
+          Artifacts
+          {options.map((_, ButtonIndex) => {
+            return selectionButton(views[ButtonIndex]);
+          })}
+          {selectionButton(setEffect)}
+        </span>
+        {options.map((_, ArtifactNum) => {
+          var childProps = {
+            ArtifactNum: ArtifactNum,
+            mainStats: options[ArtifactNum],
+          };
+          return renderOnView(
+            views[ArtifactNum],
+            <ArtifactField key={ArtifactNum} {...childProps} />
+          );
         })}
-        {selectionButton(setEffect)}
+        {renderOnView(setEffect, <SetEffectField />)}
       </div>
-      {options.map((_, ArtifactNum) => {
-        var childProps = {
-          ArtifactNum: ArtifactNum,
-          mainStats: options[ArtifactNum],
-        };
-        return renderOnView(
-          views[ArtifactNum],
-          <ArtifactField key={ArtifactNum} {...childProps} />
-        );
-      })}
-      {renderOnView(setEffect, <SetEffectField />)}
-    </div>
+    </>
   );
 };
 

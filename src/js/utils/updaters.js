@@ -1,7 +1,7 @@
 import { updateSheet } from "../../features/sheet/sheetSlice.js";
 import { calcDelta } from "../../features/totalStats/totalStatsSlice.js";
 
-const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
+const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate=true) => (value) => {
     var delta = { oldType: oldType, oldValue: oldValue };
     if (Array.isArray(value)) {
         delta.newType = oldType;
@@ -11,12 +11,12 @@ const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, ind
         delta.newType = oldType;
         delta.newValue = value;
     }
-    console.log(delta)
+    console.log(shouldUpdate)
 
-    if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
+    if (!Array.isArray(oldType) && shouldUpdate) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
-const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
+const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate=true) => (value) => {
     var delta = { oldType: oldType, oldValue: oldValue };
     if (Array.isArray(value)) {
         delta.newType = value[index];
@@ -26,8 +26,8 @@ const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, inde
         delta.newType = value;
         delta.newValue = oldValue;
     }
-    console.log(delta)
-    if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
+    console.log(shouldUpdate)
+    if (!Array.isArray(oldType) && shouldUpdate) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
 const toggleSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
@@ -51,10 +51,10 @@ const updateSheetValue = (dispatch) => (key) => (value) => {
 const updateSheetArray = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
     dispatch(updateSheet({ [sheetKey]: value }))
 }
-const arrayUpdater = (Names, updater, props) => (key, index) => (value) => {
+const arrayUpdater = (Names, updater, props) => (key, index, shouldUpdate) => (value) => {
     var passives = [...props[key]];
     passives[index] = value;
-    updater(...Names.map((name) => props[name][index]), key, index)(passives)
+    updater(...Names.map((name) => props[name][index]), key, index, shouldUpdate)(passives)
 }
 const sheetUpdater = (Names, updater, props) => key => value => {
     updater(...Names.map((name) => props[name]), key)(value)

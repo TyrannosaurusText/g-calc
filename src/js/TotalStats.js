@@ -24,7 +24,6 @@ const TotalStats = () => {
     return val;
   };
   const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)) * 100);
-  if (totalAtkPercent <= 0) return <></>;
   const normalAtkPercent = 1 - totalCrit / 100;
   const critDmgPercent =
     Trunc(normalAtkPercent + (totalCrit / 100) * (1 + totalCritDMG / 100)) *

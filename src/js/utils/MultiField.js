@@ -7,28 +7,27 @@ import "../../css/MultiField.css";
  * props: initialLength, title, buttonText, addEffect, removeEffect
  */
 
-
 const multifieldAdd = (props, array) => () => {
   const add = (mutator, name, value = undefined) => {
-    const updater = mutator(name)
-  console.log(props, name)
-  updater(props[name].concat(value))
-  }
+    const updater = mutator(name);
+    console.log(props, name);
+    updater(props[name].concat(value));
+  };
   array.forEach((args) => {
-    add(...args)
-  })
+    add(...args);
+  });
 };
 const multifieldRemove = (props, array) => (index) => {
-  const remove = (mutator, name, value, sheetUpdater = () => () => { }) => {
+  const remove = (mutator, name, value, sheetUpdater = () => () => {}) => {
     const updater = mutator(name);
-    var newState = [...props[name] ];
+    var newState = [...props[name]];
     newState.splice(index, 1);
     sheetUpdater(name, index)(0);
     updater(newState);
-  }
+  };
   array.forEach((args) => {
-    remove(...args)
-  })
+    remove(...args);
+  });
 };
 
 class MultiField extends React.Component {
@@ -59,13 +58,15 @@ class MultiField extends React.Component {
     var ids = this.state.fieldIDArray;
     ids.splice(index, 1);
     this.setState({ fieldIDArray: ids });
-    console.log(index)
+    console.log(index);
     this.props.removeEffect(index);
   };
 
   ComponentRenderer = (id, index, Component) => (
     <div key={id}>
-      <div className={this.props.wrapperClass || "section__MultiField--spacing"}>
+      <div
+        className={this.props.wrapperClass || "section__MultiField--spacing"}
+      >
         <Component id={id} index={index} />
         <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
       </div>
@@ -73,24 +74,25 @@ class MultiField extends React.Component {
   );
   render = () => {
     return (
-      <div>
-
-        {this.props.children ?
+      <>
+        {this.props.children ? (
           React.cloneElement(this.props.children, {
             key: this.state.fieldIDArray.length,
-            className: this.state.fieldIDArray.length > 3
-              ? "section__MultiField--scrollView"
-              : "section__MultiField",
+            className:
+              this.state.fieldIDArray.length > 3
+                ? "section__MultiField--scrollView"
+                : "section__MultiField",
             array: this.state.fieldIDArray,
             remove: (index) => (
-              < Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
+              <Button onClick={() => this.RemoveEffect(index)}>Remove</Button>
             ),
             add: () => (
               <Button onClick={() => this.AddEffect()}>
                 {this.props.buttonText || "Add"}
               </Button>
-            )
-          }) :
+            ),
+          })
+        ) : (
           <div>
             <div>
               {this.props.title || ""}
@@ -108,17 +110,17 @@ class MultiField extends React.Component {
             >
               {this.state.fieldIDArray
                 ? this.state.fieldIDArray.map((id, index) => {
-                  return this.ComponentRenderer(
-                    id,
-                    index,
-                    this.props.component
-                  );
-                })
+                    return this.ComponentRenderer(
+                      id,
+                      index,
+                      this.props.component
+                    );
+                  })
                 : null}
             </div>
           </div>
-        }
-      </div >
+        )}
+      </>
     );
   };
 }

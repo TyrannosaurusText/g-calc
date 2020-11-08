@@ -17,6 +17,7 @@ import { Trunc } from "./utils/Trunc.js";
 const TalentName = "TalentName";
 const DamageTypeStr = "DamageType";
 const TalentMultiplierStr = "DamageValue";
+const ReactionMultipliers = "ReactionMultipliers";
 const monsterLevelStr = "monsterLevelStr";
 const monsterResStr = "monsterResStr";
 const resReduction = "resReduction";
@@ -35,7 +36,8 @@ const DamageField = () => {
   const multifieldFields = [
     [changeDamageValue, TalentName],
     [changeDamageType, DamageTypeStr, "None"],
-    [changeDamageValue, TalentMultiplierStr]
+    [changeDamageValue, TalentMultiplierStr],
+    [changeDamageValue, ReactionMultipliers, "None"]
   ];
 
   const TableComponent = (tableProps) => {
@@ -44,7 +46,7 @@ const DamageField = () => {
         <thead>
           <tr>
             {[
-              "Skill Name",
+              "Talent",
               "Type",
               "Damage Multiplier",
               "Reaction Multiplier",
@@ -72,7 +74,7 @@ const DamageField = () => {
     "Monster Resistance": props[monsterResStr],
   };
   const missingArray = Object.keys(requiredFields).filter(
-    (key) => !requiredFields[key]
+    (key) => undefined===requiredFields[key]
   );
   const totRes = calcRes(props[monsterResStr], props[resReduction]);
   const totDef = calcDef(
@@ -93,8 +95,6 @@ const DamageField = () => {
         </td>
       )
     })
-
-
   return (
     <div>
       <table className="table__table">
