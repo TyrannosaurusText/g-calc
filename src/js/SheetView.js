@@ -88,6 +88,13 @@ const SheetView = () => {
   return (
     <div key={props.currentSheet} className="section__mainBody">
       <div>
+        <input
+          type={"text"}
+          defaultValue={props.currentSheet}
+          onBlur={(e) => {
+            dispatch(updateSheet({ currentSheet: e.target.value }));
+          }}
+        ></input>
         {Object.keys(obj).map((view) => (
           <Button
             disabled={props.view === view}

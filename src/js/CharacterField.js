@@ -28,11 +28,6 @@ const CharacterField = () => {
     hideIfFalsyOrNone(
       ascStatType,
       <>
-        {/* <tr>
-          <td className="table__td">
-            <div>VAL</div>
-          </td>
-        </tr> */}
         <tr>
           <td className={" characterField__inputUpper"}>
             <div></div>

@@ -4,7 +4,7 @@ import {
   SelectionValueField,
   hideIfFalsyOrNone,
 } from "./utils/SelectionValueField.js";
-import { NumberFieldOnLine } from "./utils/NumberField.js";
+import { NumberField } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -41,7 +41,7 @@ const BuffsField = () => {
       <>
         {hideIfFalsyOrNone(
           props[BuffType][index],
-          <NumberFieldOnLine
+          <NumberField
             onChange={onPassiveValueChange(BuffValue, index)}
             defaultValue={props[BuffValue][index]}
           />
@@ -66,7 +66,7 @@ const BuffsField = () => {
     [changePassiveValue, BuffName],
     [changePassiveType, BuffType],
     [changePassiveValue, BuffValue, 0, onPassiveValueChange],
-    [changePassiveValue, BuffToggle],
+    [changePassiveValue, BuffToggle, true],
   ];
   return (
     <div>

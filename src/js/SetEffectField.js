@@ -91,7 +91,7 @@ const SetEffectField = () => {
       <div
         style={{
           overflowY: "scroll",
-          "max-height": "194px",
+          "maxHeight": "194px",
           border: "1px solid white",
         }}
       >

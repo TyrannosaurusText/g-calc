@@ -107,7 +107,7 @@ const WeaponField = () => {
 };
 const TableComponent = (tableProps) => {
   return (
-    <div  style={{ overflowY: "scroll", "max-height": "178px", 'border': '1px solid white' }}>
+    <div  style={{ overflowY: "scroll", "maxHeight": "178px", 'border': '1px solid white' }}>
       <table className="table__table">
         <thead>
           <tr>
