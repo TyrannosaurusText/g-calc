@@ -77,35 +77,61 @@ const DamageField = () => {
   const totRes = calcRes(props[monsterResStr], props[resReduction]);
   const totDef = calcDef(
     props.LVL,
-    props[monsterLevelStr],
+    Math.max(1, props[monsterLevelStr]),
     props[defReduction]
   );
+  const mobDefInputFields = [monsterLevelStr,
+    monsterResStr,
+    resReduction,
+    defReduction].map((key, index) => {
+      return (
+        <td key={index} className="damageField__td">
+          <NumberField
+            onChange={updateSheet(key)}
+            defaultValue={props[key]}
+          />
+        </td>
+      )
+    })
+
+
   return (
     <div>
-      Monster Level:
-      <NumberField
-        onChange={updateSheet(monsterLevelStr)}
-        defaultValue={props[monsterLevelStr]}
-      />
-      Monster Res( % ):
-      <NumberField
-        onChange={updateSheet(monsterResStr)}
-        defaultValue={props[monsterResStr]}
-      />
-      Res Reduction( % ):
-      <NumberField
-        onChange={updateSheet(resReduction)}
-        defaultValue={props[resReduction]}
-      />
-      Def Reduction( % ):
-      <NumberField
-        onChange={updateSheet(defReduction)}
-        defaultValue={props[defReduction]}
-      />
-      <div>
-        Total ATK: {props.totalATK} Elemental Mastery: {props.totalEM || 0}
-        Monster Res: {totRes} % Mob Defense: {Trunc(totDef * 100)} %
-      </div>
+      <table className="damageField__table">
+        <thead>
+          <tr>
+            {
+              [
+                'Monster Lvl',
+                'Monster Res(%)',
+                'Res Reduction(%)',
+                'Def Reduction(%)',
+                'Total Res',
+                'Monster Defense'
+              ].map((key, index) => {
+                return (
+                  <th key={index} className="damageField__th">
+                    {key}
+                  </th>
+                )
+              })
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {mobDefInputFields}
+            <td className="damageField__td">
+              {totRes}%
+            </td>
+            <td className="damageField__td">
+              {Trunc((1 - totDef) * 100)}%
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
       {missingArray.length > 0 ? (
         <div> Missing : {`${missingArray.join()}`} </div>
       ) : (

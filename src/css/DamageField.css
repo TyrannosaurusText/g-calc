@@ -1,15 +1,20 @@
 .damageField__table {
-    border: 1px solid white;
-    border-collapse: collapse;
+  border: 1px solid white;
+  border-collapse: collapse;
 }
 
 .damageField__th {
-    border-right: 1px solid white;
+  border-right: 1px solid white;
 }
 
 .damageField__th,
 .damageField__td {
-    border-top: 1px solid white;
-    padding-left: 5px;
-    padding-bottom: 5px;
+  border-top: 1px solid white;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+
+.damageField__Stats {
+  display: flex;
+  flex-wrap: row;
 }

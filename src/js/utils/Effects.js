@@ -28,6 +28,7 @@ const effects = {
   Overload: "Overload DMG (%)",
   Eletrocharge: "Eletrocharge DMG (%)",
   Superconduct: "Superconduct DMG (%)",
+  Shattered: "Shattered DMG (%)",
   Melt: "Melt DMG (%)",
   Vaporize: "Vaporize DMG (%)",
   Crystalize: "Crystalize DMG (%)",
@@ -79,6 +80,7 @@ const artifactSub = [
   effects.ART_ATK,
   effects.ART_DEF,
 ].concat(generalSubs);
+const buffsList = Array.from(new Set(["None"].concat(artifactSub).concat(weaponPassives)))
 
 export {
   effects,
@@ -94,4 +96,5 @@ export {
   sandsMain,
   gobletMain,
   circletMain,
+  buffsList,
 };

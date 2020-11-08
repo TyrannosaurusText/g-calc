@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
+import BuffsField from "./BuffsField.js";
 import ArtifactsView from "./ArtifactsView.js";
 import { Button } from "./utils/Button.js";
 import DamageCalc from "./DamageField.js";
@@ -8,7 +9,7 @@ import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
-import AttackTable from "./AttackTable.js";
+
 
 const StatsView = "Stats";
 const BuffView = "Buff";
@@ -21,17 +22,12 @@ const StatsViewRender = () => (
     <div className="section__mainBody--row">
       <CharacterField />
       <WeaponField />
-      <AttackTable />
     </div>
     <ArtifactsView />
   </>
 );
-const BuffViewRender = (props) => <></>;
-const DamageFieldNameRender = () => (
-  <>
-    <DamageCalc />
-  </>
-);
+const BuffViewRender = () => <BuffsField/>;
+const DamageFieldNameRender = () => (<DamageCalc />);
 const Export = () => {
   const props = { ...(useSelector(selectSheet)) }
   const dispatch = useDispatch();

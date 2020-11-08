@@ -23,9 +23,10 @@ const WeaponField = () => {
   const updateValue = updateSheetAndStatsValue(dispatch);
   const weaponPassiveTypeValue = [weaponPassivesType, weaponPassivesValue]
   const weaponPassiveLength = props.weaponPassivesType ? props.weaponPassivesType.length : 0
+  const onPassiveValueChange = arrayUpdater(weaponPassiveTypeValue, updateValue, props);
+  const onPassiveTypeChange = arrayUpdater(weaponPassiveTypeValue, updateType, props);
+
   const WeaponPassiveInput = ({ id, index }) => {
-    const onPassiveValueChange = arrayUpdater(weaponPassiveTypeValue, updateValue, props);
-    const onPassiveTypeChange = arrayUpdater(weaponPassiveTypeValue, updateType, props);
 
     const weaponPassiveInputComponent = (
       <>
@@ -55,7 +56,7 @@ const WeaponField = () => {
   const changePassiveValue = sheetUpdater(weaponPassiveTypeValue, updateType, props);
   const multifieldFields = [
     [changePassiveType, weaponPassivesType],
-    [changePassiveValue, weaponPassivesValue]
+    [changePassiveValue, weaponPassivesValue, 0, onPassiveValueChange]
   ];
   const weaponSubstatInputComponent = hideIfFalsyOrNone(
     props[weaponSubstatType],

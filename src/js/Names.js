@@ -17,7 +17,7 @@ const DamageTypes = [
   "Ele. Skill",
   "Ele. Burst",
 ]
-const ReactionTypes = ["Swirl", "Overload", "Electrocharge", "Superconduct"]
+const ReactionTypes = ["Swirl", "Overload", "Electrocharge", "Superconduct", "Shattered"]
 export {
   WeaponFieldName,
   ArtifactFieldName,

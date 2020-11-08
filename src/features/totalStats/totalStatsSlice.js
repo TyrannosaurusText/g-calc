@@ -42,6 +42,15 @@ var getStats = (props) => {
             weaponPassivesValue[index]
         );
     }
+    const { BuffType, BuffValue, BuffToggle } = props;
+    for (var index = 0; BuffType && index < BuffType.length; index++) {
+        if (BuffToggle[index]) {
+            sumStats[BuffType[index]] = increment(
+                sumStats[BuffType[index]],
+                BuffValue[index]
+            );
+        }
+    }
     return calcTotals(sumStats);
 };
 const calcTotals = (state) => {
@@ -70,6 +79,7 @@ export const totalStatsSlice = createSlice({
     initialState: {},
     reducers: {
         calcDelta: (state, action) => {
+            console.log(action.payload)
             const { oldType, oldValue, newType, newValue } = action.payload
             if (oldType)
                 state[oldType] = (state[oldType] || 0) - (oldValue || 0);

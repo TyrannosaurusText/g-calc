@@ -11,7 +11,8 @@ import "../../css/MultiField.css";
 const multifieldAdd = (props, array) => () => {
   const add = (mutator, name, value = undefined) => {
     const updater = mutator(name)
-    updater(props[name].concat(value))
+  console.log(props, name)
+  updater(props[name].concat(value))
   }
   array.forEach((args) => {
     add(...args)
@@ -20,13 +21,12 @@ const multifieldAdd = (props, array) => () => {
 const multifieldRemove = (props, array) => (index) => {
   const remove = (mutator, name, value, sheetUpdater = () => () => { }) => {
     const updater = mutator(name);
-    var newState = [...props[name]];
+    var newState = [...props[name] ];
     newState.splice(index, 1);
     sheetUpdater(name, index)(0);
     updater(newState);
   }
   array.forEach((args) => {
-    console.log(args)
     remove(...args)
   })
 };

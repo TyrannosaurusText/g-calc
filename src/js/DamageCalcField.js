@@ -4,9 +4,10 @@ import {
     Superconduct,
     Swirl,
     EMCalc,
+    Shattered,
 } from "./utils/ReactionLevelDMG.js";
 import { NumberField } from "./utils/NumberField.js";
-import { Trunc } from "./utils/Trunc.js";
+import { Trunc, Clamp } from "./utils/Trunc.js";
 import { effects } from "./utils/Effects.js";
 import { DamageTypes, ReactionTypes } from "./Names.js";
 import { updateSheetArray, arrayUpdater } from './utils/updaters.js'
@@ -57,7 +58,8 @@ const calcDamage = (props, index) => {
         "Ele. Skill": 100 + sumEffects(effects.Skill, effects.Total, effects.ele),
         "Ele. Burst": 100 + sumEffects(effects.Burst, effects.Total, effects.ele),
     };
-    const monsterDefense = calcDef(props.LVL, props[monsterLevelStr], props[defReduction])
+    const monsterDefense = calcDef(props.LVL, Math.max(1, props[monsterLevelStr]), props[defReduction])
+    console.log(monsterDefense, Math.min(1, props[monsterLevelStr]))
     const monsterResistance = 1 - calcRes(props[monsterResStr], props[resReduction]) / 100;
     const Damage = Math.floor(totalATK * (DamagePercent / 100) * (atkType[DamageType] / 100) * monsterResistance * monsterDefense * ReactionMultiplier)
     const Crit = Math.floor(Damage * (1 + totalCritDMG / 100))
@@ -68,12 +70,15 @@ const calcReaction = (props, index) => {
     const charLevel = props.LVL;
     const atkType = {
         "Swirl": Trunc(Swirl(charLevel) * (1 + EQA / 100 + (props[effects.Swirl] || 0) / 100)),
+        "Shattered": Trunc(Shattered(charLevel) * (1 + EQA / 100 + (props[effects.Shattered] || 0) / 100)),
         "Overload": Trunc(Overload(charLevel) * (1 + EQA / 100 + (props[effects.Overload] || 0) / 100)),
         "Electrocharge": Trunc(Electrocharge(charLevel) * (1 + EQA / 100 + (props[effects.Eletrocharge] || 0) / 100)),
         "Superconduct": Trunc(Superconduct(charLevel) * (1 + EQA / 100 + (props[effects.Superconduct] || 0) / 100)),
     }
-    const reaction = props[DamageTypeStr][index]
-    return Math.floor(atkType[reaction])
+    const reaction = props[DamageTypeStr][index];
+    const monsterResistance = 1 - calcRes(props[monsterResStr], props[resReduction]) / 100;
+    console.log(monsterResistance, props[monsterResStr])
+    return Math.floor(atkType[reaction] * monsterResistance)
 }
 const DamageCalcField = ({ id, index, remove }) => {
     const dispatch = useDispatch();

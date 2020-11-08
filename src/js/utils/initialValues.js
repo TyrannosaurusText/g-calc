@@ -47,9 +47,9 @@ const initialWeaponField = {
 };
 
 export default {
-  initialWeaponField,
-  initialDamageField,
-  initialCharacterField,
-  initialArtifactField,
-  initialBuffsField,
+  ...initialWeaponField,
+  ...initialDamageField,
+  ...initialCharacterField,
+  ...initialArtifactField,
+  ...initialBuffsField,
 };

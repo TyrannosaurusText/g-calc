@@ -11,6 +11,8 @@ const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, ind
         delta.newType = oldType;
         delta.newValue = value;
     }
+    console.log(delta)
+
     if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
@@ -23,6 +25,22 @@ const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, inde
     else {
         delta.newType = value;
         delta.newValue = oldValue;
+    }
+    console.log(delta)
+    if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
+    updateSheetValue(dispatch)(sheetKey)(value)
+}
+const toggleSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0) => (value) => {
+    var delta = { oldType: oldType };
+    if (Array.isArray(value)) {
+        delta.oldValue = oldValue * (!value[index])
+        delta.newType = oldType;
+        delta.newValue = oldValue * value[index];
+    }
+    else {
+        delta.oldValue = oldValue * (!value[index])
+        delta.newType = oldType;
+        delta.newValue = oldValue * value;
     }
     if (!Array.isArray(oldType)) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
@@ -42,4 +60,4 @@ const sheetUpdater = (Names, updater, props) => key => value => {
     updater(...Names.map((name) => props[name]), key)(value)
 }
 
-export { updateSheetAndStatsValue, updateSheetAndStatsType, arrayUpdater, sheetUpdater, updateSheetValue, updateSheetArray }
+export { updateSheetAndStatsValue, updateSheetAndStatsType, toggleSheetAndStatsValue, arrayUpdater, sheetUpdater, updateSheetValue, updateSheetArray }
