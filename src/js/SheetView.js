@@ -10,13 +10,10 @@ import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
 import { renameCharacter } from "../features/sheet/charactersSlice.js";
-import { sheetUpdater } from "./utils/updaters.js";
 
 const StatsView = "Stats";
-const BuffView = "Buff";
 const DamageView = "Damage Calc";
 const ExportView = "Export";
-// const validViews = [StatsView, BuffView, DamageView];
 
 const StatsViewRender = () => (
   <>
@@ -90,32 +87,39 @@ const SheetView = () => {
   };
   return (
     <div key={props.currentSheet} className="section__mainBody">
-      <div>
-        <input
-          type={"text"}
-          defaultValue={props.currentSheet}
-          onBlur={(e) => {
-            dispatch(renameCharacter({ index: props.index, name: e.target.value }))
-            dispatch(updateSheet({ currentSheet: e.target.value }));
-          }}
-        ></input>
-        {Object.keys(obj).map((view) => (
-          <Button
-            disabled={props.view === view}
-            key={view}
-            onClick={() => setView(dispatch, view)}
-          >
-            {view}
-          </Button>
-        ))}
-      </div>
-      <div className="section__mainBody--column">
+      <div className="section__mainBody">
         {Object.keys(obj).map((view) =>
           currentView.localeCompare(view) === 0 ? (
-            <div key={view}>{obj[view]}</div>
+            <div key={view}>
+              <div>
+                <input
+                  type={"text"}
+                  defaultValue={props.currentSheet}
+                  onBlur={(e) => {
+                    dispatch(
+                      renameCharacter({
+                        index: props.index,
+                        name: e.target.value,
+                      })
+                    );
+                    dispatch(updateSheet({ currentSheet: e.target.value }));
+                  }}
+                ></input>
+                {Object.keys(obj).map((view) => (
+                  <Button
+                    disabled={props.view === view}
+                    key={view}
+                    onClick={() => setView(dispatch, view)}
+                  >
+                    {view}
+                  </Button>
+                ))}
+              </div>
+              {obj[view]}
+            </div>
           ) : (
-              <div key={view}></div>
-            )
+            <div key={view}></div>
+          )
         )}
       </div>
     </div>
