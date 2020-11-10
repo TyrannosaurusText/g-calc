@@ -59,7 +59,6 @@ const calcDamage = (props, index) => {
         "Ele. Burst": 100 + sumEffects(effects.Burst, effects.Total, effects.ele),
     };
     const monsterDefense = calcDef(props.LVL, Math.max(1, props[monsterLevelStr]), props[defReduction])
-    console.log(monsterDefense, Math.min(1, props[monsterLevelStr]))
     const monsterResistance = 1 - calcRes(props[monsterResStr], props[resReduction]) / 100;
     const Damage = Math.floor(totalATK * (DamagePercent / 100) * (atkType[DamageType] / 100) * monsterResistance * monsterDefense * ReactionMultiplier)
     const Crit = Math.floor(Damage * (1 + totalCritDMG / 100))
@@ -77,7 +76,6 @@ const calcReaction = (props, index) => {
     }
     const reaction = props[DamageTypeStr][index];
     const monsterResistance = 1 - calcRes(props[monsterResStr], props[resReduction]) / 100;
-    console.log(monsterResistance, props[monsterResStr])
     return Math.floor(atkType[reaction] * monsterResistance)
 }
 const DamageCalcField = ({ id, index, remove }) => {

@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { v4 as uuidv4 } from 'uuid';
+const characters = "@allCharacters"
 const initialState = () => {
-  const data = localStorage.getItem("@allCharacters");
-  console.log("hi", data);
+  const data = localStorage.getItem(characters);
   if (data === null) {
-    return { names: [] };
+    const newData = { names: ['Traveler'], UID: [uuidv4()] }
+    localStorage.setItem(characters, JSON.stringify(newData))
+    return newData;
   }
   try {
     return JSON.parse(data);
@@ -18,19 +20,22 @@ export const characterSlice = createSlice({
   initialState: initialState(),
   reducers: {
     addNewCharacter: (state, { payload }) => {
-      var newState = Array.from(state.names);
-      newState.push(payload.name || "New Character");
-      state.names = newState;
-      console.log(newState);
-
+      var { names, UID } = state;
+      names.push(payload.name || "New Character")
+      UID.push(uuidv4())
+      state.names = names;
+      state.UID = UID;
+      localStorage.setItem(characters, JSON.stringify({ names: names, UID: UID }))
     },
     renameCharacter: (state, { payload }) => {
       state.names[payload.index] = payload.name;
+      localStorage.setItem(characters, JSON.stringify({ names: state.names, UID: state.UID }))
     },
     deleteCharacter: (state, { payload }) => {
       var newState = Array.from(state.names);
       newState.splice(payload.index, 1);
       state.names = newState;
+      localStorage.setItem(characters, JSON.stringify({ names: state.names, UID: state.UID }))
     },
   },
 });
@@ -40,5 +45,5 @@ export const {
   renameCharacter,
   deleteCharacter,
 } = characterSlice.actions;
-export const selectCharacters = (state) => state.characters.names;
+export const selectCharacters = (state) => state.characters;
 export default characterSlice.reducer;

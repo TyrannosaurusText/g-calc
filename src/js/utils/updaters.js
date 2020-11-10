@@ -1,7 +1,7 @@
 import { updateSheet } from "../../features/sheet/sheetSlice.js";
 import { calcDelta } from "../../features/totalStats/totalStatsSlice.js";
 
-const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate=true) => (value) => {
+const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate = true) => (value) => {
     var delta = { oldType: oldType, oldValue: oldValue };
     if (Array.isArray(value)) {
         delta.newType = oldType;
@@ -11,12 +11,11 @@ const updateSheetAndStatsValue = (dispatch) => (oldType, oldValue, sheetKey, ind
         delta.newType = oldType;
         delta.newValue = value;
     }
-    console.log(shouldUpdate)
 
     if (!Array.isArray(oldType) && shouldUpdate) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }
-const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate=true) => (value) => {
+const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, index = 0, shouldUpdate = true) => (value) => {
     var delta = { oldType: oldType, oldValue: oldValue };
     if (Array.isArray(value)) {
         delta.newType = value[index];
@@ -26,7 +25,6 @@ const updateSheetAndStatsType = (dispatch) => (oldType, oldValue, sheetKey, inde
         delta.newType = value;
         delta.newValue = oldValue;
     }
-    console.log(shouldUpdate)
     if (!Array.isArray(oldType) && shouldUpdate) dispatch(calcDelta(delta))
     updateSheetValue(dispatch)(sheetKey)(value)
 }

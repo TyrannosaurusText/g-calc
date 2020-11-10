@@ -10,7 +10,6 @@ import "../../css/MultiField.css";
 const multifieldAdd = (props, array) => () => {
   const add = (mutator, name, value = undefined) => {
     const updater = mutator(name);
-    console.log(props, name);
     updater(props[name].concat(value));
   };
   array.forEach((args) => {
@@ -58,7 +57,6 @@ class MultiField extends React.Component {
     var ids = this.state.fieldIDArray;
     ids.splice(index, 1);
     this.setState({ fieldIDArray: ids });
-    console.log(index);
     this.props.removeEffect(index);
   };
 

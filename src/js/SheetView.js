@@ -9,6 +9,8 @@ import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
+import { renameCharacter } from "../features/sheet/charactersSlice.js";
+import { sheetUpdater } from "./utils/updaters.js";
 
 const StatsView = "Stats";
 const BuffView = "Buff";
@@ -64,6 +66,7 @@ const Export = () => {
           onClick={() => {
             props.currentSheet = undefined;
             props.view = undefined;
+            props.index = undefined;
             setText(JSON.stringify(props));
           }}
         >
@@ -92,6 +95,7 @@ const SheetView = () => {
           type={"text"}
           defaultValue={props.currentSheet}
           onBlur={(e) => {
+            dispatch(renameCharacter({ index: props.index, name: e.target.value }))
             dispatch(updateSheet({ currentSheet: e.target.value }));
           }}
         ></input>
@@ -110,8 +114,8 @@ const SheetView = () => {
           currentView.localeCompare(view) === 0 ? (
             <div key={view}>{obj[view]}</div>
           ) : (
-            <div key={view}></div>
-          )
+              <div key={view}></div>
+            )
         )}
       </div>
     </div>
