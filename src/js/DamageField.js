@@ -74,7 +74,7 @@ const DamageField = () => {
     "Monster Resistance": props[monsterResStr],
   };
   const missingArray = Object.keys(requiredFields).filter(
-    (key) => undefined===requiredFields[key]
+    (key) => undefined === requiredFields[key]
   );
   const totRes = calcRes(props[monsterResStr], props[resReduction]);
   const totDef = calcDef(
@@ -82,6 +82,7 @@ const DamageField = () => {
     Math.max(1, props[monsterLevelStr]),
     props[defReduction]
   );
+  const mobDefProps = [{ minValue: 1 }, {}, {}, {}]
   const mobDefInputFields = [monsterLevelStr,
     monsterResStr,
     resReduction,
@@ -91,6 +92,7 @@ const DamageField = () => {
           <NumberField
             onChange={updateSheet(key)}
             defaultValue={props[key]}
+            {...mobDefProps[index]}
           />
         </td>
       )

@@ -53,6 +53,7 @@ const CharacterField = () => {
                   <NumberField
                     name={name}
                     className={"item__fillWidth"}
+                    minValue={1}
                     defaultValue={props[name]}
                     onChange={updateValue(name, props[name], name)}
                   />
