@@ -17,12 +17,12 @@ const Sheet = () => {
   const sheet = useSelector(selectSheet);
   const characters = useSelector(selectCharacters);
   const savePage = () => {
-    if (sheet.index !== undefined) {
+    if (characters.UID[sheet.index] !== undefined) {
       localStorage.setItem(characters.UID[sheet.index], JSON.stringify(sheet));
     }
   };
-  window.addEventListener("unload", savePage);
   useEffect(() => {
+    window.addEventListener("unload", savePage);
     changePage(dispatch, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -65,8 +65,8 @@ const Sheet = () => {
           <TotalStats />
         </div>
       ) : (
-        <> </>
-      )}
+          <> </>
+        )}
     </div>
   );
 };

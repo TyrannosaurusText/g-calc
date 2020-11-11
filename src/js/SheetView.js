@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
 import BuffsField from "./BuffsField.js";
@@ -9,7 +9,7 @@ import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
-import { renameCharacter } from "../features/sheet/charactersSlice.js";
+import { deleteCharacter, renameCharacter, selectCharacters } from "../features/sheet/charactersSlice.js";
 
 const StatsView = "Stats";
 const DamageView = "Damage Calc";
@@ -29,47 +29,69 @@ const StatsViewRender = () => (
 const DamageFieldNameRender = () => <DamageCalc />;
 const Export = () => {
   const props = { ...useSelector(selectSheet) };
+  const characters = { ...useSelector(selectCharacters) };
   const dispatch = useDispatch();
   const [textInput, setText] = useState("");
+  const [deleteText, updateDelete] = useState("Delete Sheet");
   return (
     <>
-      <textarea
-        key={props.currentSheet}
-        className="body__textarea"
-        onChange={(e) => {
-          setText(e.target.value);
+      <div style={{ display: 'flex' }}>
+        <textarea
+          key={props.currentSheet}
+          className="body__textarea"
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          defaultValue={textInput}
+        />
+        <div>
+          <div>
+            <Button
+              onClick={() => {
+                try {
+                  const input = JSON.parse(textInput);
+                  input.currentSheet = props.currentSheet;
+                  input.view = StatsView;
+                  dispatch(updateSheet(input));
+                  dispatch(calcStats(input));
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+            >
+              Import
+            </Button>
+          </div>
+          <div>
+            <Button
+              onClick={() => {
+                props.currentSheet = undefined;
+                props.view = undefined;
+                props.index = undefined;
+                setText(JSON.stringify(props));
+              }}
+            >
+              Export
+            </Button>
+          </div>
+        </div>
+      </div>
+      <Button className="Delete"
+        onBlur={() => {
+          updateDelete('Delete Sheet')
         }}
-        defaultValue={textInput}
-      />
-      <div>
-        <Button
-          onClick={() => {
-            try {
-              const input = JSON.parse(textInput);
-              input.currentSheet = props.currentSheet;
-              input.view = StatsView;
-              dispatch(updateSheet(input));
-              dispatch(calcStats(input));
-            } catch (e) {
-              console.log(e);
-            }
-          }}
-        >
-          Import
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={() => {
-            props.currentSheet = undefined;
-            props.view = undefined;
-            props.index = undefined;
-            setText(JSON.stringify(props));
-          }}
-        >
-          Export
-        </Button>
-      </div>
+        onClick={() => {
+          if (deleteText.localeCompare("Delete Sheet") === 0) {
+            updateDelete('Confirm?')
+          }
+          else {
+            const index = props.index;
+            const UID = characters.UID[index];
+            dispatch(updateSheet({ currentSheet: undefined, index: undefined }));
+            dispatch(deleteCharacter({ index: index }));
+            localStorage.removeItem(UID)
+          }
+        }}>{deleteText}</Button>
     </>
   );
 };
@@ -118,8 +140,8 @@ const SheetView = () => {
               {obj[view]}
             </div>
           ) : (
-            <div key={view}></div>
-          )
+              null
+            )
         )}
       </div>
     </div>

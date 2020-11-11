@@ -1,10 +1,4 @@
 import React from "react";
-import { artifactSub } from "./utils/Effects.js";
-import {
-  SelectionValueField,
-  hideIfFalsyOrNone,
-} from "./utils/SelectionValueField.js";
-import { NumberField } from "./utils/NumberField.js";
 import { selectSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -33,33 +27,7 @@ const BuffsField = () => {
   const updateValue = updateSheetAndStatsValue(dispatch);
 
   const buffEffectLength = props[BuffType] ? props[BuffType].length : 0;
-  const onPassiveTypeChange = arrayUpdater(BuffTypeValue, updateType, props);
   const onPassiveValueChange = arrayUpdater(BuffTypeValue, updateValue, props);
-
-  const buffEffectInputComponent = ({ id, index }) => {
-    const PassiveInputComponent = (
-      <>
-        {hideIfFalsyOrNone(
-          props[BuffType][index],
-          <NumberField
-            onChange={onPassiveValueChange(BuffValue, index)}
-            defaultValue={props[BuffValue][index]}
-          />
-        )}
-      </>
-    );
-    return (
-      <div key={id}>
-        <SelectionValueField
-          selectionName={BuffType}
-          onChange={onPassiveTypeChange(BuffType, index)}
-          array={artifactSub}
-          component={PassiveInputComponent}
-          defaultValue={props[BuffType][index]}
-        />
-      </div>
-    );
-  };
   const changePassiveType = sheetUpdater(BuffTypeValue, updateValue, props);
   const changePassiveValue = sheetUpdater(BuffTypeValue, updateType, props);
   const multifieldFields = [
@@ -75,7 +43,6 @@ const BuffsField = () => {
         <MultiField
           initialLength={buffEffectLength}
           buttonText="Add Buff"
-          component={buffEffectInputComponent}
           addEffect={multifieldAdd(props, multifieldFields)}
           removeEffect={multifieldRemove(props, multifieldFields)}
         >
