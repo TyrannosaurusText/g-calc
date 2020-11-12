@@ -23,11 +23,11 @@ const TotalStats = () => {
     const val = props[stat] || 0;
     return val;
   };
-  const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)) * 100);
-  const normalAtkPercent = 1 - totalCrit / 100;
+  const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)));
+  const normalAtkPercent = 1 / (totalCrit / 100) - 1;
   const critDmgPercent =
-    Trunc(normalAtkPercent + (totalCrit / 100) * (1 + totalCritDMG / 100)) *
-    100;
+    Trunc((totalCrit / 100) * ((1 / (totalCrit / 100) - 1) + (1 + totalCritDMG / 100)))
+
 
   const sumEffects = (...effects) => {
     var sum = 0;
@@ -64,10 +64,10 @@ const TotalStats = () => {
     "Critical Damage": `${totalCritDMG}%`,
     "Attack Speed": `${totalATKSPD}%`,
     "Energy Recharge": `${totalRecharge}%`,
-    "":null,
-    "Multipliers":null,
-    "ATK Multiplier": `${totalAtkPercent}%`,
-    "CRIT Multiplier": `${critDmgPercent}%`,
+    "": null,
+    "Multipliers": null,
+    "ATK Multiplier": `${totalAtkPercent}x`,
+    "CRIT Multiplier": `${critDmgPercent}x`,
   }
   return (
     <>
