@@ -25,7 +25,7 @@ const monsterResStr = "monsterResStr";
 const resReduction = "resReduction";
 const defReduction = "defReduction";
 
-const calcRes = (res, red) => res > red ? res - red : -(red - res) / 2;
+const calcRes = (res, red) => res > red ? res - red : (-red) / 2 + (res < 0 ? res : 0);
 const calcDef = (plvl, mlvl, dr) => (100 + plvl) / (((100 + mlvl) * (1 - dr / 100 || 0)) + (100 + plvl));
 const calcDamage = (props, index) => {
     const DamageType = props[DamageTypeStr][index];

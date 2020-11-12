@@ -17,14 +17,14 @@ const Sheet = () => {
   const sheet = useSelector(selectSheet);
   const characters = useSelector(selectCharacters);
   const savePage = () => {
-    if (sheet.index !== undefined) {
+    if (characters.UID[sheet.index] !== undefined) {
       localStorage.setItem(characters.UID[sheet.index], JSON.stringify(sheet));
     }
   };
-  window.addEventListener("unload", savePage);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
+    window.addEventListener("unload", savePage);
     changePage(dispatch, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const changePage = (dispatch, index) => {
     savePage();
@@ -41,7 +41,7 @@ const Sheet = () => {
           {characters.names.map((key, index) => {
             return (
               <Button
-                style={{ 'width': '-webkit-fill-available' }}
+                style={{ width: "-webkit-fill-available" }}
                 key={characters.UID[index]}
                 disabled={sheet.index === key}
                 onClick={() => changePage(dispatch, index)}
@@ -59,17 +59,15 @@ const Sheet = () => {
           </Button>
         </div>
       </div>
-      {
-        sheet.currentSheet ? (
-          <div className="section__mainBody section__App--row">
-            <CharacterView />
-            <TotalStats />
-          </div>
-        ) : (
-            <> </>
-          )
-      }
-    </div >
+      {sheet.currentSheet ? (
+        <div className="section__mainBody section__App--row">
+          <CharacterView />
+          <TotalStats />
+        </div>
+      ) : (
+          <> </>
+        )}
+    </div>
   );
 };
 

@@ -32,10 +32,13 @@ export const characterSlice = createSlice({
       localStorage.setItem(characters, JSON.stringify({ names: state.names, UID: state.UID }))
     },
     deleteCharacter: (state, { payload }) => {
-      var newState = Array.from(state.names);
-      newState.splice(payload.index, 1);
-      state.names = newState;
-      localStorage.setItem(characters, JSON.stringify({ names: state.names, UID: state.UID }))
+      var newNames = Array.from(state.names);
+      var newUID = Array.from(state.UID);
+      newNames.splice(payload.index, 1);
+      newUID.splice(payload.index, 1);
+      state.names = newNames;
+      state.UID = newUID;
+      localStorage.setItem(characters, JSON.stringify({ names: newNames, UID: newUID }))
     },
   },
 });
