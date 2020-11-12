@@ -1,2 +1,2 @@
-var Trunc = (value) => Math.trunc(value * 100) / 100;
+var Trunc = (value) => Math.trunc(value ) ;
 export { Trunc };

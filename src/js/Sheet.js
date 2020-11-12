@@ -9,25 +9,21 @@ import {
   addNewCharacter,
   selectCharacters,
 } from "../features/sheet/charactersSlice";
-import { loadPage } from "./utils/LoadPage.js";
+import { savePage, loadPage } from "./utils/LoadPage.js";
 import { calcStats } from "../features/totalStats/totalStatsSlice";
+import SheetStore from "./SheetStore.js";
 
 const Sheet = () => {
   const dispatch = useDispatch();
   const sheet = useSelector(selectSheet);
   const characters = useSelector(selectCharacters);
-  const savePage = () => {
-    if (characters.UID[sheet.index] !== undefined) {
-      localStorage.setItem(characters.UID[sheet.index], JSON.stringify(sheet));
-    }
-  };
+  const uid = characters.UID[sheet.index];
   useEffect(() => {
-    window.addEventListener("unload", savePage);
     changePage(dispatch, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const changePage = (dispatch, index) => {
-    savePage();
+    savePage(uid, JSON.stringify(sheet));
     const state = loadPage(characters.UID[index]);
     state.currentSheet = characters.names[index];
     state.index = index;
@@ -36,6 +32,7 @@ const Sheet = () => {
   };
   return (
     <div className="section__App--row">
+      <SheetStore sheet={sheet} uid={uid} />
       <div className="section__navbar">
         <div className="section__App--column">
           {characters.names.map((key, index) => {
@@ -65,8 +62,8 @@ const Sheet = () => {
           <TotalStats />
         </div>
       ) : (
-          <> </>
-        )}
+        <> </>
+      )}
     </div>
   );
 };

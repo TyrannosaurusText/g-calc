@@ -3,7 +3,6 @@ import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
 import { useSelector } from "react-redux";
 import { selectStats } from "../features/totalStats/totalStatsSlice.js";
-import { Trunc } from "./utils/Trunc.js";
 import "../css/TotalStats.css";
 const TotalStats = () => {
   const props = useSelector(selectStats);
@@ -18,16 +17,13 @@ const TotalStats = () => {
     totalEM,
   } = props;
 
-
   const getVal = (stat) => {
     const val = props[stat] || 0;
     return val;
   };
-  const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)));
-  const normalAtkPercent = 1 / (totalCrit / 100) - 1;
+  const totalAtkPercent = totalATK / (getVal(effects.ATK) || 1);
   const critDmgPercent =
-    Trunc((totalCrit / 100) * ((1 / (totalCrit / 100) - 1) + (1 + totalCritDMG / 100)))
-
+    1 - totalCrit / 100 + (totalCrit / 100) * (1 + totalCritDMG / 100);
 
   const sumEffects = (...effects) => {
     var sum = 0;
@@ -56,19 +52,19 @@ const TotalStats = () => {
     "E. Burst": Burst,
   };
   const tableData = {
-    "Total HP": totalHP,
-    "Total ATK": totalATK,
-    "Total DEF": totalDEF,
-    "Elemental Mastery": totalEM,
+    "Total HP": (totalHP || 0).toFixed(2),
+    "Total ATK": (totalATK || 0).toFixed(2),
+    "Total DEF": (totalDEF || 0).toFixed(2),
+    "Elemental Mastery": (totalEM || 0).toFixed(2),
     "Critical Rate": `${totalCrit}%`,
     "Critical Damage": `${totalCritDMG}%`,
     "Attack Speed": `${totalATKSPD}%`,
     "Energy Recharge": `${totalRecharge}%`,
     "": null,
-    "Multipliers": null,
+    Multipliers: null,
     "ATK Multiplier": `${totalAtkPercent}x`,
     "CRIT Multiplier": `${critDmgPercent}x`,
-  }
+  };
   return (
     <>
       <table className="table__table">
@@ -76,24 +72,20 @@ const TotalStats = () => {
           {Object.keys(tableData).map((rowName, index) => {
             return (
               <tr key={index}>
-                <td className="table__td">
-                  {rowName}
-                </td>
-                <td className="table__td">
-                  {tableData[rowName]}
-                </td>
+                <td className="table__td">{rowName}</td>
+                <td className="table__td">{tableData[rowName]}</td>
               </tr>
-            )
+            );
           })}
 
           <tr>
             <th className="table__th">Attack Type</th>
-            <th className="table__th"></th>
+            <th className="table__th">Multiplier</th>
           </tr>
           {Object.keys(atkType).map((atkName) => (
             <tr key={atkName}>
               <td className="table__td">{atkName}</td>
-              <td className="table__td">{atkType[atkName]}%</td>
+              <td className="table__td">{atkType[atkName] / 100}x</td>
             </tr>
           ))}
         </tbody>
@@ -103,4 +95,3 @@ const TotalStats = () => {
 };
 
 export default TotalStats;
-

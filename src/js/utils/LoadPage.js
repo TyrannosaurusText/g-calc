@@ -1,23 +1,23 @@
-import {
-    WeaponFieldName,
-    avaliableFields,
-} from "../Names.js";
+import { WeaponFieldName, avaliableFields } from "../Names.js";
 
+export const savePage = (uid, data) => {
+  if (uid !== undefined) {
+    localStorage.setItem(uid, data);
+  }
+};
 export const loadPage = (page) => {
-    const localStoreData = localStorage.getItem(page);
-    try {
-        const data = localStoreData ? JSON.parse(localStoreData) : {};
-        var state = { currentSheet: page }
-        if (data[WeaponFieldName]) {
-            avaliableFields.forEach(field => {
-                var val = data[field] !== 'undefined' ? JSON.parse(data[field]) : {}
-                state = data[field] ? { ...state, ...val } : {};
-            })
-        }
-        else state = { ...data };
-        return state;
-    }
-    catch (e) {
-        console.log(e)
-    }
+  const localStoreData = localStorage.getItem(page);
+  try {
+    const data = localStoreData ? JSON.parse(localStoreData) : {};
+    var state = { currentSheet: page };
+    if (data[WeaponFieldName]) {
+      avaliableFields.forEach((field) => {
+        var val = data[field] !== "undefined" ? JSON.parse(data[field]) : {};
+        state = data[field] ? { ...state, ...val } : {};
+      });
+    } else state = { ...data };
+    return state;
+  } catch (e) {
+    console.log(e);
+  }
 };

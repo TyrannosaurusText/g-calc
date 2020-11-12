@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
 import BuffsField from "./BuffsField.js";
@@ -9,7 +9,11 @@ import "../css/SheetView.css";
 import { selectSheet, updateSheet } from "../features/sheet/sheetSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { calcStats } from "../features/totalStats/totalStatsSlice.js";
-import { deleteCharacter, renameCharacter, selectCharacters } from "../features/sheet/charactersSlice.js";
+import {
+  deleteCharacter,
+  renameCharacter,
+  selectCharacters,
+} from "../features/sheet/charactersSlice.js";
 
 const StatsView = "Stats";
 const DamageView = "Damage Calc";
@@ -35,7 +39,7 @@ const Export = () => {
   const [deleteText, updateDelete] = useState("Delete Sheet");
   return (
     <>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <textarea
           key={props.currentSheet}
           className="body__textarea"
@@ -76,22 +80,27 @@ const Export = () => {
           </div>
         </div>
       </div>
-      <Button className="Delete"
+      <Button
+        className="Delete"
         onBlur={() => {
-          updateDelete('Delete Sheet')
+          updateDelete("Delete Sheet");
         }}
         onClick={() => {
           if (deleteText.localeCompare("Delete Sheet") === 0) {
-            updateDelete('Confirm?')
-          }
-          else {
+            updateDelete("Confirm?");
+          } else {
             const index = props.index;
             const UID = characters.UID[index];
-            dispatch(updateSheet({ currentSheet: undefined, index: undefined }));
+            dispatch(
+              updateSheet({ currentSheet: undefined, index: undefined })
+            );
             dispatch(deleteCharacter({ index: index }));
-            localStorage.removeItem(UID)
+            localStorage.removeItem(UID);
           }
-        }}>{deleteText}</Button>
+        }}
+      >
+        {deleteText}
+      </Button>
     </>
   );
 };
@@ -139,9 +148,7 @@ const SheetView = () => {
               </div>
               {obj[view]}
             </div>
-          ) : (
-              null
-            )
+          ) : null
         )}
       </div>
     </div>
