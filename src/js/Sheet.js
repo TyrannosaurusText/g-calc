@@ -19,6 +19,7 @@ const Sheet = () => {
   const characters = useSelector(selectCharacters);
   const uid = characters.UID[sheet.index];
   useEffect(() => {
+    window.addEventListener("unload", savePage);
     changePage(dispatch, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

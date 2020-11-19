@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Trunc } from "../../js/utils/Trunc.js";
 import { effects } from "../../js/utils/Effects.js";
 
 var getStats = (props) => {
@@ -58,7 +57,7 @@ const calcTotals = (state) => {
         const base = getVal(stat) || 0;
         const percent = getVal("%" + stat) / 100;
         const flat = getVal("+" + stat) || 0;
-        return Trunc(base * (1 + percent) + flat);
+        return base * (1 + percent) + flat;
     };
     const getVal = (stat) => {
         return state[stat] || 0;
