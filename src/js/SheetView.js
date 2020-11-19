@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import WeaponField from "./WeaponField.js";
 import CharacterField from "./CharacterField.js";
 import BuffsField from "./BuffsField.js";

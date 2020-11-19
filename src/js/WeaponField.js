@@ -69,12 +69,6 @@ const WeaponField = () => {
     <div>
       Weapon Substat
       <table className="table__table">
-        {/* <thead className="table__th">
-          <tr>
-            <th> Weapon Substat </th>
-            <th></th>
-          </tr>
-        </thead> */}
         <tbody className="table__td">
           <tr>
             <td>
@@ -92,6 +86,7 @@ const WeaponField = () => {
           </tr>
         </tbody>
       </table>
+      Weapon Skill
       <MultiField
         initialLength={weaponPassiveLength}
         title="Weapon Passive"

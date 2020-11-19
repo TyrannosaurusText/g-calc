@@ -3,19 +3,18 @@ import { effects } from "./utils/Effects.js";
 import "../css/TotalStats.css";
 import { useSelector } from "react-redux";
 import { selectStats } from "../features/totalStats/totalStatsSlice.js";
-import { Trunc } from "./utils/Trunc.js";
 import "../css/TotalStats.css";
 const TotalStats = () => {
   const props = useSelector(selectStats);
   const {
-    totalHP,
-    totalATK,
-    totalDEF,
-    totalCrit,
-    totalCritDMG,
-    totalATKSPD,
-    totalRecharge,
-    totalEM,
+    totalHP = 0,
+    totalATK = 0,
+    totalDEF = 0,
+    totalCrit = 0,
+    totalCritDMG = 0,
+    totalATKSPD = 0,
+    totalRecharge = 0,
+    totalEM = 0,
   } = props;
 
 
@@ -23,10 +22,9 @@ const TotalStats = () => {
     const val = props[stat] || 0;
     return val;
   };
-  const totalAtkPercent = Trunc((totalATK / (getVal(effects.ATK) || 1)));
-  const normalAtkPercent = 1 / (totalCrit / 100) - 1;
+  const totalAtkPercent = ((totalATK / (getVal(effects.ATK) || 1)));
   const critDmgPercent =
-    Trunc((totalCrit / 100) * ((1 / (totalCrit / 100) - 1) + (1 + totalCritDMG / 100)))
+    ((totalCrit / 100) * ((1 / (totalCrit / 100) - 1) + (1 + totalCritDMG / 100)))
 
 
   const sumEffects = (...effects) => {
@@ -56,18 +54,18 @@ const TotalStats = () => {
     "E. Burst": Burst,
   };
   const tableData = {
-    "Total HP": totalHP,
-    "Total ATK": totalATK,
-    "Total DEF": totalDEF,
+    "Total HP": Math.floor(totalHP),
+    "Total ATK": Math.floor(totalATK),
+    "Total DEF": Math.floor(totalDEF),
     "Elemental Mastery": totalEM,
-    "Critical Rate": `${totalCrit}%`,
-    "Critical Damage": `${totalCritDMG}%`,
-    "Attack Speed": `${totalATKSPD}%`,
-    "Energy Recharge": `${totalRecharge}%`,
+    "Critical Rate": `${totalCrit.toFixed(2)}%`,
+    "Critical Damage": `${totalCritDMG.toFixed(2)}%`,
+    "Attack Speed": `${totalATKSPD.toFixed(2)}% `,
+    "Energy Recharge": `${totalRecharge.toFixed(2)}% `,
     "": null,
     "Multipliers": null,
-    "ATK Multiplier": `${totalAtkPercent}x`,
-    "CRIT Multiplier": `${critDmgPercent}x`,
+    "ATK Multiplier": `${totalAtkPercent.toFixed(3)}x`,
+    "CRIT Multiplier": `${critDmgPercent.toFixed(3)}x`,
   }
   return (
     <>
